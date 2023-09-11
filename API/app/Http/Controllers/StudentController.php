@@ -7,29 +7,33 @@ use App\Models\StudentsModel;
 
 class StudentController extends Controller
 {
-    public function index()
-    {
-        $students =  StudentsModel::all();
-        return response()->json($students);
-    }
 
-    public function show($email)
+    public function returnStudent(Request $request)
     {
-        $student = StudentsModel::where('email', '=', $email)->get();
+        $student = StudentsModel::where('email', '=', $request->email)->get();
         return response()->json($student);
     }
 
-    public function store(Request $request)
+    public function addStudent(Request $request)
     {
         $student = new StudentsModel();
-        $student->ime = $post->ime;
-        $student->priimek = $post->priimek;
-        $student->sola = $post->sola;
-        $student->razred = $post->razred;
-        $student->email = $post->email;
+        $student->ime = $request->ime;
+        $student->priimek = $request->priimek;
+        $student->sola = $request->sola;
+        $student->razred = $request->razred;
+        $student->email = $request->email;
         $student->save();
         return response()->json([
             "message" => "student record created"
+        ], 201);
+        
+    }
+
+    public function updateStudentClass(Request $request)
+    {
+        StudentsModel::where('email', '=', $request->email)->update(array('razred' => $request->razred));
+        return response()->json([
+            "message" => "student class record updated"
         ], 201);
     }
 }

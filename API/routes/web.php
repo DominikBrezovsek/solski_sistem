@@ -14,9 +14,6 @@ use App\Http\Controllers\StudentController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get("/students", [StudentController::class, "index"]);
-Route::get("/students/{email}", [StudentController::class, "show"]);
-Route::post("/students/create", [StudentController::class, "store"]);
+Route::post("/students/student", [StudentController::class, "returnStudent"]);
+Route::post("/student/create", [StudentController::class, "addStudent"]);
+Route::post("/student/update/class", [StudentController::class, "updateStudentClass"]);
