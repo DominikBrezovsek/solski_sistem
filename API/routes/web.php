@@ -18,5 +18,5 @@ Route::post("/students/student", [StudentController::class, "returnStudent"]);
 Route::post("/student/create", [StudentController::class, "addStudent"]);
 Route::post("/student/update/class", [StudentController::class, "updateStudentClass"]);
 
-Route::post("/teachers/teacher", [TeacherController::class, "returnTeacher"]);
+Route::post("/teacher/teacher", [TeacherController::class, "returnTeacher"]);
 Route::post("/teacher/create", [TeacherController::class, "addTeacher"]);
