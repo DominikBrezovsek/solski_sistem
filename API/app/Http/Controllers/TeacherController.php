@@ -9,7 +9,7 @@ class TeacherController extends Controller
 {
     public function returnTeacher(Request $request)
     {
-        $teacher = TeacherModel::where('email', '=', $request->email)->get();
+        $teacher = TeacherModel::where('email', 'LIKE', $request->email)->get();
         return response()->json($teacher);
     }
 

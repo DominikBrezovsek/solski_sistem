@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,5 +15,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::post("/students/student", [StudentController::class, "returnStudent"]);
+Route::post("/student/create", [StudentController::class, "addStudent"]);
+Route::post("/student/update/class", [StudentController::class, "updateStudentClass"]);
 
-Route::middleware('auth:sanctum')->get('/teacher/get', [\App\Models\TeacherModel::class, 'returnTeacher']);
+Route::post("/teacher/teacher", [TeacherController::class, "returnTeacher"]);
+Route::post("/teacher/create", [TeacherController::class, "addTeacher"]);
+
