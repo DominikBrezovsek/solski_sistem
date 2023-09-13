@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TeacherModel;
 use Illuminate\Http\Request;
 
 class TeacherController extends Controller
@@ -23,6 +24,6 @@ class TeacherController extends Controller
         return response()->json([
             "message" => "teacher record created"
         ], 201);
-        
+
     }
 }
