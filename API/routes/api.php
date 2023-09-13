@@ -15,7 +15,7 @@ use App\Http\Controllers\TeacherController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::post("/students/student", [StudentController::class, "returnStudent"]);
+Route::post("/student/student", [StudentController::class, "returnStudent"]);
 Route::post("/student/create", [StudentController::class, "addStudent"]);
 Route::post("/student/update/class", [StudentController::class, "updateStudentClass"]);
 
