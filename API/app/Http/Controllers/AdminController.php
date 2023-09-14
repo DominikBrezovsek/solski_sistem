@@ -10,11 +10,12 @@ class AdminController extends Controller
     {
         $email_exists = AdminModel::where('email', '=', $request->email)->get();
 
-        if ($email_exists) {
+        if ($email_exists != '[]') {
             return response()->json([
+                "email_exists" => $email_exists,
                 "message" => "Admin with this email already exists!",
                 "error" => "Duplicate"
-            ], '201');
+            ], '406');
         } else {
 
             $admin = new AdminModel();

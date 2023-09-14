@@ -9,7 +9,7 @@ class SubjectController extends Controller
 {
     public function addSubject(Request $request){
         $subject_exists = SubjectModel::where('ime_predmeta', '=', $request->subject)->get();
-        if($subject_exists){
+        if($subject_exists != '[]'){
             return response()->json([
                 "message" => "Subject already exists!",
                 "error" => "Duplicate"
@@ -43,7 +43,7 @@ class SubjectController extends Controller
 
     public function updateSubjectName(Request $request){
         $subject_exists = SubjectModel::where('ime_predmeta', '=', $request->subject)->get();
-        if ($subject_exists) {
+        if ($subject_exists != '[]') {
             return response()->json([
                 "message" => "Subject already exists!",
                 "error" => "Duplicate"

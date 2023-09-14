@@ -10,7 +10,7 @@ class MaterialController extends Controller
 {
     public function createMaterial(Request $request){
         $material_exists = Materials::where('name', '=', $request->name)->get();
-        if ($material_exists){
+        if ($material_exists != '[]'){
             return response()->json([
                 "message" => "Material with this name already exists!",
                 "error" => "Duplicate"
@@ -44,11 +44,11 @@ class MaterialController extends Controller
 
     public function updateMaterialName(Request $request){
         $material_exists = Materials::where('name', '=', $request->name)->get();
-        if ($material_exists) {
+        if ($material_exists != '[]') {
             return response()->json([
                 "message" => "Subject already exists!",
                 "error" => "Duplicate"
-            ], '201');
+            ], '406');
         } else {
             $material = Materials::where('name', '=', $request->name)->update(array('name' => $request->new_name));
             return response()->json([
