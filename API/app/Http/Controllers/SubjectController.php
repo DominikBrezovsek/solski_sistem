@@ -63,7 +63,7 @@ class SubjectController extends Controller
         ], '201');
     }
     public function updateSubjectCategory(Request $request){
-        $subject = SubjectModel::where('ime_predmeta', '=', $request->category)->update(array('kategorija' => $request->new_category));
+        $subject = SubjectModel::where('ime_predmeta', '=', $request->subject)->update(array('kategorija' => $request->new_category));
         return response()->json([
             "message" => "New subject category has been set successfully"
         ], '201');

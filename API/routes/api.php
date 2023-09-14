@@ -6,7 +6,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SubjectController;
-
+use App\Http\Controllers\MaterialController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,6 +44,19 @@ Route::prefix('subject')->group(function (){
         Route::post('/category', [SubjectController::class, 'updateSubjectCategory']);
     });
 });
+
+Route::prefix('materials')->group(function (){
+    Route::post('/get', [MaterialController::class, 'returnMaterial']);
+    Route::post('/create', [MaterialController::class, 'createMaterial']);
+    Route::post('/delete', [MaterialController::class, 'removeMaterial']);
+    Route::prefix('/update')->group(function (){
+        Route::post('/name', [MaterialController::class, 'updateMaterialName']);
+        Route::post('/document', [MaterialController::class, 'updateMaterialDocument']);
+        Route::post('/category', [MaterialController::class, 'updateMaterialCategory']);
+    });
+});
+
+
 
 
 
