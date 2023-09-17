@@ -11,7 +11,7 @@ class LoginController extends Controller
 {
 
     public function checkLogin(Request $request){
-        $login = LoginModel::where('username', '=', $request->username)->get();
+        $login = LoginModel::where('username', '=', $request->email)->get();
         if (Hash::check($request->password, $login->password)){
             return response()->json([
                 "message" => "User logged in sucessfully"

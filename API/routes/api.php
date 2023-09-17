@@ -7,6 +7,7 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\LoginController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -54,6 +55,11 @@ Route::prefix('materials')->group(function (){
         Route::post('/document', [MaterialController::class, 'updateMaterialDocument']);
         Route::post('/category', [MaterialController::class, 'updateMaterialCategory']);
     });
+});
+
+Route::prefix('login/')->group(function (){
+    Route::post('check', [LoginController::class, 'checkLogin']);
+    Route::post('create', [LoginController::class, 'createLogin']);
 });
 
 
