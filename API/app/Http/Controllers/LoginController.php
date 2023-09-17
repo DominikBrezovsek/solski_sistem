@@ -14,22 +14,24 @@ class LoginController extends Controller
         $login = LoginModel::where('username', '=', $request->email)->get();
         if (Hash::check($request->password, $login->password)){
             return response()->json([
-                "message" => "User logged in sucessfully"
+                "message" => "User logged in sucessfully",
+                "logged" => "success"
                 ], "200");
         } else {
             return response()->json([
-                "message" => "Username or password not matched!"
-            ], "416");
+                "message" => "Username or password not matched!",
+                "logged" => "false"
+            ], "200");
         }
     }
 
     public function createLogin(Request $request){
-        $login = LoginModel::where('username', '=', $request->username)->get();
+        $login = LoginModel::where('username', '=', $request->username)->first();
         if ($login != '[]'){
             return response()->json([
                 "message" => "Username already exists!",
                 "error" => "Duplicate"
-            ], "406");
+            ], "200");
         } else {
             $login = new LoginModel();
             $login->username = $request->username;
