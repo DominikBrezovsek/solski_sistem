@@ -6,16 +6,25 @@ use App\Models\LoginModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Testing\Fluent\Concerns\Has;
+use App\Models\AuthToken;
+use App\Http\Controllers\AuthController;
+use PHLAK\StrGen;
 
 class LoginController extends Controller
 {
 
     public function checkLogin(Request $request){
-        $login = LoginModel::where('username', '=', $request->email)->get();
+        $login = LoginModel::where('username', '=', $request->email)->first();
         if (Hash::check($request->password, $login->password)){
+            $generator = new StrGen\Generator();
+            $key = $generator->length(16)->generate();
+            $id = $generator->length(20)->generate();
+            $token = app('App\Http\Controllers\AuthController')->CreateToken($login->id, $key, $id);
+
             return response()->json([
                 "message" => "User logged in sucessfully",
-                "logged" => "success"
+                "logged" => "success",
+                "token" => $token
                 ], "200");
         } else {
             return response()->json([
@@ -44,4 +53,5 @@ class LoginController extends Controller
             ], "201");
         }
     }
+
 }
