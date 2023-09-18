@@ -12,7 +12,7 @@ class AuthController extends Controller
     public function CreateToken($user_id, $token_key, $token_id){
         date_default_timezone_set('Europe/Ljubljana');
         $iat = time();
-        $exp = (time() + 30*60*60);
+        $exp = (time() + 30*60);
         $payload = [
             'token_id' => $token_id,
             'iss' => 'https://smv.usdd.company',

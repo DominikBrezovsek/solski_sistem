@@ -28,7 +28,7 @@ class DeleteRevokedTokens extends Command
     {
         date_default_timezone_set('Europe/Ljubljana');
         $current_time = time();
-        $expired_token = AuthToken::where('expires_at', '>=',$current_time)->get();
+        $expired_token = AuthToken::where('expires_at', '<=',$current_time)->get();
         foreach ($expired_token as $token){
             $token->delete();
         }
