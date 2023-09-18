@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('delete-revoked-tokens')->everyMinute();
+        $schedule->command('app:delete-revoked-tokens')->everyThirtySeconds();
     }
 
     /**
