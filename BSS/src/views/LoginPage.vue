@@ -1,6 +1,6 @@
 <template>
     <div class="login flex flex-row justify-between">
-        <div class="about-side w-6/12 flex justify-center align-center">
+        <div class="about-side w-4/12 flex justify-center align-center">
             <div class="mt-auto mb-auto about-inner">
                 <div class="tittle-about text-5xl font-bold">
                     <h1>Welcome to</h1>
@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="login-side w-5/12 flex flex-col justify-center align-center">
+        <div class="login-side w-8/12 flex flex-col justify-center">
             <div class="login-tittle flex flex-col">
                 <div class="tittle ml-auto mr-auto text-5xl font-bold text-black">
                     <h1>Login</h1>
@@ -27,18 +27,14 @@
                     Enter your credentials to log into your account.
                 </div>
             </div>
-            <div>
-                <div>
+            <div class="flex flex-col login-form w-full">
+                <div class="flex flex-col">
                     <label for="username" class="label">Username</label>
+                    <input id="username" class="username" type="email" v-model="username" placeholder="example@example.com" />
                 </div>
-                <div>
-                    <input id="username" type="email" v-model="username" placeholder="example@example.com" />
-                </div>
-                <div>
+                <div class="flex flex-col">
                     <label for="password" class="label">Password</label>
-                </div>
-                <div>
-                    <input id="password" type="password" v-model="password" placeholder="Your password" />
+                    <input id="password" class="password" type="password" v-model="password" placeholder="Your password" />
                 </div>
                 <div>
                     <button @click="login" class="login-button">Login</button>
@@ -98,10 +94,9 @@ export default {
 }
 
 .login-tittle {
-    position: absolute;
-    top: 10%;
     gap: 2vh;
-    right: 8%;
+    margin-top: 5vh;
+
 }
 
 .subtittle {
@@ -111,23 +106,40 @@ export default {
     width: 90%;
 }
 
-#username,
-#password {
-    width: 80%;
+.login-form{
+    margin-left: auto;    
+    margin-right: auto;
+    width: 50vw;
+    justify-items: center;
+    align-items: center;
+    margin-top: auto;
+    margin-bottom: auto;
+
+}
+.login-side{
+    justify-content: center;
+    align-content: center;
+    
+}
+
+
+.username,
+.password {
+    width: 35vw;
     height: 5vh;
     border: 1px solid black;
     border-radius: 5px;
     margin-bottom: 2vh;
 }
 
-#password::placeholder,
-#username::placeholder {
+.password::placeholder,
+.username::placeholder {
     font-size: 1.5vh;
     padding-left: 1vw;
 }
 
 .login-button {
-    width: 60%;
+    width: 25vw;
     height: 5vh;
     border: none;
     border-radius: 10px;
@@ -135,7 +147,6 @@ export default {
     background-color: #4377df;
     color: white;
     font-size: 2vh;
-    margin-left: 5vw;
 }
 
 .login-button:hover {
@@ -143,8 +154,10 @@ export default {
 }
 
 .no-account {
-    margin-top: 2vh;
     font-size: 2vh;
+    margin-left: 10vw;
+    margin-bottom: auto;
+    margin-top: -15vh;
 }
 
 .no-account a {
@@ -157,7 +170,8 @@ export default {
 
 .label {
     font-size: 2vh;
-    margin-bottom: 20px;
+    margin-bottom: 0.5vh;
+    margin-right: auto;
 }
 
 .about-side {
