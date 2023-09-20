@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\DB;
 class SchoolsController extends Controller
 {
     public function getSchools(){
-        $schools = DB::table('Schools')->get();
+        $schools = School::where('naziv', '!=', null)->get('naziv');
 
-        return response()->json($schools->get('naziv'));
+        return response()->json($schools);
     }
 
     public function createSchool(Request $request){
