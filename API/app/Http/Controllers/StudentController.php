@@ -22,8 +22,8 @@ class StudentController extends Controller
             return response()->json([
                 "email_exists" => $email_exists,
                 "message" => "Student  with this email already exists!",
-                "error" => "Duplicate"
-            ], '406');
+                "error" => "duplicate"
+            ], '200');
         } else {
             $student = new StudentsModel();
             $student->ime = $request->ime;
@@ -33,7 +33,8 @@ class StudentController extends Controller
             $student->email = $request->email;
             $student->save();
             return response()->json([
-                "message" => "student record created"
+                "message" => "student record created",
+                "created" => "success"
             ], 201);
         }
 

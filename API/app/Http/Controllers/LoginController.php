@@ -20,6 +20,8 @@ class LoginController extends Controller
             $key = $generator->length(16)->generate();
             $id = $generator->length(20)->generate();
             $token = app('App\Http\Controllers\AuthController')->CreateToken($login->id, $key, $id);
+            $request->session()->regenerate();
+            $request->session()->put('user_id', $login->id);
 
             return response()->json([
                 "message" => "User logged in sucessfully",

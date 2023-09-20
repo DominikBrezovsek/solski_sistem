@@ -8,6 +8,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\LoginController;
+use \App\Http\Controllers\SchoolsController;
+use App\Http\Controllers\ClassesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -60,6 +62,14 @@ Route::prefix('materials')->group(function (){
 Route::prefix('login/')->group(function (){
     Route::post('check', [LoginController::class, 'checkLogin']);
     Route::post('create', [LoginController::class, 'createLogin']);
+});
+
+Route::prefix('schools/')->group(function (){
+    Route::get('get', [SchoolsController::class, 'getSchools']);
+});
+
+Route::prefix('class/')->group(function (){
+    Route::post('get', [ClassesController::class, 'getClasses']);
 });
 
 
