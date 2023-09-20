@@ -66,6 +66,7 @@ Route::prefix('login/')->group(function (){
 
 Route::prefix('schools/')->group(function (){
     Route::get('get', [SchoolsController::class, 'getSchools']);
+    Route::post('create', [SchoolsController::class, 'createSchool']);
 });
 
 Route::prefix('class/')->group(function (){
