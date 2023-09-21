@@ -45,7 +45,7 @@
                 </div>
                 <div class="flex flex-col">
                     <label for="class" class="label">Class</label>
-                    <select name="class" id="class">
+                    <select name="class" id="class" v-model="currentClass">
                         <option v-for="razred in classes" :value="razred.naziv">{{ razred.naziv }}</option>
                     </select>
                 </div>
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="no-account">
-                <p>Already have an account?<RouterLink to="/login">Login</RouterLink>
+                <p>Already have an account?<RouterLink to="/">Login</RouterLink>
                 </p>
             </div>
         </div>
@@ -77,9 +77,10 @@ export default {
             email: "",
             school: "",
             class: "",
-            schools: [],
-            classes: [],
-            currentSchool: ""
+            schools: Array(),
+            classes: Array(),
+            currentSchool: "",
+            currentClass: ""
         }
     },
     created() {
@@ -91,18 +92,21 @@ export default {
             });
     },
     methods: {
-        register() {
+        nextStep() {
             const credentials = new FormData();
-            credentials.append('name', this.name);
-            credentials.append('surname', this.surname);
+            credentials.append('ime', this.name);
+            credentials.append('priimek', this.surname);
+            credentials.append('sola', this.currentSchool);
+            credentials.append('razred', this.currentClass);
             credentials.append('email', this.email);
-            credentials.append('school', this.school);
-            credentials.append('class', this.class);
+            console.log("Razred:" + this.currentClass);
+
             axios.post('https://smv.usdd.company/API/public/api/student/create', credentials)
                 .then((response) => {
                     console.log(response.data.logged);
                     if (response.data.created == "success") {
-                        this.$router.push('/login');
+                        localStorage.setItem('email', this.email);
+                        this.$router.push('/register2');
                     } else if (response.data.error == "duplicate") {
                         alert("User already exists");
                     } else {
@@ -115,10 +119,13 @@ export default {
         getClasses() {
             const school = new FormData();
             console.log(this.currentSchool);
+
             school.append('school', this.currentSchool);
             axios.post('https://smv.usdd.company/API/public/api/class/get', school)
                 .then((response) => {
-                    this.classes = response.data;
+                    if (response.data != null){
+                        this.classes = response.data;
+                    }
                 }, (error) => {
                     console.log(error);
                 });
@@ -143,6 +150,7 @@ export default {
 .login-tittle {
     gap: 2vh;
     margin-top: 5vh;
+    margin-bottom: 5vh;
 
 }
 
@@ -159,8 +167,8 @@ export default {
     width: 50vw;
     justify-items: center;
     align-items: center;
-    margin-top: auto;
     margin-bottom: auto;
+    padding-bottom: 10vh;
 
 }
 .login-side{
