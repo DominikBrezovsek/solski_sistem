@@ -24,41 +24,24 @@
                     <h1>Register</h1>
                 </div>
                 <div class="subtittle text-xl font-medium ml-auto mr-auto">
-                    Create your student account.
+                    Finish creating your student account.
                 </div>
             </div>
             <div class="flex flex-col login-form w-full">
                 <div class="flex flex-col">
-                    <label for="name" class="label">Name</label>
-                    <input id="name" class="username" type="text" v-model="name" placeholder="John" />
+                    <label for="password" class="label">Password</label>
+                    <input id="password" class="username" type="password" v-model="password" placeholder="John" />
                 </div>
                 <div class="flex flex-col">
-                    <label for="password" class="label">Surname</label>
-                    <input id="password" class="password" type="text" v-model="surname" placeholder="Doe" />
-                </div>
-                <div class="flex flex-col">
-                    <label for="school" class="label">School</label>
-                    <select name="school" id="school" v-model="currentSchool" @change="getClasses" >
-                        <option value="" disabled selected>Select your school</option>
-                        <option v-for="school in schools" :value="school.naziv">{{ school.naziv }}</option>
-                    </select>
-                </div>
-                <div class="flex flex-col">
-                    <label for="class" class="label">Class</label>
-                    <select name="class" id="class" v-model="currentClass">
-                        <option v-for="razred in classes" :value="razred.naziv">{{ razred.naziv }}</option>
-                    </select>
-                </div>
-                <div class="flex flex-col">
-                    <label for="email" class="label">Email</label>
-                    <input id="email" class="username" type="email" v-model="email" placeholder="johndoe@school.domain"/>
+                    <label for="password" class="label">Re-password</label>
+                    <input id="password" class="password" type="password" v-model="re_password" placeholder="Doe" />
                 </div>
                 <div>
-                    <button @click="nextStep" class="login-button">Next step</button>
+                    <button @click="register" class="login-button">Next step</button>
                 </div>
             </div>
             <div class="no-account">
-                <p>Already have an account?<RouterLink to="/">Login</RouterLink>
+                <p>Already have an account?<RouterLink to="/login">Login</RouterLink>
                 </p>
             </div>
         </div>
@@ -72,42 +55,37 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            name: "",
-            surname: "",
-            email: "",
-            school: "",
-            class: "",
-            schools: Array(),
-            classes: Array(),
-            currentSchool: "",
-            currentClass: ""
+            password: "",
+            re_password: ""
         }
     },
-    created() {
-        axios.get('https://smv.usdd.company/API/public/api/schools/get')
-            .then((response) => {
-                this.schools = response.data;
-            }, (error) => {
-                console.log(error);
-            });
-    },
     methods: {
-        nextStep() {
+        register() {
             const credentials = new FormData();
-            credentials.append('ime', this.name);
-            credentials.append('priimek', this.surname);
-            credentials.append('sola', this.currentSchool);
-            credentials.append('razred', this.currentClass);
-            credentials.append('email', this.email);
-            console.log("Razred:" + this.currentClass);
+            let email = localStorage.getItem('email');
+            if (email == null) {
+                console.log("Email not specified!");
+            }
+            else {
+                credentials.append('username', email);
+            }
+            if (this.password != this.re_password) {
+                alert("Passwords do not match!");
+                return;
+            }
+            else {
+                credentials.append('password', this.password);
+            }
+            credentials.append('type', 'student');
 
-            axios.post('https://smv.usdd.company/API/public/api/student/create', credentials)
+            axios.post('https://smv.usdd.company/API/public/api/login/create', credentials)
                 .then((response) => {
                     console.log(response.data.logged);
                     if (response.data.created == "success") {
-                        localStorage.setItem('email', this.email);
-                        this.$router.push('/register2');
-                    } else if (response.data.error == "duplicate") {
+                        localStorage.removeItem('email');
+                        alert("User created successfully!");
+                        this.$router.push('/login');
+                    } else if (response.data.error == "Duplicate") {
                         alert("User already exists");
                     } else {
                         alert("User creation failed");
@@ -116,20 +94,6 @@ export default {
                     console.log(error);
                 });
         },
-        getClasses() {
-            const school = new FormData();
-            console.log(this.currentSchool);
-
-            school.append('school', this.currentSchool);
-            axios.post('https://smv.usdd.company/API/public/api/class/get', school)
-                .then((response) => {
-                    if (response.data != null){
-                        this.classes = response.data;
-                    }
-                }, (error) => {
-                    console.log(error);
-                });
-        }
     }
 }
 </script>
