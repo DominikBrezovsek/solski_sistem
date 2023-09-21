@@ -21,27 +21,27 @@
         <div class="login-side w-8/12 flex flex-col justify-center">
             <div class="login-tittle flex flex-col">
                 <div class="tittle ml-auto mr-auto text-5xl font-bold text-black">
-                    <h1>Login</h1>
+                    <h1>Register</h1>
                 </div>
                 <div class="subtittle text-xl font-medium ml-auto mr-auto">
-                    Enter your credentials to log into your account.
+                    Finish creating your student account.
                 </div>
             </div>
             <div class="flex flex-col login-form w-full">
                 <div class="flex flex-col">
-                    <label for="username" class="label">Username</label>
-                    <input id="username" class="username" type="email" v-model="username" placeholder="example@example.com" />
+                    <label for="password" class="label">Password</label>
+                    <input id="password" class="username" type="password" v-model="password" placeholder="John" />
                 </div>
                 <div class="flex flex-col">
-                    <label for="password" class="label">Password</label>
-                    <input id="password" class="password" type="password" v-model="password" placeholder="Your password" />
+                    <label for="password" class="label">Re-password</label>
+                    <input id="password" class="password" type="password" v-model="re_password" placeholder="Doe" />
                 </div>
                 <div>
-                    <button @click="login" class="login-button">Login</button>
+                    <button @click="register" class="login-button">Next step</button>
                 </div>
             </div>
             <div class="no-account">
-                <p>Don't have an account? <RouterLink to="/register">Register</RouterLink>
+                <p>Already have an account?<RouterLink to="/login">Login</RouterLink>
                 </p>
             </div>
         </div>
@@ -55,27 +55,45 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            username: "",
-            password: ""
+            password: "",
+            re_password: ""
         }
     },
     methods: {
-        login() {
+        register() {
             const credentials = new FormData();
-            credentials.append('email', this.username);
-            credentials.append('password', this.password);
-            axios.post('https://smv.usdd.company/API/public/api/login/check', credentials)
+            let email = localStorage.getItem('email');
+            if (email == null) {
+                console.log("Email not specified!");
+            }
+            else {
+                credentials.append('username', email);
+            }
+            if (this.password != this.re_password) {
+                alert("Passwords do not match!");
+                return;
+            }
+            else {
+                credentials.append('password', this.password);
+            }
+            credentials.append('type', 'student');
+
+            axios.post('https://smv.usdd.company/API/public/api/login/create', credentials)
                 .then((response) => {
                     console.log(response.data.logged);
-                    if (response.data.logged == "success") {
-                        this.$router.push('/home');
+                    if (response.data.created == "success") {
+                        localStorage.removeItem('email');
+                        alert("User created successfully!");
+                        this.$router.push('/login');
+                    } else if (response.data.error == "Duplicate") {
+                        alert("User already exists");
                     } else {
-                        alert("Invalid credentials");
+                        alert("User creation failed");
                     }
                 }, (error) => {
                     console.log(error);
                 });
-        }
+        },
     }
 }
 </script>
@@ -96,6 +114,7 @@ export default {
 .login-tittle {
     gap: 2vh;
     margin-top: 5vh;
+    margin-bottom: 5vh;
 
 }
 
@@ -112,8 +131,8 @@ export default {
     width: 50vw;
     justify-items: center;
     align-items: center;
-    margin-top: auto;
     margin-bottom: auto;
+    padding-bottom: 10vh;
 
 }
 .login-side{
@@ -134,6 +153,16 @@ export default {
 
 .password::placeholder,
 .username::placeholder {
+    font-size: 1.5vh;
+    padding-left: 1vw;
+}
+
+select {
+    width: 35vw;
+    height: 5vh;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-bottom: 2vh;
     font-size: 1.5vh;
     padding-left: 1vw;
 }
