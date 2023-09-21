@@ -15,19 +15,27 @@ class LoginController extends Controller
 
     public function checkLogin(Request $request){
         $login = LoginModel::where('username', '=', $request->email)->first();
-        if (Hash::check($request->password, $login->password)){
-            $generator = new StrGen\Generator();
-            $key = $generator->length(16)->generate();
-            $id = $generator->length(20)->generate();
-            $token = app('App\Http\Controllers\AuthController')->CreateToken($login->id, $key, $id);
-            $request->session()->regenerate();
-            $request->session()->put('user_id', $login->id);
+        if ($login != '') {
+            if (Hash::check($request->password, $login->password)) {
+                $generator = new StrGen\Generator();
+                $key = $generator->length(16)->generate();
+                $id = $generator->length(20)->generate();
+                $token = app('App\Http\Controllers\AuthController')->CreateToken($login->id, $key, $id);
+                session_start();
+                $session_user = $_SESSION = ['user_id', $login->id];
 
-            return response()->json([
-                "message" => "User logged in sucessfully",
-                "logged" => "success",
-                "token" => $token
+                return response()->json([
+                    "message" => "User logged in sucessfully",
+                    "logged" => "success",
+                    "token" => $token,
+                    "session" => $session_user
                 ], "200");
+            } else {
+                return response()->json([
+                    "message" => "Username or password not matched!",
+                    "logged" => "false"
+                ], "200");
+            }
         } else {
             return response()->json([
                 "message" => "Username or password not matched!",
@@ -38,7 +46,7 @@ class LoginController extends Controller
 
     public function createLogin(Request $request){
         $login = LoginModel::where('username', '=', $request->username)->first();
-        if ($login != '[]'){
+        if ($login != ''){
             return response()->json([
                 "message" => "Username already exists!",
                 "error" => "Duplicate"
@@ -52,6 +60,7 @@ class LoginController extends Controller
 
             return response()->json([
                 "message" => "Login created successfully!",
+                "created" => "success"
             ], "201");
         }
     }
