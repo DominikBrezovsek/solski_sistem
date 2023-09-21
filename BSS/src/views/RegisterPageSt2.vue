@@ -84,7 +84,7 @@ export default {
                     if (response.data.created == "success") {
                         localStorage.removeItem('email');
                         alert("User created successfully!");
-                        this.$router.push('/login');
+                        this.$router.push('/');
                     } else if (response.data.error == "Duplicate") {
                         alert("User already exists");
                     } else {
