@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="no-account">
-                <p>Already have an account?<RouterLink to="/login">Login</RouterLink>
+                <p>Already have an account?<RouterLink to="/">Login</RouterLink>
                 </p>
             </div>
         </div>
@@ -84,11 +84,13 @@ export default {
                     if (response.data.created == "success") {
                         localStorage.removeItem('email');
                         alert("User created successfully!");
-                        this.$router.push('/login');
+                        this.$router.push('/');
                     } else if (response.data.error == "Duplicate") {
                         alert("User already exists");
+                        this.$router.push('/');
                     } else {
                         alert("User creation failed");
+                        this.$router.push('/');
                     }
                 }, (error) => {
                     console.log(error);
