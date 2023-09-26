@@ -22,13 +22,15 @@ class LoginController extends Controller
                 $id = $generator->length(20)->generate();
                 $token = app('App\Http\Controllers\AuthController')->CreateToken($login->id, $key, $id);
                 session_start();
-                $session_user = $_SESSION = ['user_id', $login->id];
+                $_SESSION['user_id'] = $login->id;
+                $_SESSION['user_type'] = $login->type;
 
                 return response()->json([
                     "message" => "User logged in sucessfully",
                     "logged" => "success",
                     "token" => $token,
-                    "session" => $session_user
+                    "type" => $_SESSION['user_type'],
+                    "user_id" => $_SESSION['user_id']
                 ], "200");
             } else {
                 return response()->json([

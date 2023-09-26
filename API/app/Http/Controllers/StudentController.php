@@ -10,9 +10,19 @@ class StudentController extends Controller
 
     public function returnStudent(Request $request)
     {
-        $student = StudentsModel::where('email', '=', $request->email)->get();
-        return response()->json($student);
+        if ($request->email) {
+            $student = StudentsModel::where('email', '=', $request->email)->get();
+            return response()->json($student);
+        }
+        else if ($request->id){
+            $student = StudentsModel::where('id', '=', $request->id)->first();
+            return response()->json($student);
+        }
+        else{
+            return "";
+        }
     }
+
 
     public function addStudent(Request $request)
     {

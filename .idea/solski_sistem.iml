@@ -122,6 +122,9 @@
       <excludeFolder url="file://$MODULE_DIR$/API/vendor/webmozart/assert" />
       <excludeFolder url="file://$MODULE_DIR$/API/vendor/firebase/php-jwt" />
       <excludeFolder url="file://$MODULE_DIR$/API/vendor/phlak/strgen" />
+      <excludeFolder url="file://$MODULE_DIR$/API/storage/app" />
+      <excludeFolder url="file://$MODULE_DIR$/API/storage/framework" />
+      <excludeFolder url="file://$MODULE_DIR$/API/vendor/_laravel_idea" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

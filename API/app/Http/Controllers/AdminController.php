@@ -37,7 +37,7 @@ class AdminController extends Controller
     }
 
     public function returnAdmin(Request $request) {
-        $admin = AdminModel::where('email', '=', $request->email)->get();
+        $admin = AdminModel::where('id', '=', $request->id)->first();
         return response()->json($admin);
     }
 }

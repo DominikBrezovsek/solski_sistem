@@ -125,6 +125,7 @@
       <path value="$PROJECT_DIR$/API/vendor/graham-campbell/result-type" />
       <path value="$PROJECT_DIR$/API/vendor/firebase/php-jwt" />
       <path value="$PROJECT_DIR$/API/vendor/phlak/strgen" />
+      <path value="$PROJECT_DIR$/API/vendor/_laravel_idea" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />

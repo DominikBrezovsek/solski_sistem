@@ -9,7 +9,7 @@ class TeacherController extends Controller
 {
     public function returnTeacher(Request $request)
     {
-        $teacher = TeacherModel::where('email', 'LIKE', $request->email)->get();
+        $teacher = TeacherModel::where('id', '=', $request->id)->first();
         return response()->json($teacher);
     }
 
@@ -22,7 +22,7 @@ class TeacherController extends Controller
                 "email_exists" => $email_exists,
                 "message" => "Teacher with this email already exists!",
                 "error" => "Duplicate"
-            ], '406');
+            ], '200');
         } else {
             $teacher = new TeacherModel();
             $teacher->ime = $request->ime;
