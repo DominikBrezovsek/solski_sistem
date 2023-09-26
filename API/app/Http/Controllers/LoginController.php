@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\LoginModel;
+use App\Models\StudentsModel;
+use App\Models\TeacherModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Testing\Fluent\Concerns\Has;
@@ -54,10 +56,17 @@ class LoginController extends Controller
                 "error" => "Duplicate"
             ], "200");
         } else {
+            if($request->type == "student"){
+                $user_id = StudentsModel::where('email', '=', $request->email)->get();
+            }
+            else if ($request->type = "teacher"){
+                $user_id = TeacherModel::where('email',  '=', $request->email)->get();
+            }
             $login = new LoginModel();
             $login->username = $request->username;
             $login->password = Hash::make($request->password);
             $login->type = $request->type;
+            $login->user_id = $user_id->id;
             $login->save();
 
             return response()->json([

@@ -13,6 +13,14 @@ class StudentSeeder extends Seeder
      */
     public function run(): void
     {
+        StudentsModel::create([
+            'ime' => "Domen",
+            'priimek' => "Bezgovšek",
+            'sola' => 'SŠ KER',
+            'razred' => "R4B",
+            'email' => "debil@debil.com"
+        ]);
+
         $faker = \Faker\Factory::create();
         for ($i = 0; $i < 100; $i++) {
             StudentsModel::create([
