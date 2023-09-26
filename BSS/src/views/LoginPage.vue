@@ -68,6 +68,11 @@ export default {
                 .then((response) => {
                     console.log(response.data.logged);
                     if (response.data.logged == "success") {
+                        localStorage.setItem('token', response.data.token);
+                        if (response.data.type != null){
+                            localStorage.setItem('type', response.data.type);
+                        }
+                        localStorage.setItem('user', response.data.user_id);
                         this.$router.push('/home');
                     } else {
                         alert("Invalid credentials");
@@ -75,7 +80,11 @@ export default {
                 }, (error) => {
                     console.log(error);
                 });
-        }
+        },
+        
+    },
+    created(){
+        localStorage.clear();
     }
 }
 </script>

@@ -68,6 +68,7 @@ export default {
             }
             else {
                 credentials.append('username', email);
+                credentials.append('email', email);
             }
             if (this.password != this.re_password) {
                 alert("Passwords do not match!");
