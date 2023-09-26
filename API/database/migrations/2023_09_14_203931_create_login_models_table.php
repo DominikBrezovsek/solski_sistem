@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('username')->index();
             $table->string('password');
             $table->string('type')->index();
-            $table->bigInteger('user_id');
+            $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
         });
     }

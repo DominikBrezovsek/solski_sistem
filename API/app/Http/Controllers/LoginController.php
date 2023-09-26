@@ -11,6 +11,7 @@ use Illuminate\Testing\Fluent\Concerns\Has;
 use App\Models\AuthToken;
 use App\Http\Controllers\AuthController;
 use PHLAK\StrGen;
+use function Laravel\Prompts\select;
 
 class LoginController extends Controller
 {
@@ -57,10 +58,11 @@ class LoginController extends Controller
             ], "200");
         } else {
             if($request->type == "student"){
-                $user_id = StudentsModel::where('email', '=', $request->email)->get();
+                $user_id = StudentsModel::where('email', '=', $request->email)->first();
+
             }
             else if ($request->type = "teacher"){
-                $user_id = TeacherModel::where('email',  '=', $request->email)->get();
+                $user_id = TeacherModel::where('email',  '=', $request->email)->first();
             }
             $login = new LoginModel();
             $login->username = $request->username;

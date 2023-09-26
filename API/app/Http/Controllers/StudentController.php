@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\StudentsModel;
+use PhpParser\Node\Stmt\Catch_;
 
 class StudentController extends Controller
 {
@@ -35,18 +36,26 @@ class StudentController extends Controller
                 "error" => "duplicate"
             ], '200');
         } else {
-            $student = new StudentsModel();
-            $student->ime = $request->ime;
-            $student->priimek = $request->priimek;
-            $student->sola = $request->sola;
-            $student->razred = $request->razred;
-            $student->email = $request->email;
-            $student->save();
-            return response()->json([
-                "message" => "student record created",
-                "created" => "success"
-            ], 201);
-        }
+            try {
+                StudentsModel::create([
+                    'ime' => $request->ime,
+                    'priimek' => $request->priimek,
+                    'sola' => $request->sola,
+                    'razred' => $request->razred,
+                    'email' => $request->email
+                ]);
+                return response()->json([
+                    "message" => "student record created",
+                    "created" => "success"
+                ], 201);
+
+            } catch (\Exception $e){
+                return response()->json([
+                    'error' => $e
+                ]);
+            }
+
+            }
 
     }
 
