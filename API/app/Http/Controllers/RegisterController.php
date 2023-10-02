@@ -13,14 +13,14 @@ class RegisterController extends Controller
         $password = Hash::make($request->password);
         $userType = $request->userType;
 
-        $user = UserLoginTable::select('loginId')->where('username', '=', $username)->first();
+        $user = UserLoginTable::select('id')->where('username', '=', $username)->first();
 
-        if($user->id != null) {
+        if($user != null) {
             return response()->json([
                 "error" => "duplicate"
             ], 200);
         }
-        if ($user->id == "")
+        if ($user == null)
         UserLoginTable::create([
             'username' => $username,
             'password' => $password,

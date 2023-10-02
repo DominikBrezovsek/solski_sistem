@@ -39,6 +39,6 @@ class TeacherController extends Controller
     public function getTeacher(Request $request){
         $loginId = session('loginId');
         $teacher = TeacherTable::select(['name', 'surname', 'email'])->where('loginId', '=', $loginId)->first();
-        return response()->json([$teacher]);
+        return response()->json($teacher);
     }
 }

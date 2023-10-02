@@ -6,6 +6,7 @@ use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SchoolControler;
+use \App\Http\Controllers\TeacherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,8 @@ Route::prefix('student/')->group(function (){
 Route::prefix('school/')->group(function (){
     Route::get('getAll', [SchoolControler::class, 'getSchool']);
     Route::post('classes', [SchoolControler::class, 'getClass']);
+});
+
+Route::prefix('teacher/')->group(function (){
+    Route::get('get', [TeacherController::class, 'getTeacher']);
 });
