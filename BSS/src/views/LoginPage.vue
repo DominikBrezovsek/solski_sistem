@@ -30,18 +30,18 @@
             <div class="flex flex-col login-form w-full">
                 <div class="flex flex-col">
                     <label for="username" class="label">Username</label>
-                    <input id="username" class="username" type="email" v-model="username" placeholder="example@example.com" />
+                    <input id="username" class="username" type="text" v-model="username" placeholder="BabaJaga21" />
                 </div>
                 <div class="flex flex-col">
                     <label for="password" class="label">Password</label>
-                    <input id="password" class="password" type="password" v-model="password" placeholder="Your password" />
+                    <input id="password" class="password" type="password" v-model="password" placeholder="Your super secret password" />
                 </div>
                 <div>
                     <button @click="login" class="login-button">Login</button>
                 </div>
             </div>
             <div class="no-account">
-                <p>Don't have an account? <RouterLink to="/register">Register</RouterLink>
+                <p>Don't have an account? <RouterLink to="/register2">Register</RouterLink>
                 </p>
             </div>
         </div>
@@ -62,17 +62,16 @@ export default {
     methods: {
         login() {
             const credentials = new FormData();
-            credentials.append('email', this.username);
+            credentials.append('username', this.username);
             credentials.append('password', this.password);
             axios.post('https://smv.usdd.company/API/public/api/login/check', credentials)
                 .then((response) => {
                     console.log(response.data.logged);
-                    if (response.data.logged == "success") {
-                        localStorage.setItem('token', response.data.token);
+                    if (response.data.success == "true") {
+                        sessionStorage.setItem('token', response.data.jwt);
                         if (response.data.type != null){
-                            localStorage.setItem('type', response.data.type);
+                            sessionStorage.setItem('type', response.data.type);
                         }
-                        localStorage.setItem('user', response.data.user_id);
                         this.$router.push('/home');
                     } else {
                         alert("Invalid credentials");
