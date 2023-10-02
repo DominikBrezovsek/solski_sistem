@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ClassTable;
 use App\Models\StudentTable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
@@ -41,11 +42,11 @@ class StudentController extends Controller
 
     public function getStudent(Request $request){
         $loginId = session('loginId');
-        $student = StudentTable::select(['name', 'surname', 'classId', 'email'])->where('loginId', '=', $loginId)->first();
-
-        $classId = $student->classId;
-
-        $className = ClassTable::select('class')->where('id', '=', $classId)->first();
-        return response()->json([$student, $className]);
+        $student = DB::table('StudentTable')
+            ->join('ClassTable', 'StudentTable.classId', '=','ClassTable.id')
+            ->select('name', 'surname', 'email', 'class' )
+            ->where('loginId', '=', $loginId)
+            ->first();
+        return response()->json($student);
     }
 }
