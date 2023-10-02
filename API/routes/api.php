@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserLoginController;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,4 +21,4 @@ Route::prefix('login/')->group(function (){
     Route::post('create');
 });
 
-Route::post('register', []);
+Route::post('register', [RegisterController::class, 'registerUser']);
