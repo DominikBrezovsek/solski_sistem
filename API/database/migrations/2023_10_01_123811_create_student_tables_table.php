@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('surname');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->bigInteger('loginId')->unsigned()->index();
             $table->bigInteger('classId')->unsigned()->index();
             $table->foreign('loginId')->references('id')->on('UserLoginTable')->cascadeOnUpdate()->cascadeOnDelete();
