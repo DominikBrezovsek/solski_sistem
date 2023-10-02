@@ -10,6 +10,7 @@ class AssignmentMaterialTable extends Model
     use HasFactory;
     protected $table = "AssignmentMaterialTable";
     protected $fillable = [
-        'MaterialId'
+        'material',
+        'addedAt'
     ];
 }

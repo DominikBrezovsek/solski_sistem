@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('AssignmentMaterialTable', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('materialId')->unsigned()->index();
-            $table->foreign('materialId')->references('id')->on('MaterialTable')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->string('material');
+            $table->dateTime('addedAt');
             $table->timestamps();
         });
     }
