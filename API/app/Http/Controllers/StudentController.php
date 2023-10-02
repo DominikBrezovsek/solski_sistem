@@ -40,8 +40,12 @@ class StudentController extends Controller
     }
 
     public function getStudent(Request $request){
-        $loginId = $_SESSION['loginId'];
-        $student = StudentTable::where('loginId', '=', $loginId)->first();
-        return response()->json($student);
+        $loginId = session('loginId');
+        $student = StudentTable::select(['name', 'surname', 'classId', 'email'])->where('loginId', '=', $loginId)->first();
+
+        $classId = $student->classId;
+
+        $className = ClassTable::select('class')->where('id', '=', $classId)->first();
+        return response()->json([$student, $className]);
     }
 }

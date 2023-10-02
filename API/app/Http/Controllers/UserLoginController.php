@@ -19,7 +19,7 @@ class UserLoginController extends TokenController
                 'username' => $username,
             ])->first();
             if(Hash::check($password, $user->password)){
-                $_SESSION['loginId'] = $user->id;
+                session(['loginId' => $user->id]);
                 return response()->json([
                     'jwt' => $this->generateToken($user->id),
                     'success' => 'true',
