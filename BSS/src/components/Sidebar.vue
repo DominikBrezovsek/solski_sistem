@@ -2,14 +2,14 @@
     <div class="navbar">
         <div class="logo">
           <div>
-            <img src="https://smv.usdd.company/API/public/images/logo.png" alt="logo">
+            <img src="https://smv.usdd.company/images/logo.png" alt="logo">
           </div>
         </div>
         <div class="user">
             <img :src="image" alt="user">
             <div class="user-info">
                 <p>{{name}} {{surname}}</p>
-                <p>Razred: {{class}}</p>
+                <p v-if="type == 'student'">Razred: {{class}}</p>
                 <p>Šolsko leto {{school_year}}</p>
             </div>
         </div>
@@ -34,6 +34,7 @@ export default  {
             class: "",
             image: "",
             school_year: "",
+            type: "",
         }
     },
     methods: {
@@ -50,13 +51,13 @@ export default  {
         },
         getUserImage(tip:string){
             if(tip == "student"){
-                return "https://smv.usdd.company/API/public/images/studenti.png/";
+                return "https://smv.usdd.company/images/studenti.png";
             }
             else if(tip == "teacher"){
-                return "https://smv.usdd.company/API/public/images/ucitelji.png/";
+                return "https://smv.usdd.company/images/ucitelji.png";
             }
             else{
-                return "https://smv.usdd.company/API/public/images/default.png";
+                return "https://smv.usdd.company/images/default.png";
             }
         },
 
@@ -64,17 +65,19 @@ export default  {
             const user = new FormData();;
             switch (tip){
                 case "student":{
+                  this.type = tip;
                     axios.get('https://smv.usdd.company/API/public/api/student/get')
                     .then((response) => {
-                        this.name = response.data[0].name;
-                        this.surname = response.data[0].surname;
-                        this.class = response.data[1].class;
+                        this.name = response.data.name;
+                        this.surname = response.data.surname;
+                        this.class = response.data.class;
                     }, (error) => {
                         console.log(error);
                     });
                     break
                 }
                 case "teacher":{
+                  this.type = tip;
                     axios.get('https://smv.usdd.company/API/public/api/teacher/get',)
                     .then((response) => {
                         this.name = response.data.name;
@@ -85,6 +88,7 @@ export default  {
                     break
                 }
                 case "admin": {
+                  this.type = tip;
                     axios.get('https://smv.usdd.company/API/public/api/admin/get')
                     .then((response) => {
                         this.name = response.data.name;

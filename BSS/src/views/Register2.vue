@@ -104,10 +104,9 @@ export default {
             }
             axios.post('https://smv.usdd.company/API/public/api/student/create', credentials)
                 .then((response) => {
-                    console.log(response.data.logged);
-                    if (response.data.created == "success") {
-                        localStorage.setItem('email', this.email);
-                        this.$router.push('/register2');
+                    if (response.data.success == "true") {
+                        sessionStorage.setItem('email', this.email);
+                        this.$router.push('/');
                     } else if (response.data.error == "duplicate") {
                         alert("User already exists");
                     } else {
