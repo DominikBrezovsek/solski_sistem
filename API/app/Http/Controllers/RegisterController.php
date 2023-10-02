@@ -28,9 +28,6 @@ class RegisterController extends Controller
         ]);
 
         $loginId = UserLoginTable::select('id')->where('username', '=', $username)->first();
-        return response()->json([
-            "created" => "true",
-            "loginId" => $loginId
-        ], 200);
+        return response()->json($loginId);
     }
 }

@@ -6,6 +6,7 @@ use App\Models\UserLoginTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\TokenController;
+use function Laravel\Prompts\error;
 
 class UserLoginController extends TokenController
 {
@@ -30,5 +31,9 @@ class UserLoginController extends TokenController
                 ]);
             }
         }
+        return response()->json([
+            'error' => 'credentials'
+        ]);
     }
+
 }
