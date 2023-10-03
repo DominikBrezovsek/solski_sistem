@@ -18,6 +18,12 @@ class UserLoginController extends TokenController
             $user = UserLoginTable::select(['id', 'password', 'userType'])->where([
                 'username' => $username,
             ])->first();
+
+            if($user == null){
+                return response()->json([
+                    'error' => 'credentials'
+                ]);
+            }
             if(Hash::check($password, $user->password)){
                 session(['loginId' => $user->id]);
                 return response()->json([
@@ -27,7 +33,7 @@ class UserLoginController extends TokenController
                 ], 200);
             } else{
                 return response()->json([
-                    'error' => 'true'
+                    'error' => 'credentials'
                 ]);
             }
         }
