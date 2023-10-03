@@ -25,16 +25,17 @@ Route::prefix('login/')->group(function (){
 
 Route::post('register', [RegisterController::class, 'registerUser']);
 
+
 Route::prefix('student/')->group(function (){
     Route::post('create', [StudentController::class, 'createStudent']);
     Route::get('get', [StudentController::class, 'getStudent']);
-});
+})->middleware('verifyToken');
 
 Route::prefix('school/')->group(function (){
     Route::get('getAll', [SchoolControler::class, 'getSchool']);
     Route::post('classes', [SchoolControler::class, 'getClass']);
-});
+})->middleware('verifyToken');
 
 Route::prefix('teacher/')->group(function (){
     Route::get('get', [TeacherController::class, 'getTeacher']);
-});
+})->middleware('verifyToken');
