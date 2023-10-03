@@ -28,7 +28,7 @@ Route::post('register', [RegisterController::class, 'registerUser']);
 
 Route::prefix('student/')->group(function (){
     Route::post('create', [StudentController::class, 'createStudent']);
-    Route::get('get', [StudentController::class, 'getStudent']);
+    Route::post('get', [StudentController::class, 'getStudent']);
 })->middleware('verifyToken');
 
 Route::prefix('school/')->group(function (){
