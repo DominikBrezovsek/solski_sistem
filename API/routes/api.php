@@ -22,7 +22,10 @@ use \App\Http\Controllers\TeacherController;
 Route::prefix('login/')->group(function (){
     Route::post('check', [UserLoginController::class, 'checkLogin']);
 });
-
+Route::prefix('school/')->group(function (){
+    Route::get('getAll', [SchoolControler::class, 'getSchool']);
+    Route::post('classes', [SchoolControler::class, 'getClass']);
+});
 Route::post('register', [RegisterController::class, 'registerUser']);
 
 Route::middleware(['tokenVerify'])->group(function (){
@@ -31,10 +34,6 @@ Route::middleware(['tokenVerify'])->group(function (){
         Route::post('get', [StudentController::class, 'getStudent']);
     });
 
-    Route::prefix('school/')->group(function (){
-        Route::post('getAll', [SchoolControler::class, 'getSchool']);
-        Route::post('classes', [SchoolControler::class, 'getClass']);
-    });
 
     Route::prefix('teacher/')->group(function (){
         Route::post('get', [TeacherController::class, 'getTeacher']);
