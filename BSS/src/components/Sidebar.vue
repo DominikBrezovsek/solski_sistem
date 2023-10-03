@@ -42,11 +42,13 @@ export default  {
             let date = new Date();
             let year = date.getFullYear();
             let month = date.getMonth();
-            if (month < 8) {
+            let nextYear = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear()
+
+          if (month < 8) {
                 this.school_year = (year - 1 + "/" + year);
             }
             else {
-                this.school_year = (year + "/" + year + 1);
+                this.school_year = (year + "/" + nextYear);
             }
         },
         getUserImage(tip:string){

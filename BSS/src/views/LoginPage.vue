@@ -73,8 +73,8 @@ export default {
                             sessionStorage.setItem('type', response.data.type);
                         }
                         this.$router.push('/home');
-                    } else {
-                        alert("Invalid credentials");
+                    } else if (response.data.error == "credentials") {
+                      alert("Invalid credentials");
                     }
                 }, (error) => {
                     console.log(error);
@@ -92,7 +92,7 @@ export default {
 * {
     margin: 0;
     padding: 0;
-
+  box-sizing: border-box;
 }
 
 .login {
@@ -138,12 +138,12 @@ export default {
     border: 1px solid black;
     border-radius: 5px;
     margin-bottom: 2vh;
+    padding: 1vw;
 }
 
 .password::placeholder,
 .username::placeholder {
     font-size: 1.5vh;
-    padding-left: 1vw;
 }
 
 .login-button {

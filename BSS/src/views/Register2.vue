@@ -184,12 +184,12 @@ export default {
     border: 1px solid black;
     border-radius: 5px;
     margin-bottom: 2vh;
+    padding: 1vw;
 }
 
 .password::placeholder,
 .username::placeholder {
     font-size: 1.5vh;
-    padding-left: 1vw;
 }
 
 select {
