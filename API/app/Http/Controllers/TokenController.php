@@ -43,13 +43,18 @@ class TokenController extends Controller
 
     public function verifyToken($token): bool
     {
-        $tokenKey = LoginToken::select('tokenKey')->where('loginId', '=', session('loginId'));
-        if ($tokenKey) {
-            $decoded_token = JWT::decode($token, new Key($tokenKey, 'HS256'));
-            $verify = UserLoginTable::select(['loginId'])->where('tokenId', '=', $decoded_token->tokenId)->first();
+        if ($token) {
 
-            if ($verify->loginId == $decoded_token->loginId) {
-                return true;
+            $tokenKey = LoginToken::select('tokenKey')->where('loginId', '=', session('loginId'))->first();
+            if ($tokenKey->tokenKey) {
+                $decoded_token = JWT::decode($token, new Key($tokenKey->tokenKey, 'HS256'));
+                $verify = UserLoginTable::select(['id'])->where('id', '=', $decoded_token->loginId)->first();
+
+                if ($verify->id == $decoded_token->loginId) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }

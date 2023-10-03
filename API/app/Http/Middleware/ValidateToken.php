@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\TokenController;
 
-class ValidateToken extends TokenController
+class ValidateToken
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,8 @@ class ValidateToken extends TokenController
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($this->verifyToken($request->token) !== true){
+        $token = app(TokenController::class)->verifyToken($request->token);
+        if($token !== true){
             return response()->json([
                 "error" => "token"
             ]);
