@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('subjectId')->unsigned()->index();
             $table->bigInteger('studentId')->unsigned()->index();
-            $table->dateTime('enrolledAt');
+            $table->timestamp('enrolledAt');
+            $table->bigInteger('lastAccess')->index()->default(0);
             $table->foreign('subjectId')->references('id')->on('SubjectTable')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('studentId')->references('id')->on('StudentTable')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();

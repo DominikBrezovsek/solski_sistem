@@ -6,7 +6,8 @@ use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SchoolControler;
-use \App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,10 +35,11 @@ Route::middleware(['tokenVerify'])->group(function (){
         Route::post('get', [StudentController::class, 'getStudent']);
     });
 
-
     Route::prefix('teacher/')->group(function (){
         Route::post('get', [TeacherController::class, 'getTeacher']);
     });
+
+    Route::post('/dashboard', [DashboardController::class, 'dashboardData']);
 
 });
 

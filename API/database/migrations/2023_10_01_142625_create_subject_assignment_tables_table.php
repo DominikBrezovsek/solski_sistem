@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('SubjectAssignmentTable', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('subjectId')->unsigned()->index();
             $table->bigInteger('tsId')->unsigned()->index();
             $table->bigInteger('amId')->unsigned()->index();
             $table->longText('description');
             $table->dateTime('givenAt');
             $table->dateTime('deadline');
+            $table->foreign('subjectId')->references('id')->on('SubjectTable')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('tsId')->references('id')->on('TeacherSubjectTable')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('amId')->references('id')->on('AssignmentMaterialTable')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();

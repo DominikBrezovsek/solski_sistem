@@ -13,5 +13,6 @@ class StudentSubjectTable extends Model
         'subjectId',
         'studentId',
         'enrolledAt',
+        'lastAccess'
     ];
 }

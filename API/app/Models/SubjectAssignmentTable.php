@@ -10,6 +10,7 @@ class SubjectAssignmentTable extends Model
     use HasFactory;
     protected $table = "SubjectAssignmentTable";
     protected $fillable = [
+        'subjectId',
         'tsId',
         'amId',
         'description',
