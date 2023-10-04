@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\LoginToken;
 use App\Models\UserLoginTable;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Testing\Fluent\Concerns\Has;
 use PHLAK\StrGen;
@@ -15,6 +17,11 @@ class TokenController extends Controller
 {
     public function generateToken($loginId): string
     {
+        $tokenExists = LoginToken::select('tokenId')->where('loginId', '=', $loginId)->first();
+        if ($tokenExists != null) {
+            DB::table('LoginToken')->where('loginId', '=', $loginId)->delete();
+        }
+
         $currentTime = time();
         $expiresAt = $currentTime * 60 * 5;
 
@@ -43,9 +50,10 @@ class TokenController extends Controller
 
     public function verifyToken($token): bool
     {
-        if ($token) {
+        $loginId = session('loginId');
+        if ($token && $loginId) {
 
-            $tokenKey = LoginToken::select('tokenKey')->where('loginId', '=', session('loginId'))->first();
+            $tokenKey = LoginToken::select('tokenKey')->where('loginId', '=', $loginId)->first();
             if ($tokenKey->tokenKey) {
                 $decoded_token = JWT::decode($token, new Key($tokenKey->tokenKey, 'HS256'));
                 $verify = UserLoginTable::select(['id'])->where('id', '=', $decoded_token->loginId)->first();
