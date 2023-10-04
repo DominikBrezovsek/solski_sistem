@@ -14,9 +14,9 @@ class DashboardController extends Controller
         $user_id = session('loginId');
         if ($user_id) {
             $lastSubjects = DB::table('StudentSubjectTable')
-                ->join('SubjectTable', 'id', '=', 'StudentSubjectTable.subjectId')
-                ->where('studentId', '=', $user_id)
-                ->orderBy('lastAccess', 'desc')
+                ->join('SubjectTable', 'SubjectTable.id', '=', 'StudentSubjectTable.subjectId')
+                ->where('StudentSubjectTable.studentId', '=', $user_id)
+                ->orderBy('StudentSubjectTable.lastAccess', 'desc')
                 ->get();
 
             return response()->json($lastSubjects);
