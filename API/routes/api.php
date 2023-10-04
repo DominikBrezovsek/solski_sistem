@@ -39,7 +39,10 @@ Route::middleware(['tokenVerify'])->group(function (){
         Route::post('get', [TeacherController::class, 'getTeacher']);
     });
 
-    Route::post('/dashboard', [DashboardController::class, 'dashboardData']);
+    Route::prefix('dashboard/')->group(function (){
+        Route::post('subjects', [DashboardController::class, 'userSubjects']);
+        Route::post('assignments', [DashboardController::class, 'userAssignments']);
+    });
 
 });
 

@@ -9,9 +9,9 @@ use function Laravel\Prompts\error;
 
 class DashboardController extends Controller
 {
-    public function dashboardData(Request $request)
+    public function userSubjects(Request $request)
     {
-        $user_id = session('userId');
+        $user_id = session('loginId');
         if ($user_id) {
             $lastSubjects = DB::table('StudentSubjectTable')
                 ->join('SubjectTable', 'subjectId', '=', 'id')
@@ -19,20 +19,30 @@ class DashboardController extends Controller
                 ->orderBy('lastAccess', 'desc')
                 ->get();
 
-            $fistDueAss = DB::table('SubjectAssignmentTable')
-                ->select('description', 'deadline', 'studentId')
-                ->join('StudentSubjectTable', 'SubjectAssignmentTable.subjectId', '=', 'StudentSubjectTable.subjectId')
-                ->where('StudentSubjectTable.studentId', '=', $user_id)
-                ->orderBy('deadline', 'asc')
-                ->get();
-            return response()->json([
-                'subjects' => $lastSubjects,
-                'assignments' => $fistDueAss]);
+            return response()->json($lastSubjects);
         } else {
             return response()->json([
                 'error' => 'session'
             ], 200);
         }
 
+    }
+
+    public function userAssignments(Request $request)
+    {
+        $user_id = session('loginId');
+        if ($user_id) {
+            $fistDueAss = DB::table('SubjectAssignmentTable')
+                ->select('description', 'deadline', 'studentId')
+                ->join('StudentSubjectTable', 'SubjectAssignmentTable.subjectId', '=', 'StudentSubjectTable.subjectId')
+                ->where('StudentSubjectTable.studentId', '=', $user_id)
+                ->orderBy('deadline', 'asc')
+                ->get();
+            return response()->json($fistDueAss);
+        } else {
+            return response()->json([
+                'error' => 'session'
+            ], 200);
+        }
     }
 }
