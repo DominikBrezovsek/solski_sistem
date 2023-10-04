@@ -5,7 +5,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      subjects: Array(),
+      subjects: ""
     }
   },
   methods: {
@@ -17,7 +17,7 @@ export default {
         axios.post('https://smv.usdd.company/API/public/api/dashboard/subjects', jwt)
             .then((response) => {
               if(response.data.studentId){
-                this.subjects = response.data
+                this.subjects = response.data.subjects
               } else if (response.data.error == "session"){
                 alert("Session has expired, please log in again!");
                 sessionStorage.clear();
