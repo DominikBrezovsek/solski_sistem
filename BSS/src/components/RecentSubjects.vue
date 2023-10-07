@@ -1,3 +1,11 @@
+<template>
+  <div class="recent-subjects">
+    <div class="recent-subject" v-for="subject in subjects">
+      <h1>{{subject.description}}</h1>
+    </div>
+  </div>
+</template>
+
 <script lang="ts">
 
 import axios from "axios";
@@ -5,7 +13,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      subjects: ""
+      subjects: Array ()
     }
   },
   methods: {
@@ -34,33 +42,28 @@ export default {
 }
 </script>
 
-<template>
-  <div class="recent-subjects">
-    <div class="recent-subject" v-for="subject in subjects">
-      <h1>{{subject.description}}</h1>
-    </div>
-  </div>
-</template>
-
 <style scoped>
 .recent-subjects{
   height: 40vh;
-  width: 100%;
+  width: 80vw;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .recent-subject {
   height: 15vh;
-  width: 15vw;
+  min-width: 15vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: #2e5baa;
+  float: left;
 }
+
 .recent-subject h1 {
   color: white;
   font-size: medium;

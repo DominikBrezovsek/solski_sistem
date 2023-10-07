@@ -1,6 +1,9 @@
 <template>
+  <div class="flex flex-row">
     <Sidebar />
-  <RecentSubjects/>
+    <RecentSubjects/>
+  </div>
+
 </template>
 
 

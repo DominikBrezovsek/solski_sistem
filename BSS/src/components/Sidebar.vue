@@ -2,26 +2,33 @@
   <div class="navbar">
     <div class="logo">
       <div>
-        <img src="https://smv.usdd.company/images/logo.png" alt="logo">
+        <img src="../assets/logo_BSS.png" alt="logo">
       </div>
-    </div>
-    <div class="user">
-      <img :src="image" alt="user">
-      <div class="user-info">
-        <p>{{ name }} {{ surname }}</p>
-        <p v-if="type == 'student'">Razred: {{ class }}</p>
+      <div class="solsko-leto">
         <p>Šolsko leto {{ school_year }}</p>
       </div>
     </div>
-    <div class="studies">
-      <div>
-        <p>Studies</p>
+    <div class="menu">
+      <div class="headings">
+        <h1>Studies</h1>
+      </div>
+      <div class="options">
+        <router-link to="/classes" class="navigation_link">
+          <div>
+            <img src="../assets/books_img.png" alt="img">
+          </div>
+          <div>
+            <h2>Classes</h2>
+          </div>
+        </router-link>
       </div>
     </div>
-    <div class="menu">
-      <li>A</li>
-      <li>A</li>
-      <li>A</li>
+    <div class="user">
+      <div class="user-info">
+        <img :src="image" alt="user">
+        <p>{{ name }} {{ surname }}</p>
+        <p v-if="type == 'student'">Razred: {{ class }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -144,13 +151,22 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+}
+
+.solsko-leto {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
 }
 
 .logo {
-  margin-bottom: 20vh;
+  margin-bottom: 10vh;
+  margin-top: 1vh;
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -164,7 +180,7 @@ export default {
 }
 
 .user {
-  margin-bottom: 25vh;
+  margin-bottom: 5vh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -177,20 +193,36 @@ export default {
 .menu {
   margin-bottom: 10vh;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  flex-direction: column;
 }
 
-.studies {
+.headings {
   width: 100%;
+  margin-left: 1vh;
+  margin-bottom: 1vh;
   display: flex;
+  justify-content: left;
+  color: grey;
+  font-size: xx-large;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
 }
 
+.options{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: white;
+  font-size: large;
+}
+
+.navigation_link {
+  display: flex;
+  flex-direction: row;
+  height: 8vh;
+  align-items: center;
+  justify-content: left;
+  gap: 30px;
+}
+.navigation_link img {
+  height: 6vh;
+}
 </style>
