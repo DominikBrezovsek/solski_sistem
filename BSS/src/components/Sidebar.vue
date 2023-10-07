@@ -51,22 +51,25 @@
           <div class="headings">
             <h1>Ljudje</h1>
           </div>
-          <router-link to="/students" class="navigation_link" >
-            <div>
-              <img src="../assets/student_img.png" alt="img">
-            </div>
-            <div>
-              <h2>Dijaki</h2>
-            </div>
-          </router-link>
-          <router-link to="/teachers" class="navigation_link" >
-            <div>
-              <img src="../assets/teacher_img.png" alt="img">
-            </div>
-            <div>
-              <h2>Profesorji</h2>
-            </div>
-          </router-link>
+          <div class="link_space">
+            <router-link to="/students" class="navigation_link" >
+              <div>
+                <img src="../assets/student_img.png" alt="img">
+              </div>
+              <div>
+                <h2>Dijaki</h2>
+              </div>
+            </router-link>
+            <router-link to="/teachers" class="navigation_link" >
+              <div>
+                <img src="../assets/teacher_img.png" alt="img">
+              </div>
+              <div>
+                <h2>Profesorji</h2>
+              </div>
+            </router-link>
+          </div>
+
         </div>
       </div>
     </div>
@@ -83,6 +86,7 @@
 <script lang="ts">
 import axios from 'axios';
 import router from "@/router";
+
 
 
 export default {
@@ -111,11 +115,13 @@ export default {
     },
     getUserImage(tip: string) {
       if (tip == "student") {
-        return "https://smv.usdd.company/images/studenti.png";
+        this.image = "../assets/student_profile_pic.png";
       } else if (tip == "teacher") {
-        return "https://smv.usdd.company/images/ucitelji.png";
-      } else {
-        return "https://smv.usdd.company/images/default.png";
+        this.image = "../assets/teacher.png";
+      } else if(tip == "admin"){
+        this.image = "../assets/admin_profile_pic.png";
+      } else{
+        return this.$router.push ('/');
       }
     },
 
@@ -180,7 +186,7 @@ export default {
     this.getSchoolYear();
     const type = sessionStorage.getItem('type');
     if (type != null) {
-      this.image = this.getUserImage(type);
+      this.getUserImage(type);
       this.getUser(type);
     }
 
@@ -244,14 +250,15 @@ export default {
 }
 
 .headings {
-  width: 100%;
-  margin-left: 1vh;
+  width: 90%;
   margin-bottom: 1vh;
+  margin-left: 2vh;
   display: flex;
   justify-content: left;
   color: grey;
   font-size: xx-large;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .options{
@@ -260,6 +267,7 @@ export default {
   width: 100%;
   color: white;
   font-size: large;
+  justify-content: space-between;
 }
 
 .navigation_link {
@@ -275,4 +283,10 @@ export default {
   height: 6vh;
 }
 
+.link_space{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2vh;
+}
 </style>
