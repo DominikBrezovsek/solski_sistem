@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\AdminTable;
 use App\Models\AssignmentMaterialTable;
 use App\Models\ClassTable;
 use App\Models\SchoolTable;
@@ -154,6 +155,19 @@ class DatabaseSeeder extends Seeder
             'description' => 'Razlagalni spis o Strahovih',
             'givenAt' => '2023-10-01 00:00:00',
             'deadline' => '2023-10-8 23:59:59',
+        ]);
+
+        UserLoginTable::create([
+            'username' => 'daddySlemi2m',
+            'password' => Hash::make('admin'),
+            'userType' => 'admin'
+        ]);
+        $admin_login_id = UserLoginTable::where('username', '=', 'daddySlemi2m')->first();
+        AdminTable::create([
+            'name' => 'Daddy',
+            'surname' => 'Slemi',
+            'email' => 'uzelagamagla@magla.com',
+            'loginId' => $admin_login_id->id,
         ]);
 
 
