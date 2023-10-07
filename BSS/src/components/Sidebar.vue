@@ -13,12 +13,21 @@
         <h1>Studies</h1>
       </div>
       <div class="options">
-        <router-link to="/classes" class="navigation_link">
+        <router-link to="/classes" class="navigation_link" v-if="type == 'student'">
           <div>
             <img src="../assets/books_img.png" alt="img">
           </div>
           <div>
             <h2>Classes</h2>
+          </div>
+        </router-link>
+
+        <router-link to="/classes" class="navigation_link" v-if="type == 'teacher'">
+          <div>
+            <img src="../assets/books_img.png" alt="img">
+          </div>
+          <div>
+            <h2>Teaching</h2>
           </div>
         </router-link>
       </div>
@@ -151,6 +160,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 }
 
 .solsko-leto {
@@ -191,7 +201,7 @@ export default {
 }
 
 .menu {
-  margin-bottom: 10vh;
+  margin-bottom: 15vh;
   width: 100%;
 }
 
