@@ -9,27 +9,65 @@
       </div>
     </div>
     <div class="menu">
-      <div class="headings">
-        <h1>Studies</h1>
-      </div>
       <div class="options">
-        <router-link to="/classes" class="navigation_link" v-if="type == 'student'">
-          <div>
-            <img src="../assets/books_img.png" alt="img">
+        <div class="student" v-if="type == 'student'">
+          <div class="headings">
+            <h1>Učenje</h1>
           </div>
-          <div>
-            <h2>Classes</h2>
+          <router-link to="/classes" class="navigation_link" >
+            <div>
+              <img src="../assets/books_img.png" alt="img">
+            </div>
+            <div>
+              <h2>Predmeti</h2>
+            </div>
+          </router-link>
+        </div>
+        <div class="teacher" v-if="type == 'teacher'">
+          <div class="headings">
+            <h1>Učenje</h1>
           </div>
-        </router-link>
-
-        <router-link to="/classes" class="navigation_link" v-if="type == 'teacher'">
-          <div>
-            <img src="../assets/books_img.png" alt="img">
+          <router-link to="/classes" class="navigation_link" >
+            <div>
+              <img src="../assets/books_img.png" alt="img">
+            </div>
+            <div>
+              <h2>Predmeti</h2>
+            </div>
+          </router-link>
+        </div>
+        <div class="admin" v-if="type == 'admin'">
+          <div class="headings">
+            <h1>Učenje</h1>
           </div>
-          <div>
-            <h2>Teaching</h2>
+          <router-link to="/classes" class="navigation_link" >
+            <div>
+              <img src="../assets/books_img.png" alt="img">
+            </div>
+            <div>
+              <h2>Predmeti</h2>
+            </div>
+          </router-link>
+          <div class="headings">
+            <h1>Ljudje</h1>
           </div>
-        </router-link>
+          <router-link to="/students" class="navigation_link" >
+            <div>
+              <img src="../assets/student_img.png" alt="img">
+            </div>
+            <div>
+              <h2>Dijaki</h2>
+            </div>
+          </router-link>
+          <router-link to="/teachers" class="navigation_link" >
+            <div>
+              <img src="../assets/teacher_img.png" alt="img">
+            </div>
+            <div>
+              <h2>Profesorji</h2>
+            </div>
+          </router-link>
+        </div>
       </div>
     </div>
     <div class="user">
@@ -232,7 +270,9 @@ export default {
   justify-content: left;
   gap: 30px;
 }
+
 .navigation_link img {
   height: 6vh;
 }
+
 </style>

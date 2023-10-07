@@ -3,6 +3,8 @@ import LoginPage from '../views/LoginPage.vue'
 import RegisterPage1 from '../views/Register2.vue'
 import RegisterPage2 from '../views/Register1.vue'
 import ClassesPage from '../views/Classes.vue'
+import StudentsPage from '../views/Students.vue'
+import TeachersPage from '../views/Teachers.vue'
 import HomePage from '../views/Home.vue'
 
 const router = createRouter({
@@ -27,6 +29,16 @@ const router = createRouter({
             path: '/classes',
             name: 'Classes',
             component: ClassesPage
+        },
+        {
+            path: '/students',
+            name: 'Students',
+            component: StudentsPage
+        },
+        {
+            path: '/teachers',
+            name: 'Teachers',
+            component: TeachersPage
         },
         {
             path: '/home',
