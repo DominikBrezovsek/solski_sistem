@@ -12,9 +12,10 @@ class AssignmentController extends Controller
         $assignment_id = $request->assignmentId;
         if ($assignment_id != null){
             $assignment = DB::table('SubjectAssignmentTable')
-                ->select('SubjectAssignmentTable.*', 'TeacherTable.name', 'TeacherTable.surname')
+                ->select('SubjectAssignmentTable.*', 'TeacherTable.name', 'TeacherTable.surname', 'SubjectTable.subject')
                 ->join('TeacherSubjectTable', 'TeacherSubjectTable.id', '=', 'SubjectAssignmentTable.tsId')
                 ->join('TeacherTable', 'TeacherSubjectTable.teacherId', '=', 'TeacherTable.id')
+                ->join('SubjectTable', 'SubjectTable.id', '=', 'TeacherSubjectTable.subjectId')
                 ->where('SubjectAssignmentTable.id', '=', $assignment_id)
                 ->get();
             return response()->json([

@@ -12,11 +12,12 @@ class DashboardController extends Controller
 {
     public function userSubjects(Request $request)
     {
-        $user_id = session('loginId');
-        if ($user_id) {
+        $studentId = session('studentId');
+        if ($studentId != null) {
             $lastSubjects = DB::table('StudentSubjectTable')
                 ->join('SubjectTable', 'SubjectTable.id', '=', 'StudentSubjectTable.subjectId')
-                ->where('StudentSubjectTable.studentId', '=', $user_id)
+                ->where('StudentSubjectTable.studentId', '=', $studentId)
+                ->limit('3')
                 ->orderBy('StudentSubjectTable.lastAccess', 'desc')
                 ->get();
 

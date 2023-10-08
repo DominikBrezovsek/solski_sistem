@@ -30,14 +30,14 @@ Route::prefix('login/')->group(function (){
 Route::prefix('school/')->group(function (){
     Route::get('getAll', [SchoolController::class, 'getSchool']);
     Route::post('classes', [SchoolController::class, 'getClass']);
-});
 
+});
+Route::post('student/create', [StudentController::class, 'createStudent']);
 
 Route::post('register', [RegisterController::class, 'registerUser']);
 
 Route::middleware(['tokenVerify'])->group(function (){
     Route::prefix('student/')->group(function (){
-        Route::post('create', [StudentController::class, 'createStudent']);
         Route::post('get', [StudentController::class, 'getStudent']);
         Route::post('admin-get', [StudentController::class, 'AdminGetStudent']);
         Route::post('update', [StudentController::class, 'updateStudent']);

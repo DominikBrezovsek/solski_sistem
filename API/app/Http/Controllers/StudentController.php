@@ -44,9 +44,10 @@ class StudentController extends Controller
         $loginId = session('loginId');
         $student = DB::table('StudentTable')
             ->join('ClassTable', 'StudentTable.classId', '=','ClassTable.id')
-            ->select('name', 'surname', 'email', 'class' )
+            ->select('name', 'surname', 'email', 'class', 'StudentTable.id' )
             ->where('loginId', '=', $loginId)
             ->first();
+        session(['studentId' => $student->id]);
         return response()->json($student);
     }
 
