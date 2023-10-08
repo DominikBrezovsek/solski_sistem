@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
             DB::table('LoginToken')
                 ->where('expiresAt', '<', time())
                 ->delete();
-        })->everyFifteenSeconds();
+        })->everyFiveMinutes();
     }
 
     /**

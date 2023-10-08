@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('tokenId')->index();
             $table->string('tokenKey');
             $table->bigInteger('loginId')->unsigned()->index();
-            $table->bigInteger('expiresAt');
+            $table->bigInteger('expiresAt')->unsigned();
             $table->foreign('loginId')->references('id')->on('UserLoginTable')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
