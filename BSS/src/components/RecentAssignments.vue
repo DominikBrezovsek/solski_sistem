@@ -95,7 +95,7 @@ export default {
 
 .recent-assignment h2,p {
   padding-top: 1vh;
-  padding-bottom: 1vh;
+  padding-bottom: 3vh;
 }
 .recent-assignment h2::before {
   counter-increment: section;
