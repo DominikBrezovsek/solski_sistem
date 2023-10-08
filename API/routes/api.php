@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\StudentSubjectController;
+use App\Http\Controllers\AssignmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,6 +85,12 @@ Route::middleware(['tokenVerify'])->group(function (){
 
     Route::prefix('sts/')->group(function (){
         Route::post('add', [StudentSubjectController::class, 'enrollStudent']);
+    });
+
+    Route::prefix('assignment/')->group(function (){
+        Route::post('get', [AssignmentController::class, 'getAssignment']);
+        Route::post('get-all', [AssignmentController::class, 'getAssignments']);
+
     });
 
 });

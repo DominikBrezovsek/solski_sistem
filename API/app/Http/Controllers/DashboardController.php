@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\StudentSubjectTable;
+use App\Models\SubjectAssignmentTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function Laravel\Prompts\error;
@@ -35,7 +36,7 @@ class DashboardController extends Controller
         $user_id = session('loginId');
         if ($user_id) {
             $fistDueAss = DB::table('SubjectAssignmentTable')
-                ->select('deadline', 'SubjectAssignmentTable.tittle', 'SubjectTable.subject')
+                ->select('SubjectAssignmentTable.id', 'deadline', 'SubjectAssignmentTable.tittle', 'SubjectTable.subject')
                 ->join('StudentSubjectTable', 'SubjectAssignmentTable.subjectId', '=', 'StudentSubjectTable.subjectId')
                 ->join('SubjectTable', 'SubjectTable.id', '=', 'SubjectAssignmentTable.subjectId')
                 ->where('StudentSubjectTable.studentId', '=', $user_id)
