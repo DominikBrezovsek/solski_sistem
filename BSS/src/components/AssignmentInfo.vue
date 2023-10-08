@@ -1,7 +1,12 @@
 <template>
 <div class="assignments-info" v-for="a in assignment">
-  <h2>Naslov: {{a.tittle}}</h2>
-  <p>Opis naloge: {{a.description}}</p>
+  <div class="tittle">
+    <h1>{{a.subject}}</h1>
+  </div>
+  <div class="tittle_assignment">
+    <h2>{{a.tittle}}</h2>
+  </div>
+  <p>{{a.description}}</p>
   <p>Dodelelil/a: {{a.name}} {{a.surname}}</p>
 </div>
 </template>
@@ -51,17 +56,41 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 2vh;
-  width: 90%;
+  width: 85%;
   height: 45vh;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 5vh;
-  border: 2px solid #2e5baa;
-  border-radius: 20px;
-  margin-top: 2vh;
+  padding: 3vh;
 }
 
 .assignments-info h2, p {
   padding: 2vh;
 }
+.assignments-info h2{
+  width: 100%;
+  padding: 2vh;
+  border-bottom: 3px solid grey;
+}
+.tittle{
+  width: 100%;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  margin-left: 1vh;
+  display: flex;
+  justify-content: center;
+  color: grey;
+  font-size: xx-large;
+  flex-direction: column;
+  overflow: hidden;
+}
+.tittle_assignment{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: black;
+  font-size: x-large;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 </style>

@@ -3,7 +3,8 @@
     <Sidebar/>
     <div class="content">
       <RecentSubjects v-if="user_type == 'student'"/>
-      <RecentAssignments/>
+      <RecentAssignments v-if="user_type == 'student'" />
+      <GivenAssignments v-if="user_type == 'teacher'" />
     </div>
   </div>
 
@@ -13,12 +14,14 @@
 import Sidebar from '@/components/Sidebar.vue';
 import RecentSubjects from "@/components/RecentSubjects.vue";
 import RecentAssignments from "@/components/RecentAssignments.vue";
+import GivenAssignments from "@/components/GivenAssignments.vue";
 
 export default {
   components: {
     Sidebar,
     RecentSubjects,
-    RecentAssignments
+    RecentAssignments,
+    GivenAssignments
   },
   data() {
     return {
