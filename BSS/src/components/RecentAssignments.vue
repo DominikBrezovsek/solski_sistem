@@ -4,8 +4,10 @@
       <h1>Zadnje naloge</h1>
     </div>
     <div class="assignment">
-      <div class="recent-assignment" v-for ="a in assignment">
-        <h2>{{a.description}}</h2>
+      <div class="recent-assignment" v-for ="a in assignment" @click="assignmentInfo(a.id)">
+        <h2>{{a.tittle}}</h2>
+        <p>{{a.subject}}</p>
+        <p>{{a.deadline}}</p>
       </div>
     </div>
   </div>
@@ -42,6 +44,10 @@ export default {
       } else {
         this.$router.push('/');
       }
+    },
+    assignmentInfo(id: string){
+      sessionStorage.setItem('assignmentId', id);
+      this.$router.push('/assignments');
     }
   },
   created() {
@@ -61,16 +67,35 @@ export default {
 }
 .recent-assignment{
   height: 2vh;
-  width: 20vw;
+  width: 40vw;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-bottom: 2vh;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  gap: 5vw;
+  margin-bottom: 5vh;
   margin-left: 2vw;
+  border-bottom: 4px solid #2e5baa;
+  padding-bottom: 2vh;
+  padding-top: 1vh;
+
+}
+
+.recent-assignment:hover {
+  border-bottom: 4px solid #5891d3;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
 }
 .recent-assignment h2 {
   color: black;
   font-size: large;
+  width: 15vw;
+  line-break: auto;
+}
+
+.recent-assignment h2,p {
+  padding-top: 1vh;
+  padding-bottom: 1vh;
 }
 .recent-assignment h2::before {
   counter-increment: section;
@@ -92,8 +117,14 @@ export default {
 .assignment{
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+  align-items: flex-start;
   width: 100%;
-  margin-bottom: 8vh;
+  height: 100%;
+  padding-top: 5vh;
+  background: #dee8fb;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: -1px -1px 13px 1px #00000040
 }
 </style>

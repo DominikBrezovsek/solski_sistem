@@ -65,13 +65,14 @@ export default {
 
 .recent-subject {
   height: 20vh;
-  width: 20vw;
+  width: 15vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: #2e5baa;
   border-radius: 2vh;
+  box-shadow: 4px 3px 14px 0px #00000085
 }
 
 .recent-subject h1 {
@@ -96,8 +97,11 @@ export default {
 .subjects{
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+  gap: 8vw;
   width: 100%;
-  margin-bottom: 8vh;
+  height: 100%;
+  align-items: center;
+  padding-left: 5vw;
 }
 </style>

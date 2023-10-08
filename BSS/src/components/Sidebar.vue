@@ -10,6 +10,11 @@
     </div>
     <div class="menu">
       <div class="options">
+        <router-link to="/home">
+          <div>
+            <h2>Domov</h2>
+          </div>
+        </router-link>
         <div class="student" v-if="type == 'student'">
           <div class="headings">
             <h1>Učenje</h1>

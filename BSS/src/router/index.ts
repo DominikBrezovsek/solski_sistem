@@ -6,6 +6,7 @@ import ClassesPage from '../views/Classes.vue'
 import StudentsPage from '../views/Students.vue'
 import TeachersPage from '../views/Teachers.vue'
 import HomePage from '../views/Home.vue'
+import Assignment from "@/views/Assignment.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -44,6 +45,11 @@ const router = createRouter({
             path: '/home',
             name: 'Home',
             component: HomePage
+        },
+        {
+            path: '/assignments',
+            name: 'Assignment',
+            component: Assignment
         }
     ]
 })
