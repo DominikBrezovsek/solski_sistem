@@ -29,29 +29,58 @@ const router = createRouter({
         {
             path: '/classes',
             name: 'Classes',
-            component: ClassesPage
+            component: ClassesPage,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: '/students',
             name: 'Students',
-            component: StudentsPage
+            component: StudentsPage,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: '/teachers',
             name: 'Teachers',
-            component: TeachersPage
+            component: TeachersPage,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: '/home',
             name: 'Home',
-            component: HomePage
+            component: HomePage,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: '/assignments',
             name: 'Assignment',
-            component: Assignment
+            component: Assignment,
+            meta: {
+                requiresAuth: true
+            }
         }
     ]
-})
 
+})
+router.beforeEach((to, from) => {
+    // instead of having to check every route record with
+    // to.matched.some(record => record.meta.requiresAuth)
+    const isLoggedIn = sessionStorage.getItem('token')
+    if (to.meta.requiresAuth && isLoggedIn == null) {
+        // this route requires auth, check if logged in
+        // if not, redirect to login page.
+        return {
+            path: '/',
+            // save the location we were at to come back later
+            query: { redirect: to.fullPath },
+        }
+    }
+})
 export default router
