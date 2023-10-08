@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\SchoolControler;
+use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SubjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,24 +26,59 @@ Route::prefix('login/')->group(function (){
     Route::post('check', [UserLoginController::class, 'checkLogin']);
 });
 Route::prefix('school/')->group(function (){
-    Route::get('getAll', [SchoolControler::class, 'getSchool']);
-    Route::post('classes', [SchoolControler::class, 'getClass']);
+    Route::get('getAll', [SchoolController::class, 'getSchool']);
+    Route::post('classes', [SchoolController::class, 'getClass']);
 });
+
+
 Route::post('register', [RegisterController::class, 'registerUser']);
 
 Route::middleware(['tokenVerify'])->group(function (){
     Route::prefix('student/')->group(function (){
         Route::post('create', [StudentController::class, 'createStudent']);
         Route::post('get', [StudentController::class, 'getStudent']);
+        Route::post('admin-get', [StudentController::class, 'AdminGetStudent']);
+        Route::post('update', [StudentController::class, 'updateStudent']);
     });
 
+    Route::prefix('school/manage')->group(function (){
+        Route::post('/create', [SchoolController::class, 'createSchool']);
+        Route::post('/delete', [SchoolController::class, 'deleteSchool']);
+        Route::post('/update', [SchoolController::class, 'updateSchool']);
+    });
+    Route::prefix('class/manage')->group(function () {
+        Route::post('/get', [SchoolController::class, 'getSpecificClass']);
+        Route::post('/create', [SchoolController::class, 'createClass']);
+        Route::post('/delete', [SchoolController::class, 'deleteClass']);
+        Route::post('/update', [SchoolController::class, 'updateClass']);
+    });
     Route::prefix('teacher/')->group(function (){
         Route::post('get', [TeacherController::class, 'getTeacher']);
+        Route::post('create', [TeacherController::class, 'createTeacher']);
+        Route::post('delete', [TeacherController::class, 'getTeacher']);
+        Route::post('update', [TeacherController::class, 'getTeacher']);
+    });
+
+    Route::prefix('admin/')->group(function () {
+        Route::post('get', [AdminController::class, 'getAdmin']);
+    });
+
+    Route::prefix('user/')->group(function (){
+        Route::post('create', [RegisterController::class, 'registerUser']);
+        Route::post('get', [RegisterController::class, 'deleteUser']);
+        Route::post('update', [RegisterController::class, 'updateUser']);
     });
 
     Route::prefix('dashboard/')->group(function (){
         Route::post('subjects', [DashboardController::class, 'userSubjects']);
         Route::post('assignments', [DashboardController::class, 'userAssignments']);
+    });
+
+    Route::prefix('subjects/')->group(function (){
+        Route::post('get-all', [SubjectController::class, 'getSubjects']);
+        Route::post('get', [SubjectController::class, 'getSubject']);
+        Route::post('create', [SubjectController::class, 'createSubject']);
+        Route::post('delete', [SubjectController::class, 'deleteSubject']);
     });
 
 });

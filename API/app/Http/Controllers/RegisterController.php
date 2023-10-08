@@ -20,7 +20,6 @@ class RegisterController extends Controller
                 "error" => "duplicate"
             ], 200);
         }
-        if ($user == null)
         UserLoginTable::create([
             'username' => $username,
             'password' => $password,
@@ -29,5 +28,35 @@ class RegisterController extends Controller
 
         $loginId = UserLoginTable::select('id')->where('username', '=', $username)->first();
         return response()->json($loginId);
+    }
+
+    public function deleteUser(Request $request){
+        $loginId = $request->loginId;
+
+        UserLoginTable::where('id', '=', $loginId)->delete();
+        return response()->json([
+            'success' => 'true'
+        ]);
+    }
+
+    public function updateUser(Request $request){
+        $loginId = $request->loginId;
+        $username = $request->username;
+        $password = Hash::make($request->password);
+
+        $usernameTaken = UserLoginTable::select('id')->where('username', '=', $username)->first();
+
+        if($usernameTaken != null){
+            return response()->json([
+                'error' => 'duplicate'
+            ]);
+        } else if ($password != null){
+            UserLoginTable::where('id', '=', $loginId)->update(array('username' => $username, 'password' => $password));
+        } else {
+            UserLoginTable::where('id', '=', $loginId)->update(array('username' => $username));
+        }
+        return response()->json([
+            'error' => 'unknown'
+        ]);
     }
 }

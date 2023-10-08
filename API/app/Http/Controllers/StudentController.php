@@ -49,4 +49,45 @@ class StudentController extends Controller
             ->first();
         return response()->json($student);
     }
+
+    public function AdminGetStudent(Request $request){
+        $loginId = $request->loginId;
+        $student = DB::table('StudentTable')
+            ->join('ClassTable', 'StudentTable.classId', '=','ClassTable.id')
+            ->where('loginId', '=', $loginId)
+            ->first();
+        return response()->json($student);
+    }
+
+    public function updateStudent(Request $request){
+        $loginId = $request->loginId;
+        $name = $request->name;
+        $surname = $request->surname;
+        $email = $request->email;
+        $class = $request->classId;
+        if ($loginId != null && $class != null && $name != null && $surname != null && $email != null) {
+            StudentTable::where('loginId', '=', $loginId)->update(array(
+                'name' => $name,
+                'surname' => $surname,
+                'email' => $email,
+                'classId' => $class
+            ));
+            return response()->json([
+                'success' => 'true'
+            ]);
+        } else if($class == null && $name != null && $surname != null && $email != null && $loginId != null){
+            StudentTable::where('loginId', '=', $loginId)->update(array(
+                'name' => $name,
+                'surname' => $surname,
+                'email' => $email,
+            ));
+            return response()->json([
+                'success' => 'true'
+            ]);
+        } else {
+            return response()->json([
+                'error' => 'data'
+            ]);
+        }
+    }
 }
