@@ -161,6 +161,7 @@ export default {
                 if (response.data.name != "") {
                   this.name = response.data.name;
                   this.surname = response.data.surname;
+                  sessionStorage.setItem('teacherId', response.data.id);
                 } else if (response.data.error == "token") {
                   sessionStorage.clear();
                   this.$router.push('/');
