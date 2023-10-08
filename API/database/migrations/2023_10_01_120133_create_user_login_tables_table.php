@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('username')->unique();
             $table->string('password');
-            $table->string('userType')->index();;
+            $table->string('userType')->index();
             $table->timestamps();
         });
     }

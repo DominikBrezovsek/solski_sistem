@@ -35,7 +35,7 @@ class DashboardController extends Controller
         $user_id = session('loginId');
         if ($user_id) {
             $fistDueAss = DB::table('SubjectAssignmentTable')
-                ->select('deadline', 'SubjectAssignmentTable.description', 'SubjectTable.subject')
+                ->select('deadline', 'SubjectAssignmentTable.tittle', 'SubjectTable.subject')
                 ->join('StudentSubjectTable', 'SubjectAssignmentTable.subjectId', '=', 'StudentSubjectTable.subjectId')
                 ->join('SubjectTable', 'SubjectTable.id', '=', 'SubjectAssignmentTable.subjectId')
                 ->where('StudentSubjectTable.studentId', '=', $user_id)
