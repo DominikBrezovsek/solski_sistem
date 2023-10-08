@@ -1,30 +1,47 @@
 <template>
   <div class="flex flex-row">
-    <Sidebar />
-    <RecentSubjects v-if="user_type == 'student'" />
+    <Sidebar/>
+    <div class="content">
+      <RecentSubjects v-if="user_type == 'student'"/>
+      <RecentAssignments/>
+    </div>
   </div>
 
 </template>
 
-
-<script lang="ts" >
+<script lang="ts">
 import Sidebar from '@/components/Sidebar.vue';
 import RecentSubjects from "@/components/RecentSubjects.vue";
+import RecentAssignments from "@/components/RecentAssignments.vue";
+
 export default {
-  components:{
+  components: {
     Sidebar,
-    RecentSubjects
+    RecentSubjects,
+    RecentAssignments
   },
-  data (){
+  data() {
     return {
       user_type: ""
     }
   },
-  created (){
+  created() {
     const userType = sessionStorage.getItem('type');
-    if (userType != null){
+    if (userType != null) {
       this.user_type = userType;
     }
   }
 }
 </script>
+
+<style scoped>
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+</style>

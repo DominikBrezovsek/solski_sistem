@@ -198,7 +198,7 @@ export default {
 <style scoped>
 
 .navbar {
-  width: 20vw;
+  width: 15vw;
   height: 100vh;
   background: linear-gradient(185deg, rgba(24, 37, 84, 1) 0%, rgba(40, 100, 180, 1) 40%, rgba(117, 171, 228, 1) 100%);
   display: flex;
@@ -268,6 +268,7 @@ export default {
   color: white;
   font-size: large;
   justify-content: space-between;
+  margin-left: 2vw;
 }
 
 .navigation_link {
@@ -276,7 +277,6 @@ export default {
   height: 8vh;
   align-items: center;
   justify-content: left;
-  gap: 30px;
 }
 
 .navigation_link img {

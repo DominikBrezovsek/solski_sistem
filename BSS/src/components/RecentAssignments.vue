@@ -1,38 +1,36 @@
 <template>
-  <div class="recent-subjects">
+  <div class="recent-assignments">
     <div class="tittle">
-      <h1>Zadnji predmeti</h1>
+      <h1>Zadnje naloge</h1>
     </div>
-    <div class="subjects">
-      <div class="recent-subject" v-for="subject in subjects">
-        <h1>{{ subject.subject }}</h1>
+    <div class="assignment">
+      <div class="recent-assignment" v-for ="a in assignment">
+        <h2>{{a.description}}</h2>
       </div>
     </div>
   </div>
 </template>
 
-
 <script lang="ts">
-
 import axios from "axios";
 
 export default {
   data() {
     return {
-      subjects: Array()
+      assignment: Array()
     }
   },
   methods: {
-    getRecentSubjects() {
+    getRecentAssignmnent() {
       let token = sessionStorage.getItem('token');
       if (token != null) {
         const jwt = new FormData();
         jwt.append('token', token);
-        axios.post('https://smv.usdd.company/API/public/api/dashboard/subjects', jwt)
+        axios.post('https://smv.usdd.company/API/public/api/dashboard/assignments', jwt)
             .then((response) => {
               if (response.data != null) {
-                for (let i = 0; i < (response.data.subjects).length; i++) {
-                  this.subjects.push(response.data.subjects[i]);
+                for (let i = 0; i < (response.data.assignments).length; i++) {
+                  this.assignment.push(response.data.assignments[i]);
                 }
               } else if (response.data.error == "session") {
                 alert("Session has expired, please log in again!");
@@ -47,43 +45,42 @@ export default {
     }
   },
   created() {
-    this.getRecentSubjects();
+    this.getRecentAssignmnent();
   },
 }
 </script>
 
-
 <style scoped>
-.recent-subjects {
-  height: 40vh;
+.recent-assignments{
+  height: 60vh;
   width: 85vw;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  counter-reset: section;
 }
-
-.recent-subject {
-  height: 20vh;
+.recent-assignment{
+  height: 2vh;
   width: 20vw;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  background: #2e5baa;
-  border-radius: 2vh;
+  margin-bottom: 2vh;
+  margin-left: 2vw;
 }
-
-.recent-subject h1 {
-  color: white;
-  font-size: x-large;
-  font-weight: bold;
+.recent-assignment h2 {
+  color: black;
+  font-size: large;
+}
+.recent-assignment h2::before {
+  counter-increment: section;
+  content: counter(section) ": ";
 }
 
 .tittle{
   width: 100%;
   margin-top: 2vh;
-  margin-bottom: 1vh;
+  margin-bottom: 2vh;
   margin-left: 5vh;
   display: flex;
   justify-content: center;
@@ -92,10 +89,9 @@ export default {
   flex-direction: column;
   overflow: hidden;
 }
-
-.subjects{
+.assignment{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-evenly;
   width: 100%;
   margin-bottom: 8vh;
