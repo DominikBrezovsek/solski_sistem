@@ -12,6 +12,7 @@ class LoginToken extends Model
     protected $fillable = [
         'tokenId',
         'tokenKey',
-        'loginId'
+        'loginId',
+        'expiresAt'
     ];
 }

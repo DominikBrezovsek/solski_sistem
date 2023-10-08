@@ -43,6 +43,7 @@ class TokenController extends Controller
             'tokenId' => $tokenId,
             'tokenKey' => $tokenKey,
             'loginId' => $loginId,
+            'expiresAt' => $expiresAt,
         ]);
 
         return JWT::encode($payload, $tokenKey, 'HS256');
@@ -54,7 +55,7 @@ class TokenController extends Controller
         if ($token && $loginId) {
 
             $tokenKey = LoginToken::select('tokenKey')->where('loginId', '=', $loginId)->first();
-            if ($tokenKey->tokenKey) {
+            if ($tokenKey->tokenKey != null) {
                 $decoded_token = JWT::decode($token, new Key($tokenKey->tokenKey, 'HS256'));
                 $verify = UserLoginTable::select(['id'])->where('id', '=', $decoded_token->loginId)->first();
 
