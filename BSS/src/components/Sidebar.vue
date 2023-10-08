@@ -11,7 +11,7 @@
     <div class="menu">
       <div class="options">
         <router-link to="/home">
-          <div>
+          <div class="home">
             <h2>Domov</h2>
           </div>
         </router-link>
@@ -257,7 +257,6 @@ export default {
 .headings {
   width: 90%;
   margin-bottom: 1vh;
-  margin-left: 2vh;
   display: flex;
   justify-content: left;
   color: grey;
@@ -273,7 +272,8 @@ export default {
   color: white;
   font-size: large;
   justify-content: space-between;
-  margin-left: 2vw;
+  margin-left: 1vw;
+  margin-bottom: 10vh;
 }
 
 .navigation_link {
@@ -293,5 +293,13 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   gap: 2vh;
+}
+.home{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  font-size: large;
+  margin-bottom: 10vh;
 }
 </style>
