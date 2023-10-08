@@ -21,7 +21,7 @@ class SchoolController extends Controller
     {
         $schoolExists = SchoolTable::select('id')->where('name', '=', $request->name)->first();
 
-        if ($schoolExists != null) {
+        if ($schoolExists == null) {
             $newSchool = SchoolTable::create([
                 'name' => $request->name
             ]);
@@ -85,11 +85,11 @@ class SchoolController extends Controller
     public function createClass(Request $request)
     {
         $classExists = ClassTable::select('id')->where(['class' => $request->className, 'schoolId' => $request->schoolId])->first();
-        $hasTeacher = ClassTable::select('teacherId')->where('teacherId', '=', 'teacherId');
-        if ($classExists && $hasTeacher == null) {
+        $hasTeacher = ClassTable::select('teacherId')->where('teacherId', '=', $request->teacherId)->first();
+        if ($classExists == null && $hasTeacher == null) {
             ClassTable::create([
                 'class' => $request->className,
-                'schoolId' => $request->school,
+                'schoolId' => $request->schoolId,
                 'teacherId' => $request->teacherId,
             ]);
             return response()->json([
@@ -102,6 +102,7 @@ class SchoolController extends Controller
         } else if ($hasTeacher != null) {
             return response()->json([
                 'error' => 'teacher'
+
             ]);
         } else {
             return response()->json([

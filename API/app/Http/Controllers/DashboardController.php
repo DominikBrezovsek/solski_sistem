@@ -19,7 +19,9 @@ class DashboardController extends Controller
                 ->orderBy('StudentSubjectTable.lastAccess', 'desc')
                 ->get();
 
-            return response()->json($lastSubjects);
+            return response()->json([
+
+            ]);
         } else {
             return response()->json([
                 'error' => 'session'
