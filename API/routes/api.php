@@ -10,6 +10,7 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\StudentSubjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +80,10 @@ Route::middleware(['tokenVerify'])->group(function (){
         Route::post('get', [SubjectController::class, 'getSubject']);
         Route::post('create', [SubjectController::class, 'createSubject']);
         Route::post('delete', [SubjectController::class, 'deleteSubject']);
+    });
+
+    Route::prefix('sts/')->group(function (){
+        Route::post('add', [StudentSubjectController::class, 'enrollStudent']);
     });
 
 });

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->bigInteger('subjectId')->unsigned()->index();
             $table->bigInteger('tsId')->unsigned()->index();
             $table->bigInteger('amId')->unsigned()->index();
+            $table->string('tittle');
             $table->longText('description');
             $table->dateTime('givenAt');
             $table->dateTime('deadline');

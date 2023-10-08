@@ -13,6 +13,7 @@ class SubjectAssignmentTable extends Model
         'subjectId',
         'tsId',
         'amId',
+        'tittle',
         'description',
         'givenAt',
         'deadline'

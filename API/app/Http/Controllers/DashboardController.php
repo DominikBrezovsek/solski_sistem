@@ -20,7 +20,7 @@ class DashboardController extends Controller
                 ->get();
 
             return response()->json([
-
+                'subjects' => $lastSubjects
             ]);
         } else {
             return response()->json([
@@ -35,12 +35,16 @@ class DashboardController extends Controller
         $user_id = session('loginId');
         if ($user_id) {
             $fistDueAss = DB::table('SubjectAssignmentTable')
-                ->select('description', 'deadline','studentId',)
+                ->select('deadline', 'SubjectAssignmentTable.description', 'SubjectTable.subject')
                 ->join('StudentSubjectTable', 'SubjectAssignmentTable.subjectId', '=', 'StudentSubjectTable.subjectId')
+                ->join('SubjectTable', 'SubjectTable.id', '=', 'SubjectAssignmentTable.subjectId')
                 ->where('StudentSubjectTable.studentId', '=', $user_id)
                 ->orderBy('deadline', 'asc')
                 ->get();
-            return response()->json($fistDueAss);
+            return response()->json([
+                'assignments' => $fistDueAss
+            ]);
+
         } else {
             return response()->json([
                 'error' => 'session'
