@@ -1,35 +1,39 @@
 <template>
-  <div class="AssignmentsSubmission">
+  <div class="subject-info" v-for="a in subject">
     <div class="tittle">
-      <h1>Oddaja naloge</h1>
+      <h1>{{ a.subject }}</h1>
+    </div>
+    <div class="tittle_subject">
+      <h2>{{ a.tittle }}</h2>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import axios from "axios";
+import Subject from "@/views/Subject.vue";
 
 export default {
   data() {
     return {
-      assignment: Array()
+      subject: Array()
     }
   },
-  methods:{
-    getAssignment() {
+  methods: {
+    getSubject() {
       let token = sessionStorage.getItem('token');
-      const subjectId = sessionStorage.getItem('subId')
-      const assignmentId = sessionStorage.getItem('assignmentId');
-      if (token != null && subjectId != null && assignmentId != null) {
+      const subjectId = sessionStorage.getItem('subjectId')
+      if (token != null && subjectId != null) {
         const path = 'https://smv.usdd.company/API/public/api/';
         const jwt = new FormData();
         jwt.append('token', token);
         jwt.append('subjectId', subjectId)
-        jwt.append('assignmentId', assignmentId)
-        axios.post(path + 'assignment/submit', jwt)
+        axios.post(path + 'subjects/get', jwt)
             .then((response) => {
               if (response.data != null) {
-                console.log(response.data.assId)
+                for (let i = 0; i < (response.data.subject).length; i++) {
+                  this.subject.push(response.data.subject[i]);
+                }
               } else if (response.data.error == "session") {
                 alert("Session has expired, please log in again!");
                 sessionStorage.clear();
@@ -43,13 +47,13 @@ export default {
     }
   },
   created() {
-    this.getAssignment()
-  }
+    this.getSubject()
+  },
 }
 </script>
 
 <style scoped>
-.AssignmentsSubmission {
+.subject-info {
   display: flex;
   flex-direction: column;
   gap: 2vh;
@@ -59,11 +63,22 @@ export default {
   align-items: flex-start;
   padding: 3vh;
 }
-.tittle{
+
+.subject-info h2, p {
+  padding: 2vh;
+}
+
+.subject-info h2 {
   width: 100%;
-  margin-top: 2vh;
+  padding: 2vh;
+  border-bottom: 3px solid grey;
+}
+
+.tittle {
+  width: 100%;
+  margin-top: 1vh;
   margin-bottom: 1vh;
-  margin-left: 5vh;
+  margin-left: 1vh;
   display: flex;
   justify-content: center;
   color: grey;
@@ -71,4 +86,15 @@ export default {
   flex-direction: column;
   overflow: hidden;
 }
+
+.tittle_subject {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: black;
+  font-size: x-large;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 </style>

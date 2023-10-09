@@ -46,7 +46,7 @@ export default {
     },
     openSubject (id: string){
       sessionStorage.setItem('subjectId', id);
-      this.$router.push('/classes');
+      this.$router.push('/subject');
     }
   },
   created() {

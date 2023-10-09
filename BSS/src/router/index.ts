@@ -7,6 +7,7 @@ import StudentsPage from '../views/Students.vue'
 import TeachersPage from '../views/Teachers.vue'
 import HomePage from '../views/Home.vue'
 import Assignment from "@/views/Assignment.vue";
+import Subject from "@/views/Subject.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -65,9 +66,16 @@ const router = createRouter({
             meta: {
                 requiresAuth: true
             }
+        },
+        {
+            path: '/subject',
+            name: 'Subject',
+            component: Subject,
+            meta: {
+                requiresAuth: true
+            }
         }
     ]
-
 })
 router.beforeEach((to, from) => {
     // instead of having to check every route record with
