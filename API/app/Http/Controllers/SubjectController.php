@@ -17,7 +17,9 @@ class SubjectController extends Controller
         $subjectId = $request->subjectId;
         if ($subjectId != null){
             $subject = SubjectTable::where('id', '=', $subjectId)->first();
-            return response()->json($subject);
+            return response()->json([
+                'subject' => $subject
+            ]);
         } else {
             return response()->json([
                 'error' => 'subject'

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\SubjectAssignmentTable;
+use App\Models\SubmissionTable;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class AssignmentController extends Controller
@@ -45,5 +47,29 @@ class AssignmentController extends Controller
                 'error' => 'id'
             ]);
         }
+    }
+
+    public function  submitAssignment(Request $request){
+        $assignmentId = $request->assignmentId;
+        $subjectId = $request->subjectId;
+        $loginId = (session('loginId'));
+        $sstId = DB::table('StudentSubjectTable AS SST')
+            ->select('SST.id')
+            ->join('StudentTable AS S', 'S.id', '=', 'SST.studentId')
+            ->where(['loginId' => $loginId, 'SST.subjectId' => $subjectId])
+            ->first();
+        date_default_timezone_set("Europe/Ljubljana");
+        $handedIn = gmdate('Y-m-d h:i:s', time());
+        $file = 'test.docx';
+        SubmissionTable::create([
+            'assignmentId' => $assignmentId,
+            'studSubjectId' => $sstId->id,
+            'handedInAt' => $handedIn,
+            'file' => $file
+        ]);
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 }

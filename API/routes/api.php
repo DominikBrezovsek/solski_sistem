@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\StudentSubjectController;
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\TeacherSubjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,12 +86,17 @@ Route::middleware(['tokenVerify'])->group(function (){
 
     Route::prefix('sts/')->group(function (){
         Route::post('add', [StudentSubjectController::class, 'enrollStudent']);
+        Route::post('get', [StudentSubjectController::class, 'getSubjects']);
+    });
+
+    Route::prefix('ts/')->group(function (){
+        Route::post('get', [TeacherSubjectController::class, 'getSubjects']);
     });
 
     Route::prefix('assignment/')->group(function (){
         Route::post('get', [AssignmentController::class, 'getAssignment']);
         Route::post('get-all', [AssignmentController::class, 'getAssignments']);
-
+        Route::post('submit', [AssignmentController::class, 'submitAssignment']);
     });
 
 });
