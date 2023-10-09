@@ -1,24 +1,25 @@
 <template>
-<div class="assignments-info" v-for="a in assignment">
-  <div class="tittle">
-    <h1>{{a.subject}}</h1>
+  <div class="assignments-info" v-for="a in assignment">
+    <div class="tittle">
+      <h1>{{ a.subject }}</h1>
+    </div>
+    <div class="tittle_assignment">
+      <h2>{{ a.tittle }}</h2>
+    </div>
+    <p>{{ a.description }}</p>
+    <p>Dodelelil/a: {{ a.name }} {{ a.surname }}</p>
   </div>
-  <div class="tittle_assignment">
-    <h2>{{a.tittle}}</h2>
-  </div>
-  <p>{{a.description}}</p>
-  <p>Dodelelil/a: {{a.name}} {{a.surname}}</p>
-</div>
 </template>
 
-<script  lang="ts">
+<script lang="ts">
 import axios from "axios";
+
 export default {
   data() {
-    return{
+    return {
       assignment: Array()
     }
-},
+  },
   methods: {
     getAssignment() {
       const assignment = Array();
@@ -37,7 +38,7 @@ export default {
                   this.assignment.push(assResponse[i]);
                   console.log(this.assignment);
                 }
-              }else {
+              } else {
                 this.assignment.push({'tittle': 'Naloga ni bila najdena'})
               }
             })
@@ -46,7 +47,7 @@ export default {
   },
   created() {
     this.getAssignment()
-},
+  },
 }
 
 </script>
@@ -66,12 +67,14 @@ export default {
 .assignments-info h2, p {
   padding: 2vh;
 }
-.assignments-info h2{
+
+.assignments-info h2 {
   width: 100%;
   padding: 2vh;
   border-bottom: 3px solid grey;
 }
-.tittle{
+
+.tittle {
   width: 100%;
   margin-top: 1vh;
   margin-bottom: 1vh;
@@ -83,7 +86,8 @@ export default {
   flex-direction: column;
   overflow: hidden;
 }
-.tittle_assignment{
+
+.tittle_assignment {
   width: 100%;
   display: flex;
   justify-content: center;

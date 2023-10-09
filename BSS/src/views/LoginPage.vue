@@ -1,4 +1,5 @@
 <template>
+<CustomAlert/>
     <div class="login flex flex-row justify-between">
         <div class="about-side w-4/12 flex justify-center align-center">
             <div class="mt-auto mb-auto about-inner">
@@ -34,7 +35,7 @@
                 </div>
                 <div class="flex flex-col">
                     <label for="password" class="label">Password</label>
-                    <input id="password" class="password" type="password" v-model="password" placeholder="Your super secret password" />
+                    <input id="password" class="password" type="password" v-model="password" placeholder="Your super secret password" @keyup.enter="login" />
                 </div>
                 <div>
                     <button @click="login" class="login-button">Login</button>
@@ -51,6 +52,7 @@
 <script  lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import axios from 'axios';
+import Swal from "sweetalert2";
 
 export default {
     data() {
@@ -74,10 +76,25 @@ export default {
                         }
                         this.$router.push('/home');
                     } else if (response.data.error == "credentials") {
-                      alert("Invalid credentials");
+                      Swal.fire({
+                        title: "Napaka pri prijavi",
+                        text: "Napačno uporabniško ime ali geslo!",
+                        icon: "error",
+                        confirmButtonText: "Razumem",
+                        buttonsStyling: true,
+                        confirmButtonColor: "#4377df"
+                          })
                     }
                 }, (error) => {
                     console.log(error);
+                  Swal.fire({
+                    title: "Napaka pri prijavi",
+                    text: "Prišlo je do napake na naši strani. Prosimo, poskusite kasneje lai kontakrirajte administratorja.",
+                    icon: "error",
+                    confirmButtonText: "Razumem",
+                    buttonsStyling: true,
+                    confirmButtonColor: "#4377df"
+                  });
                 });
         },
         
@@ -213,6 +230,13 @@ export default {
 .text-about {
     width: 80%;
     text-align: center;
+}
+
+.confirm-button {
+  background-color: #4377df;
+  color: white;
+  padding: 2vh;
+  border-radius: 10px;
 }
 </style>
 

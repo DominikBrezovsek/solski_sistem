@@ -68,6 +68,7 @@
 <script  lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import axios from 'axios';
+import Swal from "sweetalert2";
 
 export default {
     data() {
@@ -105,15 +106,44 @@ export default {
             axios.post('https://smv.usdd.company/API/public/api/student/create', credentials)
                 .then((response) => {
                     if (response.data.success == "true") {
+                      Swal.fire({
+                        title: "Uporabnik registriran",
+                        text: "Uporabnik je bil uspešno registriran!",
+                        icon: "success",
+                        confirmButtonText: "Prijava",
+                        buttonsStyling: true,
+                        confirmButtonColor: "#4377df"
+                      })
                         sessionStorage.setItem('email', this.email);
                         this.$router.push('/');
                     } else if (response.data.error == "duplicate") {
-                        alert("User already exists");
+                      Swal.fire({
+                        title: "Uporabnik obstaja",
+                        text: "Uporabnik s tem e-poštnim naslovom že obstaja.",
+                        icon: "info",
+                        confirmButtonText: "Razumem",
+                        buttonsStyling: true,
+                        confirmButtonColor: "#4377df"
+                      })
                     } else {
-                        alert("User creation failed");
+                      Swal.fire({
+                        title: "Registracija ni uspela",
+                        text: "Prišlo je do napake pri registraciji. Prosim, poskusite kasneje.",
+                        icon: "error",
+                        confirmButtonText: "Razumem",
+                        buttonsStyling: true,
+                        confirmButtonColor: "#4377df"
+                      })
                     }
                 }, (error) => {
-                    console.log(error);
+                  Swal.fire({
+                    title: "Registracija ni uspela",
+                    text: "Prišlo je do napake pri registraciji. Prosim, poskusite kasneje.",
+                    icon: "error",
+                    confirmButtonText: "Razumem",
+                    buttonsStyling: true,
+                    confirmButtonColor: "#4377df"
+                  })
                 });
         },
         getClasses() {

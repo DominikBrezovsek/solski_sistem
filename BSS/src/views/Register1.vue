@@ -55,6 +55,7 @@
 <script  lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import axios from 'axios';
+import Swal from "sweetalert2";
 
 export default {
     data() {
@@ -68,27 +69,81 @@ export default {
         register() {
             const credentials = new FormData();
 
-            if(this.password == this.re_password){
+            if(this.password == this.re_password && this.password != ""){
               credentials.append('username', this.username);
               credentials.append('password', this.password);
               credentials.append('userType', 'student')
             }
-
-            axios.post('https://smv.usdd.company/API/public/api/register', credentials)
-                .then((response) => {
+            else if (this.password != this.re_password && this.password != ""){
+              Swal.fire({
+                title: "Gesli se ne ujemata",
+                text: "Vnešeni gesli se ne ujemata!",
+                icon: "warning",
+                confirmButtonText: "Razumem",
+                buttonsStyling: true,
+                confirmButtonColor: "#4377df"
+              })
+            }
+            else  {
+              Swal.fire({
+                title: "Manjkajoči podatki",
+                text: "Prosimo, izpolnite vsa polja!",
+                icon: "warning",
+                confirmButtonText: "Razumem",
+                buttonsStyling: true,
+                confirmButtonColor: "#4377df"
+              })
+            }
+            if (this.username != "" && this.password != "") {
+              axios.post('https://smv.usdd.company/API/public/api/register', credentials)
+                  .then((response) => {
                     console.log(response.data.logged);
                     if (response.data.id != "") {
                       sessionStorage.setItem('loginId', response.data.id);
-                        this.$router.push('/register');
+                      this.$router.push('/register');
                     } else if (response.data.error == "duplicate") {
-                        alert("Username already exists");
+                      Swal.fire({
+                        title: "Uporabnik obstaja",
+                        text: "Uporabnik s tem uporabniškim imenom že obstaja.",
+                        icon: "info",
+                        confirmButtonText: "Razumem",
+                        buttonsStyling: true,
+                        confirmButtonColor: "#4377df"
+                      })
                     } else {
-                        alert("User creation failed");
-                        this.$router.push('/');
+                      Swal.fire({
+                        title: "Registracija ni uspela",
+                        text: "Prišlo je do napake pri registraciji. Prosim, poskusite kasneje.",
+                        icon: "error",
+                        confirmButtonText: "Razumem",
+                        buttonsStyling: true,
+                        confirmButtonColor: "#4377df"
+                      })
+                      this.$router.push('/');
                     }
-                }, (error) => {
+                  }, (error) => {
                     console.log(error);
-                });
+                    Swal.fire({
+                      title: "Registracija ni uspela",
+                      text: "Prišlo je do napake pri registraciji. Prosim, poskusite kasneje.",
+                      icon: "error",
+                      confirmButtonText: "Razumem",
+                      buttonsStyling: true,
+                      confirmButtonColor: "#4377df"
+                    })
+                    this.$router.push('/');
+                  });
+            }
+            else {
+              Swal.fire({
+                title: "Manjkajoči podatki",
+                text: "Prosimo, izpolnite vsa polja!",
+                icon: "warning",
+                confirmButtonText: "Razumem",
+                buttonsStyling: true,
+                confirmButtonColor: "#4377df"
+              })
+            }
         },
     }
 }
