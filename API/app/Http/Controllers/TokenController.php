@@ -23,7 +23,7 @@ class TokenController extends Controller
         }
 
         $currentTime = time();
-        $expiresAt = $currentTime * 60 * 5;
+        $expiresAt = $currentTime + ( 60 * 5);
 
         $generator = new StrGen\Generator();
 
