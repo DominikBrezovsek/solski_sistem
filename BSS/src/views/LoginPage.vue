@@ -66,36 +66,48 @@ export default {
             const credentials = new FormData();
             credentials.append('username', this.username);
             credentials.append('password', this.password);
+          if (this.username != "" && this.password != "") {
             axios.post('https://smv.usdd.company/API/public/api/login/check', credentials)
                 .then((response) => {
-                    console.log(response.data.logged);
-                    if (response.data.success == "true") {
-                        sessionStorage.setItem('token', response.data.jwt);
-                        if (response.data.type != null){
-                            sessionStorage.setItem('type', response.data.type);
-                        }
-                        this.$router.push('/home');
-                    } else if (response.data.error == "credentials") {
-                      Swal.fire({
-                        title: "Napaka pri prijavi",
-                        text: "Napačno uporabniško ime ali geslo!",
-                        icon: "error",
-                        confirmButtonText: "Razumem",
-                        buttonsStyling: true,
-                        confirmButtonColor: "#4377df"
-                          })
+                  console.log(response.data.logged);
+                  if (response.data.success == "true") {
+                    sessionStorage.setItem('token', response.data.jwt);
+                    if (response.data.type != null) {
+                      sessionStorage.setItem('type', response.data.type);
                     }
+                    this.$router.push('/home');
+                  } else if (response.data.error == "credentials") {
+                    Swal.fire({
+                      title: "Napaka pri prijavi",
+                      text: "Napačno uporabniško ime ali geslo!",
+                      icon: "error",
+                      confirmButtonText: "Razumem",
+                      buttonsStyling: true,
+                      confirmButtonColor: "#4377df"
+                    })
+                  }
                 }, (error) => {
-                    console.log(error);
+                  console.log(error);
                   Swal.fire({
                     title: "Napaka pri prijavi",
-                    text: "Prišlo je do napake na naši strani. Prosimo, poskusite kasneje lai kontakrirajte administratorja.",
+                    text: "Prišlo je do napake na naši strani. Prosimo, poskusite kasneje ali kontakrirajte administratorja.",
                     icon: "error",
                     confirmButtonText: "Razumem",
                     buttonsStyling: true,
                     confirmButtonColor: "#4377df"
                   });
                 });
+          } else {
+            Swal.fire({
+              title: "Manjkajoči podatki",
+              text: "Prosimo, izpolnite vsa polja!",
+              icon: "warning",
+              confirmButtonText: "Razumem",
+              buttonsStyling: true,
+              confirmButtonColor: "#4377df"
+            })
+          }
+          }
         },
         
     },
