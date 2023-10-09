@@ -37,6 +37,7 @@ export default {
                 for (let i = 0; i < assResponse.length; i++) {
                   this.assignment.push(assResponse[i]);
                   console.log(this.assignment);
+                  sessionStorage.setItem('subId', assResponse[i].subjectId);
                 }
               } else {
                 this.assignment.push({'tittle': 'Naloga ni bila najdena'})
