@@ -13,6 +13,7 @@
 
 <script lang="ts">
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   data() {
@@ -38,8 +39,37 @@ export default {
         file.append('token', token)
         axios.post(path + 'assignment/submit', file)
             .then((response) =>{
-              console.log(response.data)
-        });
+              if (response.data.error == "duplicate") {
+                Swal.fire({
+                  title: 'Ponovna oddaja naloge?',
+                  text: 'Želite ponovno oddati nalogo? Stara datoteka bo odstranjena iz strežnika.',
+                  icon: 'question',
+                  confirmButtonText: 'Da, ponovno oddaj',
+                  confirmButtonColor: "#4377df",
+                  cancelButtonText: 'Ne, ne želim ponovne oddaje',
+                  showCancelButton: true,
+                  cancelButtonColor: "#e63946"
+                }).then(function (isConfirm:any){
+                  if (isConfirm.isConfirmed){
+                    file.append('resubmit', 'true')
+                    axios.post(path + 'assignment/submit', file)
+                        .then ((response => {
+                          if (response.data.resubmitted = "true"){
+                            Swal.fire({
+                              title: 'Oddaja uspešna',
+                              text: 'Uspešno ste ponovno oddali nalogo.',
+                              icon: 'success',
+                              confirmButtonText: 'Odlično!',
+                              confirmButtonColor: "#4377df"
+                            })
+                          }
+                        }))
+                  } else {
+                    Swal.close();
+                  }
+                })
+              }
+            });
       }
 
     }

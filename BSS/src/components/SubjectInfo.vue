@@ -4,7 +4,7 @@
       <h1>{{ a.subject }}</h1>
     </div>
     <div class="description">
-      <p>OPIS</p>
+      <p>{{a.description}}</p>
     </div>
   </div>
 </template>

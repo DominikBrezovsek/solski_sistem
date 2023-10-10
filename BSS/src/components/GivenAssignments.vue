@@ -1,7 +1,7 @@
 <template>
   <div class="given-assignments">
     <div class="tittle">
-      <h1>Naloge</h1>
+      <h1>Dodeljene naloge</h1>
     </div>
     <div class="assignment">
       <div class="given-assignment" v-for ="a in assignment" @click="assignmentInfo(a.id)">
@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   data() {
@@ -25,20 +26,17 @@ export default {
   methods: {
     getGivAssignment() {
       let token = sessionStorage.getItem('token');
-      if (token != null) {
+      const subject = sessionStorage.getItem('subjectId');
+      if (token != null && subject != null) {
         const jwt = new FormData();
         jwt.append('token', token);
-        axios.post('https://smv.usdd.company/API/public/api/dashboard/assignments', jwt)
+        jwt.append('subjectId', subject )
+        axios.post('https://smv.usdd.company/API/public/api/assignment/get-all', jwt)
             .then((response) => {
               if (response.data != null) {
                 for (let i = 0; i < (response.data.assignments).length; i++) {
                   this.assignment.push(response.data.assignments[i]);
                 }
-              } else if (response.data.error == "session") {
-                alert("Session has expired, please log in again!");
-                sessionStorage.clear();
-                localStorage.clear();
-                this.$router.push('/');
               }
             })
       } else {

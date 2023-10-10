@@ -1,7 +1,7 @@
 <template>
   <div class="submitted-assignments">
     <div class="tittle">
-      <h1>Naloge</h1>
+      <h1>Oddane naloge</h1>
     </div>
     <div class="assignment">
       <div class="submitted-assignment" v-for ="a in assignment" @click="assignmentInfo(a.id)">
@@ -25,10 +25,12 @@ export default {
   methods: {
     getSubAssignment() {
       let token = sessionStorage.getItem('token');
-      if (token != null) {
+      const subjectId = sessionStorage.getItem('subjectId');
+      if (token != null && subjectId != null) {
         const jwt = new FormData();
         jwt.append('token', token);
-        axios.post('https://smv.usdd.company/API/public/api/dashboard/assignments', jwt)
+        jwt.append('subjectId', subjectId)
+        axios.post('https://smv.usdd.company/API/public/api/assignment/submitted', jwt)
             .then((response) => {
               if (response.data != null) {
                 for (let i = 0; i < (response.data.assignments).length; i++) {
@@ -42,7 +44,6 @@ export default {
               }
             })
       } else {
-        this.$router.push('/');
       }
     },
     assignmentInfo(id: string){
