@@ -35,7 +35,7 @@ class AssignmentController extends Controller
     public function getAssignments(Request $request)
     {
         $teacherId = session('teacherId');
-
+        $loginId = session('loginId');
         if ($teacherId != null) {
             $assignment = DB::table('SubjectAssignmentTable')
                 ->select('SubjectAssignmentTable.*', 'TeacherTable.name', 'TeacherTable.surname')
@@ -46,9 +46,25 @@ class AssignmentController extends Controller
             return response()->json([
                 'assignments' => $assignment
             ]);
-        } else {
+        } else if ($teacherId == null && $loginId != null) {
+            $subjectId = $request->subjectId;
+            $fistDueAss = DB::select("
+    SELECT SAT.id, SAT.tittle, S.subject, SAT.deadline
+    FROM SubjectAssignmentTable SAT
+    JOIN StudentSubjectTable SST ON SAT.subjectId = SST.subjectId
+    JOIN StudentTable ST ON SST.studentId = ST.id
+    JOIN SubjectTable S ON SST.subjectId = S.id
+    WHERE NOT EXISTS (
+        SELECT SubmissionTable.id
+        FROM SubmissionTable
+        WHERE SubmissionTable.studSubjectId = SST.id
+    )
+    AND ST.loginId = $loginId
+    AND S.id = $subjectId
+    ORDER BY SAT.deadline ASC
+");
             return response()->json([
-                'error' => 'id'
+                'assignments' => $fistDueAss
             ]);
         }
     }
@@ -74,9 +90,9 @@ class AssignmentController extends Controller
                 ->where('SAT.id', '=', $assignmentId)
                 ->first();
             $fileName = ($file_tittle->surname . ' ' . $file_tittle->name . ' - ' . $file_tittle->tittle);
-            $fileExists = SubmissionTable::where('file', '=', $fileName)->first();
+            $fileExists = SubmissionTable::where(['file' => $fileName, 'studSubjectId' => $sstId->id])->first();
             if ($file != null) {
-                if($fileExists == null) {
+                if ($fileExists == null) {
                     Storage::putFileAs(
                         '/ass_sub', $file, $fileName
                     );
@@ -90,7 +106,26 @@ class AssignmentController extends Controller
                     return response()->json([
                         'success' => true
                     ]);
-                } else  {
+                } else if( $fileExists != null && $request->resubmit == "true") {
+                    $deleteFile = $fileExists->file;
+
+                    Storage::disk('local')->delete('/ass_sub/'. $deleteFile);
+                    SubmissionTable::where(['file' => $fileName, 'studSubjectId' => $sstId->id])->delete();
+
+                    Storage::putFileAs(
+                        '/ass_sub', $file, $fileName
+                    );
+                    SubmissionTable::create([
+                        'assignmentId' => $assignmentId,
+                        'studSubjectId' => $sstId->id,
+                        'handedInAt' => $handedIn,
+                        'file' => $fileName
+                    ]);
+
+                    return response()->json([
+                        'resubmitted' => true
+                    ]);
+                } else {
                     return response()->json([
                         'error' => 'duplicate'
                     ]);
@@ -107,4 +142,30 @@ class AssignmentController extends Controller
 
         }
     }
+
+    public function getSubmission(Request $request){
+        $loginId = session('loginId');
+        $subjectId = $request->subjectId;
+
+        if ($loginId != null && $subjectId != null){
+            $submission = DB::table('SubmissionTable AS SUB')
+                ->select('SAT.id', 'SAT.tittle', 'S.subject', 'SUB.handedInAt', 'SUB.file')
+                ->join('StudentSubjectTable AS SST', 'SUB.studSubjectId', '=', 'SST.id')
+                ->join('StudentTable AS ST', 'ST.id', '=', 'SST.studentId')
+                ->join('SubjectAssignmentTable AS SAT', 'SUB.assignmentId', '=', 'SAT.id')
+                ->join('SubjectTable AS S', 'SST.subjectId', '=', 'S.id')
+                ->where('ST.id', '=', $loginId)
+                ->where('S.id', '=', $subjectId)
+                ->get();
+
+            return response()->json([
+                'assignments' => $submission
+            ]);
+        } else {
+            return response()->json([
+                'error' => 'subjectId'
+            ]);
+        }
+    }
 }
+
