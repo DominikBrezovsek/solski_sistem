@@ -23,7 +23,7 @@ export default {
     }
   },
   methods: {
-    getRecentAssignmnent() {
+    getRecentAssignment() {
       let token = sessionStorage.getItem('token');
       if (token != null) {
         const jwt = new FormData();
@@ -51,7 +51,7 @@ export default {
     }
   },
   created() {
-    this.getRecentAssignmnent();
+    this.getRecentAssignment();
   },
 }
 </script>

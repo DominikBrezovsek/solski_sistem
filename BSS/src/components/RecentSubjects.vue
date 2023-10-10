@@ -4,7 +4,7 @@
       <h1>Zadnji predmeti</h1>
     </div>
     <div class="subjects">
-      <div class="recent-subject" v-for="subject in subjects">
+      <div class="recent-subject" v-for="subject in subjects" @click="openSubject(subject.id)">
         <h1>{{ subject.subject }}</h1>
       </div>
     </div>
@@ -44,7 +44,11 @@ export default {
       } else {
         this.$router.push('/');
       }
-    }
+    },
+      openSubject (id: string){
+      sessionStorage.setItem('subjectId', id);
+      this.$router.push('/subject');
+      }
   },
   created() {
     this.getRecentSubjects();
@@ -73,6 +77,11 @@ export default {
   background: #2e5baa;
   border-radius: 2vh;
   box-shadow: 4px 3px 14px 0px #00000085
+}
+.recent-subject:hover {
+  border-bottom: 4px solid #5891d3;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 .recent-subject h1 {
