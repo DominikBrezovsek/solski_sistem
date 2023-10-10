@@ -82,7 +82,11 @@ export default {
   font-size: x-large;
   font-weight: bold;
 }
-
+.Student_class:hover {
+  border-bottom: 4px solid #5891d3;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
 .tittle{
   width: 100%;
   margin-top: 2vh;
@@ -95,7 +99,6 @@ export default {
   flex-direction: column;
   overflow: hidden;
 }
-
 .classes{
   display: flex;
   flex-direction: row;

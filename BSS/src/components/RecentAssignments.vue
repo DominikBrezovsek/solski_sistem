@@ -23,19 +23,26 @@ export default {
     }
   },
   methods: {
-    getRecentAssignment() {
+    getRecentAssignmnent() {
       let token = sessionStorage.getItem('token');
       if (token != null) {
         const jwt = new FormData();
         jwt.append('token', token);
-        axios.post('https://smv.usdd.company/API/public/api/dashboard/assignments', jwt)
+        axios.post('https://smv.usdd.company/API/public/api/assignment/get-all', jwt)
             .then((response) => {
               if (response.data != null) {
                 for (let i = 0; i < (response.data.assignments).length; i++) {
                   this.assignment.push(response.data.assignments[i]);
                 }
+              } else if (response.data.error == "session") {
+                alert("Session has expired, please log in again!");
+                sessionStorage.clear();
+                localStorage.clear();
+                this.$router.push('/');
               }
             })
+      } else {
+        this.$router.push('/');
       }
     },
     assignmentInfo(id: string){
@@ -44,7 +51,7 @@ export default {
     }
   },
   created() {
-    this.getRecentAssignment();
+    this.getRecentAssignmnent();
   },
 }
 </script>
@@ -97,9 +104,9 @@ export default {
 
 .tittle{
   width: 100%;
-  margin-top: 2vh;
-  margin-bottom: 2vh;
-  margin-left: 5vh;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  margin-left: 1vh;
   display: flex;
   justify-content: center;
   color: grey;

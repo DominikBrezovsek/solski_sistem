@@ -14,7 +14,7 @@
 import Sidebar from '@/components/Sidebar.vue';
 import RecentSubjects from "@/components/RecentSubjects.vue";
 import RecentAssignments from "@/components/RecentAssignments.vue";
-import GivenAssignments from "@/components/GivenAssignments.vue";
+import GivenAssignments from "@/components/RecentAssignments.vue";
 
 export default {
   components: {

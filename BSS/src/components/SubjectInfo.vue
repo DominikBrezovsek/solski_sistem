@@ -3,9 +3,6 @@
     <div class="tittle">
       <h1>{{ a.subject }}</h1>
     </div>
-    <div class="tittle_subject">
-      <h2>{{ a.tittle }}</h2>
-    </div>
   </div>
 </template>
 
@@ -57,8 +54,8 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 2vh;
-  width: 85%;
-  height: 45vh;
+  width: 100%;
+  height: 20vh;
   justify-content: flex-start;
   align-items: flex-start;
   padding: 3vh;
@@ -83,16 +80,6 @@ export default {
   justify-content: center;
   color: grey;
   font-size: xx-large;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.tittle_subject {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  color: black;
-  font-size: x-large;
   flex-direction: column;
   overflow: hidden;
 }
