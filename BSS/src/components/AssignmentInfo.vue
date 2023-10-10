@@ -24,25 +24,24 @@ export default {
     getAssignment() {
       const assignment = Array();
       const token = sessionStorage.getItem('token');
-      const assId = sessionStorage.getItem('assignmentId');
+      let assId = sessionStorage.getItem('assignmentId');
 
-      if (token != null && assId != null) {
-        const data = new FormData();
-        data.append('token', token);
-        data.append('assignmentId', assId);
-        axios.post('https://smv.usdd.company/API/public/api/assignment/get', data)
-            .then((response) => {
-              const assResponse = response.data.assignment;
-              if (assResponse != null) {
-                for (let i = 0; i < assResponse.length; i++) {
-                  this.assignment.push(assResponse[i]);
-                  console.log(this.assignment);
-                  sessionStorage.setItem('subId', assResponse[i].subjectId);
+      if (token != null) {
+        if (assId){
+          const data = new FormData();
+          data.append('token', token);
+          data.append('assignmentId', assId);
+          axios.post('https://smv.usdd.company/API/public/api/assignment/get', data)
+              .then((response) => {
+                const assResponse = response.data.assignment;
+                if (assResponse != null) {
+                  for (let i = 0; i < assResponse.length; i++) {
+                    this.assignment.push(assResponse[i]);
+                    sessionStorage.setItem('subjectId', this.assignment[i].subjectId)
+                  }
                 }
-              } else {
-                this.assignment.push({'tittle': 'Naloga ni bila najdena'})
-              }
-            })
+              })
+        }
       }
     }
   },

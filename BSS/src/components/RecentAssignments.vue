@@ -34,15 +34,8 @@ export default {
                 for (let i = 0; i < (response.data.assignments).length; i++) {
                   this.assignment.push(response.data.assignments[i]);
                 }
-              } else if (response.data.error == "session") {
-                alert("Session has expired, please log in again!");
-                sessionStorage.clear();
-                localStorage.clear();
-                this.$router.push('/');
               }
             })
-      } else {
-        this.$router.push('/');
       }
     },
     assignmentInfo(id: string){

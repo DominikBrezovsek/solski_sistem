@@ -3,6 +3,11 @@
     <div class="tittle">
       <h1>Oddaja naloge</h1>
     </div>
+    <div class="flex flex-col">
+      <h4>Naloži datoteko</h4>
+      <input type="file" @change="storeFile">
+      <button @click="submitFile">Submit</button>
+    </div>
   </div>
 </template>
 
@@ -12,13 +17,14 @@ import axios from "axios";
 export default {
   data() {
     return {
-      assignment: Array()
+      assignment: Array(),
+      file: null,
     }
   },
-  methods:{
+  methods: {
     getAssignment() {
       let token = sessionStorage.getItem('token');
-      const subjectId = sessionStorage.getItem('subId')
+      const subjectId = sessionStorage.getItem('subjectId')
       const assignmentId = sessionStorage.getItem('assignmentId');
       if (token != null && subjectId != null && assignmentId != null) {
         const path = 'https://smv.usdd.company/API/public/api/';
@@ -30,16 +36,30 @@ export default {
             .then((response) => {
               if (response.data != null) {
                 console.log(response.data.assId)
-              } else if (response.data.error == "session") {
-                alert("Session has expired, please log in again!");
-                sessionStorage.clear();
-                localStorage.clear();
-                this.$router.push('/');
               }
             })
-      } else {
-        this.$router.push('/');
       }
+    },
+    storeFile(event: any){
+      this.file = event.target.files[0]
+    },
+    submitFile(){
+      const path = 'https://smv.usdd.company/API/public/api/';
+      const subjectId = sessionStorage.getItem('subjectId')
+      const assignmentId = sessionStorage.getItem('assignmentId');
+      const file = new FormData();
+      const token = sessionStorage.getItem('token')
+      if(this.file && token != null && subjectId != null && assignmentId != null) {
+        file.append('file', this.file)
+        file.append('subjectId', subjectId)
+        file.append('assignmentId', assignmentId)
+        file.append('token', token)
+        axios.post(path + 'assignment/submit', file)
+            .then((response) =>{
+              console.log(response.data)
+        });
+      }
+
     }
   },
   created() {
