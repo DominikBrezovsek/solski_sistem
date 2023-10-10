@@ -22,24 +22,6 @@ export default {
     }
   },
   methods: {
-    getAssignment() {
-      let token = sessionStorage.getItem('token');
-      const subjectId = sessionStorage.getItem('subjectId')
-      const assignmentId = sessionStorage.getItem('assignmentId');
-      if (token != null && subjectId != null && assignmentId != null) {
-        const path = 'https://smv.usdd.company/API/public/api/';
-        const jwt = new FormData();
-        jwt.append('token', token);
-        jwt.append('subjectId', subjectId)
-        jwt.append('assignmentId', assignmentId)
-        axios.post(path + 'assignment/submit', jwt)
-            .then((response) => {
-              if (response.data != null) {
-                console.log(response.data.assId)
-              }
-            })
-      }
-    },
     storeFile(event: any){
       this.file = event.target.files[0]
     },
@@ -63,7 +45,6 @@ export default {
     }
   },
   created() {
-    this.getAssignment()
   }
 }
 </script>
