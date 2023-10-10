@@ -23,12 +23,12 @@ export default {
     }
   },
   methods: {
-    getRecentAssignmnent() {
+    getRecentAssignment() {
       let token = sessionStorage.getItem('token');
       if (token != null) {
         const jwt = new FormData();
         jwt.append('token', token);
-        axios.post('https://smv.usdd.company/API/public/api/assignment/get-all', jwt)
+        axios.post('https://smv.usdd.company/API/public/api/dashboard/assignments', jwt)
             .then((response) => {
               if (response.data != null) {
                 for (let i = 0; i < (response.data.assignments).length; i++) {
@@ -51,7 +51,7 @@ export default {
     }
   },
   created() {
-    this.getRecentAssignmnent();
+    this.getRecentAssignment();
   },
 }
 </script>

@@ -3,6 +3,9 @@
     <div class="tittle">
       <h1>{{ a.subject }}</h1>
     </div>
+    <div class="description">
+      <p>OPIS</p>
+    </div>
   </div>
 </template>
 
