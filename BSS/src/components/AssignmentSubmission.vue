@@ -54,7 +54,7 @@ export default {
                     file.append('resubmit', 'true')
                     axios.post(path + 'assignment/submit', file)
                         .then ((response => {
-                          if (response.data.resubmitted == "true"){
+                          if (response.data[0].resubmitted == "true"){
                             Swal.fire({
                               title: 'Oddaja uspešna',
                               text: 'Uspešno ste ponovno oddali nalogo.',
