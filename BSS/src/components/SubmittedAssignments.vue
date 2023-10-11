@@ -10,7 +10,9 @@
           <p>{{a.subject}}</p>
           <p>{{a.deadline}}</p>
         </div>
-        <p><img src="../assets/delete-icon.png" alt="Izbriši" @click="deleteSubmission(a.file)"></p>
+        <div class="button">
+          <p><img src="../assets/delete-icon.png" alt="Izbriši" @click="deleteSubmission(a.file)"></p>
+        </div>
       </div>
     </div>
   </div>
@@ -175,9 +177,13 @@ export default {
   width: 15vw;
   line-break: auto;
 }
-.submitted-assignment img{
-  width: 3vw;
+.submitted-assignment img {
+  width: 2vw;
 }
+.submitted-assignment img:hover,
+.submitted-assignment img:focus{
+   width:2.2vw;
+ }
 .submitted-assignment h2,p {
   padding-top: 1vh;
   padding-bottom: 3vh;
@@ -211,4 +217,5 @@ export default {
   border-top-right-radius: 20px;
   box-shadow: -1px -1px 13px 1px #00000040
 }
+
 </style>
