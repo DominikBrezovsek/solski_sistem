@@ -49,7 +49,7 @@ export default {
                   cancelButtonText: 'Ne, ne želim ponovne oddaje',
                   showCancelButton: true,
                   cancelButtonColor: "#e63946"
-                }).then(function (isConfirm:any){
+                }).then((isConfirm) =>{
                   if (isConfirm.isConfirmed){
                     file.append('resubmit', 'true')
                     axios.post(path + 'assignment/submit', file)
@@ -61,7 +61,11 @@ export default {
                               icon: 'success',
                               confirmButtonText: 'Odlično!',
                               confirmButtonColor: "#4377df"
-                            })
+                            }) .then((event) => {
+                              if (event.isConfirmed){
+                                this.$router.push
+                              }
+                            });
                           }
                         }))
                   } else {
