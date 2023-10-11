@@ -102,12 +102,11 @@ export default {
   font-size: x-large;
   font-weight: bold;
 }
-
 .tittle{
   width: 100%;
-  margin-top: 2vh;
+  margin-top: 1vh;
   margin-bottom: 1vh;
-  margin-left: 5vh;
+  margin-left: 1vh;
   display: flex;
   justify-content: center;
   color: grey;

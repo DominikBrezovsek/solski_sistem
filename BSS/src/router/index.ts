@@ -8,6 +8,7 @@ import TeachersPage from '../views/Teachers.vue'
 import HomePage from '../views/Home.vue'
 import Assignment from "@/views/Assignment.vue";
 import Subject from "@/views/Subject.vue";
+import Profile from "../views/Profile.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -63,6 +64,14 @@ const router = createRouter({
             path: '/assignments',
             name: 'Assignment',
             component: Assignment,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/profile',
+            name: 'Profile',
+            component: Profile,
             meta: {
                 requiresAuth: true
             }

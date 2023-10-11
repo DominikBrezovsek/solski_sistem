@@ -163,8 +163,8 @@ input[type="file"] {
   width: 10vw;
   height: 4vh;
   border: 2px solid #315cfd;
-  border-radius: 40px;
-  transition: all 0.3s;
+  border-radius: 5px;
+  transition: all 0.22s;
   cursor: pointer;
   font-size: 1em;
   font-weight: 550;

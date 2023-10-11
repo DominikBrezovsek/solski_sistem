@@ -81,11 +81,13 @@
       </div>
     </div>
     <div class="user">
-      <div class="user-info">
-        <img :src="image" alt="user">
-        <p>{{ name }} {{ surname }}</p>
-        <p v-if="type == 'student'">Razred: {{ razred }}</p>
-      </div>
+      <router-link to="/profile">
+        <div class="user-info">
+          <img :src="image" alt="user">
+          <p>{{ name }} {{ surname }}</p>
+          <p v-if="type == 'student'">Razred: {{ razred }}</p>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -293,6 +295,7 @@ export default {
   font-size: large;
   justify-content: space-between;
   padding-bottom: 10vh;
+  padding-left: 1vw;
 }
 
 .navigation_link {

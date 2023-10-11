@@ -75,6 +75,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  padding-left: 2vw;
 }
 
 .Teacher_class {
@@ -101,9 +102,9 @@ export default {
 }
 .tittle{
   width: 100%;
-  margin-top: 2vh;
+  margin-top: 1vh;
   margin-bottom: 1vh;
-  margin-left: 5vh;
+  margin-left: 1vh;
   display: flex;
   justify-content: center;
   color: grey;
