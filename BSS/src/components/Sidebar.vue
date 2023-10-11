@@ -152,9 +152,13 @@ export default {
                     text: 'Za nadaljevanje se ponovno prijavite.',
                     icon: "warning",
                     confirmButtonText: 'Prijava',
-                    confirmButtonColor: '4377df'
+                    confirmButtonColor: '#4377df'
                   }) .then((event) => {
                     if (event.isConfirmed){
+                      sessionStorage.clear();
+                      localStorage.clear();
+                      this.$router.push('/');
+                    } else {
                       sessionStorage.clear();
                       localStorage.clear();
                       this.$router.push('/');

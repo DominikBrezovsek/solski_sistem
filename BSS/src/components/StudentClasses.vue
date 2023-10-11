@@ -47,6 +47,11 @@ export default {
                     localStorage.clear();
                     this.$router.push('/');
                   }
+                  else {
+                    sessionStorage.clear();
+                    localStorage.clear();
+                    this.$router.push('/');
+                  }
                 })
               }
             })
