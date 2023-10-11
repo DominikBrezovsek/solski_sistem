@@ -70,7 +70,7 @@ export default {
 <style scoped>
 .Teacher_classes {
   height: 40vh;
-  width: 85vw;
+  width: 82vw;
   display: flex;
   flex-direction: column;
   align-items: center;

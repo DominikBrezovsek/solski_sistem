@@ -136,10 +136,11 @@ export default {
 <style scoped>
 .submitted-assignments{
   height: 40vh;
-  width: 85vw;
+  width: 82vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-left: 2vw;
   counter-reset: section;
 }
 .submitted-assignment{

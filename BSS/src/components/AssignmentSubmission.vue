@@ -4,9 +4,22 @@
       <h1>Oddaja naloge</h1>
     </div>
     <div class="flex flex-col">
-      <h4>Naloži datoteko</h4>
-      <input type="file" @change="storeFile">
-      <button @click="submitFile">Submit</button>
+      <label class="button-file">
+        <input type="file" @change="storeFile" id="file"/>
+        Naloži datoteko
+      </label>
+      <div class="curent-file">
+        <p v-if="file != null">
+          {{ fileName }}
+        </p>
+        <p v-else-if="file == null">
+          Nobena datoteka ni izbrana!
+        </p>
+      </div>
+      <div class="button-sub">
+        <button @click="submitFile">Submit</button>
+      </div>
+
     </div>
   </div>
 </template>
@@ -20,25 +33,29 @@ export default {
     return {
       assignment: Array(),
       file: null,
+      fileName: ""
     }
   },
   methods: {
-    storeFile(event: any){
+    storeFile(event: any) {
       this.file = event.target.files[0]
+      if (this.file != null) {
+        this.fileName = (event.target.files[0].name)
+      }
     },
-    submitFile(){
+    submitFile() {
       const path = 'https://smv.usdd.company/API/public/api/';
       const subjectId = sessionStorage.getItem('subjectId')
       const assignmentId = sessionStorage.getItem('assignmentId');
       const file = new FormData();
       const token = sessionStorage.getItem('token')
-      if(this.file && token != null && subjectId != null && assignmentId != null) {
+      if (this.file && token != null && subjectId != null && assignmentId != null) {
         file.append('file', this.file)
         file.append('subjectId', subjectId)
         file.append('assignmentId', assignmentId)
         file.append('token', token)
         axios.post(path + 'assignment/submit', file)
-            .then((response) =>{
+            .then((response) => {
               if (response.data.error == "duplicate") {
                 Swal.fire({
                   title: 'Ponovna oddaja naloge?',
@@ -49,20 +66,21 @@ export default {
                   cancelButtonText: 'Ne, ne želim ponovne oddaje',
                   showCancelButton: true,
                   cancelButtonColor: "#e63946"
-                }).then((isConfirm) =>{
-                  if (isConfirm.isConfirmed){
+                }).then((isConfirm) => {
+                  if (isConfirm.isConfirmed) {
                     file.append('resubmit', 'true')
                     axios.post(path + 'assignment/submit', file)
-                        .then ((response => {
-                          if (response.data.resubmitted == true){
+                        .then((response => {
+                          console.log(response.data.resubmitted);
+                          if (response.data.resubmitted == true) {
                             Swal.fire({
                               title: 'Oddaja uspešna',
                               text: 'Uspešno ste ponovno oddali nalogo.',
                               icon: 'success',
                               confirmButtonText: 'Odlično!',
                               confirmButtonColor: "#4377df"
-                            }) .then((event) => {
-                              if (event.isConfirmed){
+                            }).then((event) => {
+                              if (event.isConfirmed) {
                                 this.$router.push
                               }
                             });
@@ -72,7 +90,7 @@ export default {
                     Swal.close();
                   }
                 })
-              } else if (!response.data.error){
+              } else if (!response.data.error) {
                 Swal.fire({
                   title: 'Oddaja uspešna',
                   text: 'Uspešno ste oddali nalogo.',
@@ -81,7 +99,7 @@ export default {
                   confirmButtonColor: '#4377df'
                 })
                     .then((event) => {
-                      if (event.isConfirmed){
+                      if (event.isConfirmed) {
                         this.$router.push('/classes')
                       }
                     })
@@ -126,7 +144,41 @@ export default {
   align-items: flex-start;
   padding: 3vh;
 }
-.tittle{
+
+input[type="file"] {
+  display: none;
+}
+
+.button-file {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.button-sub {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10vw;
+  height: 4vh;
+  border: 2px solid #315cfd;
+  border-radius: 40px;
+  transition: all 0.3s;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 550;
+  text-align: center;
+  color: #315cfd;
+}
+
+.button-sub:hover {
+  background: #315cfd;
+  color: white;
+  font-size: 1.1em;
+}
+
+.tittle {
   width: 100%;
   margin-top: 2vh;
   margin-bottom: 1vh;
@@ -137,5 +189,8 @@ export default {
   font-size: xx-large;
   flex-direction: column;
   overflow: hidden;
+}
+.flex{
+  gap: 2vh;
 }
 </style>

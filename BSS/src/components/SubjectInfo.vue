@@ -69,11 +69,11 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 2vh;
-  width: 100%;
+  width: 82vw;
   height: 20vh;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 3vh;
+  padding-left: 2vw;
 }
 
 .subject-info h2, p {

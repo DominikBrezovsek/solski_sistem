@@ -72,11 +72,12 @@ export default {
 <style scoped>
 .recent-subjects {
   height: 40vh;
-  width: 85vw;
+  width: 82vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  padding-left: 2vw;
 }
 
 .recent-subject {

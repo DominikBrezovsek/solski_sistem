@@ -71,10 +71,11 @@ export default {
 <style scoped>
 .recent-assignments{
   height: 60vh;
-  width: 85vw;
+  width: 82vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-left: 2vw;
   counter-reset: section;
 }
 .recent-assignment{

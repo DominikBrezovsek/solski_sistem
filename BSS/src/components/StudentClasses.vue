@@ -71,7 +71,7 @@ export default {
 <style scoped>
 .Student_classes {
   height: 40vh;
-  width: 85vw;
+  width: 82vw;
   display: flex;
   flex-direction: column;
   align-items: center;

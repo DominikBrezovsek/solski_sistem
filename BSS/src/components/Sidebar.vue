@@ -10,71 +10,73 @@
     </div>
     <div class="menu">
       <div class="options">
-        <router-link to="/home">
-          <div class="home">
+        <router-link to="/home" class="home">
+          <div>
+            <img src="../assets/home_img.png" alt="img">
+          </div>
+          <div>
             <h2>Domov</h2>
           </div>
         </router-link>
-        <div class="student" v-if="type == 'student'">
-          <div class="headings">
-            <h1>Učenje</h1>
+          <div class="student" v-if="type == 'student'">
+            <div class="headings">
+              <h1>Učenje</h1>
+            </div>
           </div>
-          <router-link to="/classes" class="navigation_link" >
-            <div>
-              <img src="../assets/books_img.png" alt="img">
-            </div>
-            <div>
-              <h2>Predmeti</h2>
-            </div>
-          </router-link>
+        <router-link to="/classes" class="navigation_link">
+          <div>
+            <img src="../assets/books_img.png" alt="img">
+          </div>
+          <div>
+            <h2>Predmeti</h2>
+          </div>
+        </router-link>
+      </div>
+      <div class="teacher" v-if="type == 'teacher'">
+        <div class="headings">
+          <h1>Učenje</h1>
         </div>
-        <div class="teacher" v-if="type == 'teacher'">
-          <div class="headings">
-            <h1>Učenje</h1>
+        <router-link to="/classes" class="navigation_link">
+          <div>
+            <img src="../assets/books_img.png" alt="img">
           </div>
-          <router-link to="/classes" class="navigation_link" >
-            <div>
-              <img src="../assets/books_img.png" alt="img">
-            </div>
-            <div>
-              <h2>Predmeti</h2>
-            </div>
-          </router-link>
+          <div>
+            <h2>Predmeti</h2>
+          </div>
+        </router-link>
+      </div>
+      <div class="admin" v-if="type == 'admin'">
+        <div class="headings">
+          <h1>Učenje</h1>
         </div>
-        <div class="admin" v-if="type == 'admin'">
-          <div class="headings">
-            <h1>Učenje</h1>
+        <router-link to="/classes" class="navigation_link">
+          <div>
+            <img src="../assets/books_img.png" alt="img">
           </div>
-          <router-link to="/classes" class="navigation_link" >
+          <div>
+            <h2>Predmeti</h2>
+          </div>
+        </router-link>
+        <div class="headings">
+          <h1>Ljudje</h1>
+        </div>
+        <div class="link_space">
+          <router-link to="/students" class="navigation_link">
             <div>
-              <img src="../assets/books_img.png" alt="img">
+              <img src="../assets/student_img.png" alt="img">
             </div>
             <div>
-              <h2>Predmeti</h2>
+              <h2>Dijaki</h2>
             </div>
           </router-link>
-          <div class="headings">
-            <h1>Ljudje</h1>
-          </div>
-          <div class="link_space">
-            <router-link to="/students" class="navigation_link" >
-              <div>
-                <img src="../assets/student_img.png" alt="img">
-              </div>
-              <div>
-                <h2>Dijaki</h2>
-              </div>
-            </router-link>
-            <router-link to="/teachers" class="navigation_link" >
-              <div>
-                <img src="../assets/teacher_img.png" alt="img">
-              </div>
-              <div>
-                <h2>Profesorji</h2>
-              </div>
-            </router-link>
-          </div>
-
+          <router-link to="/teachers" class="navigation_link">
+            <div>
+              <img src="../assets/teacher_img.png" alt="img">
+            </div>
+            <div>
+              <h2>Profesorji</h2>
+            </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -92,7 +94,6 @@
 import axios from 'axios';
 import router from "@/router";
 import Swal from "sweetalert2";
-
 
 
 export default {
@@ -124,10 +125,10 @@ export default {
         this.image = "../assets/student_profile_pic.png";
       } else if (tip == "teacher") {
         this.image = "../assets/teacher.png";
-      } else if(tip == "admin"){
+      } else if (tip == "admin") {
         this.image = "../assets/admin_profile_pic.png";
-      } else{
-        return this.$router.push ('/');
+      } else {
+        return this.$router.push('/');
       }
     },
 
@@ -254,7 +255,9 @@ export default {
 .user img {
   height: 10vh;
 }
-
+.home img{
+  height: 6vh;
+}
 .user {
   margin-bottom: 5vh;
   width: 100%;
@@ -267,7 +270,7 @@ export default {
 }
 
 .menu {
-  margin-bottom: 15vh;
+  padding-bottom: 5vh;
   width: 100%;
 }
 
@@ -282,15 +285,14 @@ export default {
   overflow: hidden;
 }
 
-.options{
+.options {
   display: flex;
   flex-direction: column;
   width: 100%;
   color: white;
   font-size: large;
   justify-content: space-between;
-  margin-left: 1vw;
-  margin-bottom: 10vh;
+  padding-bottom: 10vh;
 }
 
 .navigation_link {
@@ -305,13 +307,14 @@ export default {
   height: 6vh;
 }
 
-.link_space{
+.link_space {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 2vh;
 }
-.home{
+
+.home {
   display: flex;
   flex-direction: row;
   align-items: center;
