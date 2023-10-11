@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LoginToken;
 use App\Models\UserLoginTable;
+use Exception;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
@@ -23,7 +24,7 @@ class TokenController extends Controller
         }
 
         $currentTime = time();
-        $expiresAt = $currentTime + ( 60 * 5);
+        $expiresAt = $currentTime + (60 * 5);
 
         $generator = new StrGen\Generator();
 
@@ -53,18 +54,21 @@ class TokenController extends Controller
     {
         $loginId = session('loginId');
         if ($token && $loginId) {
+            try {
+                $tokenKey = LoginToken::select('tokenKey')->where('loginId', '=', $loginId)->first();
+                if ($tokenKey->tokenKey != null) {
+                    $decoded_token = JWT::decode($token, new Key($tokenKey->tokenKey, 'HS256'));
+                    $verify = UserLoginTable::select(['id'])->where('id', '=', $decoded_token->loginId)->first();
 
-            $tokenKey = LoginToken::select('tokenKey')->where('loginId', '=', $loginId)->first();
-            if ($tokenKey->tokenKey != null) {
-                $decoded_token = JWT::decode($token, new Key($tokenKey->tokenKey, 'HS256'));
-                $verify = UserLoginTable::select(['id'])->where('id', '=', $decoded_token->loginId)->first();
-
-                if ($verify->id == $decoded_token->loginId) {
-                    return true;
+                    if ($verify->id == $decoded_token->loginId) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 } else {
                     return false;
                 }
-            } else {
+            } catch (Exception $e) {
                 return false;
             }
         } else {

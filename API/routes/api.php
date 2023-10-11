@@ -42,6 +42,8 @@ Route::middleware(['tokenVerify'])->group(function (){
         Route::post('get', [StudentController::class, 'getStudent']);
         Route::post('admin-get', [StudentController::class, 'AdminGetStudent']);
         Route::post('update', [StudentController::class, 'updateStudent']);
+        Route::post('update', [StudentController::class, 'updateStudent']);
+        Route::post('delete', [StudentController::class, 'deleteStudent']);
     });
 
     Route::prefix('school/manage')->group(function (){
@@ -98,6 +100,7 @@ Route::middleware(['tokenVerify'])->group(function (){
         Route::post('get-all', [AssignmentController::class, 'getAssignments']);
         Route::post('submit', [AssignmentController::class, 'submitAssignment']);
         Route::post('submitted', [AssignmentController::class, 'getSubmission']);
+        Route::post('deleteSubmission', [AssignmentController::class, 'deleteSubmission']);
     });
 
 });

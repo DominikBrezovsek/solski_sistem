@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\ClassTable;
 use App\Models\StudentTable;
+use App\Models\UserLoginTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
-    public function createStudent(Request $request){
+    public function createStudent(Request $request)
+    {
         $name = $request->name;
         $surname = $request->surname;
         $email = $request->email;
@@ -18,7 +20,7 @@ class StudentController extends Controller
 
         $checkEmail = StudentTable::select('id')->where('email', '=', $email)->first();
 
-        if($checkEmail != ""){
+        if ($checkEmail != "") {
             return response()->json([
                 'error' => 'email-duplicate'
             ], 200);
@@ -37,30 +39,32 @@ class StudentController extends Controller
         }
 
 
-
     }
 
-    public function getStudent(Request $request){
+    public function getStudent(Request $request)
+    {
         $loginId = session('loginId');
         $student = DB::table('StudentTable')
-            ->join('ClassTable', 'StudentTable.classId', '=','ClassTable.id')
-            ->select('name', 'surname', 'email', 'class', 'StudentTable.id' )
+            ->join('ClassTable', 'StudentTable.classId', '=', 'ClassTable.id')
+            ->select('name', 'surname', 'email', 'class', 'StudentTable.id')
             ->where('loginId', '=', $loginId)
             ->first();
         session(['studentId' => $student->id]);
         return response()->json($student);
     }
 
-    public function AdminGetStudent(Request $request){
+    public function AdminGetStudent(Request $request)
+    {
         $loginId = $request->loginId;
         $student = DB::table('StudentTable')
-            ->join('ClassTable', 'StudentTable.classId', '=','ClassTable.id')
+            ->join('ClassTable', 'StudentTable.classId', '=', 'ClassTable.id')
             ->where('loginId', '=', $loginId)
             ->first();
         return response()->json($student);
     }
 
-    public function updateStudent(Request $request){
+    public function updateStudent(Request $request)
+    {
         $loginId = $request->loginId;
         $name = $request->name;
         $surname = $request->surname;
@@ -76,18 +80,29 @@ class StudentController extends Controller
             return response()->json([
                 'success' => 'true'
             ]);
-        } else if($class == null && $name != null && $surname != null && $email != null && $loginId != null){
-            StudentTable::where('loginId', '=', $loginId)->update(array(
-                'name' => $name,
-                'surname' => $surname,
-                'email' => $email,
-            ));
+        } else {
+            return response()->json([
+                'error' => 'data'
+            ]);
+        }
+    }
+
+    public function deleteStudent(Request $request){
+        $studentId = $request->studentId;
+        if ($studentId != null){
+            $getStudent = DB::table('StudentTable')
+                ->select('loginId')
+                ->where('id', '=', $studentId)
+                ->first();
+            StudentTable::where('loginId', '=', $getStudent->loginId)->delete();
+            UserLoginTable::where('id', '=', $getStudent->loginId)->delete();
+
             return response()->json([
                 'success' => 'true'
             ]);
         } else {
             return response()->json([
-                'error' => 'data'
+                'error' => 'studentId'
             ]);
         }
     }

@@ -89,18 +89,22 @@ class AssignmentController extends Controller
                 ->join('StudentTable AS ST', 'SST.studentId', '=', 'ST.id')
                 ->where('SAT.id', '=', $assignmentId)
                 ->first();
-            $fileName = ($file_tittle->surname . ' ' . $file_tittle->name . ' - ' . $file_tittle->tittle);
-            $fileExists = SubmissionTable::where(['file' => $fileName, 'studSubjectId' => $sstId->id])->first();
+            $fileNameExt = ($file_tittle->surname . ' ' . $file_tittle->name . ' - ' .$file_tittle->tittle.'.'.$file->getClientOriginalExtension());
+            $fileName = ($file_tittle->surname . ' ' . $file_tittle->name . ' - ' .$file_tittle->tittle);
+            $fileExists = DB::table('SubmissionTable')
+                ->where('file', 'like', $fileName.'%')
+                ->where('studSubjectId', '=', $sstId->id)
+                ->first();
             if ($file != null) {
                 if ($fileExists == null) {
                     Storage::putFileAs(
-                        '/ass_sub', $file, $fileName
+                        '/ass_sub', $file, $fileNameExt
                     );
                     SubmissionTable::create([
                         'assignmentId' => $assignmentId,
                         'studSubjectId' => $sstId->id,
                         'handedInAt' => $handedIn,
-                        'file' => $fileName
+                        'file' => $fileNameExt
                     ]);
 
                     return response()->json([
@@ -110,16 +114,16 @@ class AssignmentController extends Controller
                     $deleteFile = $fileExists->file;
 
                     Storage::disk('local')->delete('/ass_sub/'. $deleteFile);
-                    SubmissionTable::where(['file' => $fileName, 'studSubjectId' => $sstId->id])->delete();
+                    SubmissionTable::where(['file' => $deleteFile, 'studSubjectId' => $sstId->id])->delete();
 
                     Storage::putFileAs(
-                        '/ass_sub', $file, $fileName
+                        '/ass_sub', $file, $fileNameExt
                     );
                     SubmissionTable::create([
                         'assignmentId' => $assignmentId,
                         'studSubjectId' => $sstId->id,
                         'handedInAt' => $handedIn,
-                        'file' => $fileName
+                        'file' => $fileNameExt
                     ]);
 
                     return response()->json([
@@ -166,6 +170,41 @@ class AssignmentController extends Controller
                 'error' => 'subjectId'
             ]);
         }
+    }
+
+    public function deleteSubmission(Request$request){
+        $loginId = session('loginId');
+        $subjectId = $request->subjectId;
+        $deleteFile = $request->fileName;
+        if ($loginId != null && $subjectId != null) {
+            $sstId = DB::table('StudentSubjectTable AS SST')
+                ->select('SST.id')
+                ->join('StudentTable AS S', 'S.id', '=', 'SST.studentId')
+                ->where(['loginId' => $loginId, 'SST.subjectId' => $subjectId])
+                ->first();
+
+
+            Storage::disk('local')->delete('/ass_sub/'. $deleteFile);
+            SubmissionTable::where(['file' => $deleteFile, 'studSubjectId' => $sstId->id])->delete();
+
+            return response()->json([
+                'success' => 'true'
+            ]);
+        } else {
+            return response()->json([
+                'error' => 'subjectId'
+            ]);
+        }
+    }
+
+    public function addAsignment(Request $request){
+        $subjectId = $request->subjectId;
+        $material = $request->file('material');
+        $loginId = session('loginId');
+
+
+
+
     }
 }
 
