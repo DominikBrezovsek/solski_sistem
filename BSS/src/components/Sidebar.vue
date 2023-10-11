@@ -322,4 +322,5 @@ export default {
   font-size: large;
   margin-bottom: 10vh;
 }
+
 </style>
