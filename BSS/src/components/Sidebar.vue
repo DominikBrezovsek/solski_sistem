@@ -84,7 +84,7 @@
       <div class="user-info">
         <img :src="image" alt="user">
         <p>{{ name }} {{ surname }}</p>
-        <p v-if="type == 'student'">Razred: {{ class }}</p>
+        <p v-if="type == 'student'">Razred: {{ razred }}</p>
       </div>
     </div>
   </div>
@@ -101,7 +101,7 @@ export default {
     return {
       name: "",
       surname: "",
-      class: "",
+      razred: "",
       image: "",
       school_year: "",
       type: "",
@@ -146,7 +146,7 @@ export default {
                 if (response.data.name != "") {
                   this.name = response.data.name;
                   this.surname = response.data.surname;
-                  this.class = response.data.class;
+                  this.razred = response.data.class;
                 } else if (response.data.error == "token") {
                   Swal.fire({
                     title: 'Seja je potekla',
