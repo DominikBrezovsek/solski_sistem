@@ -13,6 +13,7 @@
 
 <script lang="ts">
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   data() {
@@ -39,6 +40,20 @@ export default {
                     this.assignment.push(assResponse[i]);
                     sessionStorage.setItem('subjectId', this.assignment[i].subjectId)
                   }
+                } else if(response.data.error == "token"){
+                  Swal.fire({
+                    title: 'Seja je potekla',
+                    text: 'Za nadaljevanje se ponovno prijavite.',
+                    icon: "warning",
+                    confirmButtonText: 'Prijava',
+                    confirmButtonColor: '4377df'
+                  }) .then((event) => {
+                    if (event.isConfirmed){
+                      sessionStorage.clear();
+                      localStorage.clear();
+                      this.$router.push('/');
+                    }
+                  })
                 }
               })
         }

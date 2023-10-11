@@ -40,21 +40,20 @@ export default {
                 for (let i = 0; i < (response.data.assignments).length; i++) {
                   this.assignment.push(response.data.assignments[i]);
                 }
-              } else if (response.data.error == "session") {
+              } else if (response.data.error == "token") {
                 Swal.fire({
-                  title: "Ponovna prijava",
-                  text: "Šment, vaša seja se je iztekla! Ponovno se prijavite da nadaljujete z delom.",
+                  title: 'Seja je potekla',
+                  text: 'Za nadaljevanje se ponovno prijavite.',
                   icon: "warning",
-                  confirmButtonText: "Na prijavno stran.",
-                  confirmButtonColor: "#4377df"
+                  confirmButtonText: 'Prijava',
+                  confirmButtonColor: '#4377df'
+                }) .then((event) => {
+                  if (event.isConfirmed){
+                    sessionStorage.clear();
+                    localStorage.clear();
+                    this.$router.push('/');
+                  }
                 })
-                    .then((isConfirmed) => {
-                      if (isConfirmed.isConfirmed || isConfirmed.isDismissed){
-                        sessionStorage.clear();
-                        localStorage.clear();
-                        this.$router.push('/');
-                      }
-                    })
               }
             })
       } else {

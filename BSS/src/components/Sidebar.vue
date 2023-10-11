@@ -91,6 +91,7 @@
 <script lang="ts">
 import axios from 'axios';
 import router from "@/router";
+import Swal from "sweetalert2";
 
 
 
@@ -146,8 +147,19 @@ export default {
                   this.surname = response.data.surname;
                   this.class = response.data.class;
                 } else if (response.data.error == "token") {
-                  sessionStorage.clear();
-                  this.$router.push('/');
+                  Swal.fire({
+                    title: 'Seja je potekla',
+                    text: 'Za nadaljevanje se ponovno prijavite.',
+                    icon: "warning",
+                    confirmButtonText: 'Prijava',
+                    confirmButtonColor: '4377df'
+                  }) .then((event) => {
+                    if (event.isConfirmed){
+                      sessionStorage.clear();
+                      localStorage.clear();
+                      this.$router.push('/');
+                    }
+                  })
                 }
               }, (error) => {
                 console.log(error);

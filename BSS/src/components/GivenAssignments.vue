@@ -37,10 +37,22 @@ export default {
                 for (let i = 0; i < (response.data.assignments).length; i++) {
                   this.assignment.push(response.data.assignments[i]);
                 }
+              } else if (response.data.error == "token"){
+                Swal.fire({
+                  title: 'Seja je potekla',
+                  text: 'Za nadaljevanje se ponovno prijavite.',
+                  icon: "warning",
+                  confirmButtonText: 'Prijava',
+                  confirmButtonColor: '#4377df'
+                }) .then((event) => {
+                  if (event.isConfirmed){
+                    sessionStorage.clear();
+                    localStorage.clear();
+                    this.$router.push('/');
+                  }
+                })
               }
             })
-      } else {
-        this.$router.push('/');
       }
     },
     assignmentInfo(id: string){

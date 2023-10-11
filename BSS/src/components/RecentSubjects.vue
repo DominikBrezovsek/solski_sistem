@@ -15,6 +15,7 @@
 <script lang="ts">
 
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   data() {
@@ -34,15 +35,22 @@ export default {
                 for (let i = 0; i < (response.data.subjects).length; i++) {
                   this.subjects.push(response.data.subjects[i]);
                 }
-              } else if (response.data.error == "session") {
-                alert("Session has expired, please log in again!");
-                sessionStorage.clear();
-                localStorage.clear();
-                this.$router.push('/');
+              } else if (response.data.error == "token") {
+                Swal.fire({
+                  title: 'Seja je potekla',
+                  text: 'Za nadaljevanje se ponovno prijavite.',
+                  icon: "warning",
+                  confirmButtonText: 'Prijava',
+                  confirmButtonColor: '4377df'
+                }) .then((event) => {
+                  if (event.isConfirmed){
+                    sessionStorage.clear();
+                    localStorage.clear();
+                    this.$router.push('/');
+                  }
+                })
               }
             })
-      } else {
-        this.$router.push('/');
       }
     },
       openSubject (id: string){
