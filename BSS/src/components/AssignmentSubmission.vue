@@ -54,7 +54,7 @@ export default {
                     file.append('resubmit', 'true')
                     axios.post(path + 'assignment/submit', file)
                         .then ((response => {
-                          if (response.data.resubmitted = "true"){
+                          if (response.data.resubmitted == "true"){
                             Swal.fire({
                               title: 'Oddaja uspešna',
                               text: 'Uspešno ste ponovno oddali nalogo.',
@@ -68,6 +68,19 @@ export default {
                     Swal.close();
                   }
                 })
+              } else if (!response.data.error){
+                Swal.fire({
+                  title: 'Oddaja uspešna',
+                  text: 'Uspešno ste oddali nalogo.',
+                  icon: "success",
+                  confirmButtonText: 'Juppii!',
+                  confirmButtonColor: '#4377df'
+                })
+                    .then((event) => {
+                      if (event.isConfirmed){
+                        this.$router.push('/classes')
+                      }
+                    })
               }
             });
       }

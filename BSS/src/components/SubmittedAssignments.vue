@@ -48,13 +48,13 @@ export default {
                   confirmButtonText: "Na prijavno stran.",
                   confirmButtonColor: "#4377df"
                 })
-                    .then(function (isConfirmed){
+                    .then((isConfirmed) => {
                       if (isConfirmed.isConfirmed || isConfirmed.isDismissed){
                         sessionStorage.clear();
                         localStorage.clear();
+                        this.$router.push('/');
                       }
                     })
-                this.$router.push('/');
               }
             })
       } else {
