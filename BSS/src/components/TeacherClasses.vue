@@ -30,7 +30,7 @@ export default {
         jwt.append('token', token);
         axios.post(path + 'ts/get', jwt)
             .then((response) => {
-              if (response.data != null) {
+              if (response.data.subjects != null) {
                 for (let i = 0; i < (response.data.subjects).length; i++) {
                   this.subjects.push(response.data.subjects[i]);
                 }

@@ -31,7 +31,7 @@ export default {
         jwt.append('subjectId', subjectId)
         axios.post(path + 'subjects/get', jwt)
             .then((response) => {
-              if (response.data != null) {
+              if (response.data.subject != null) {
                 for (let i = 0; i < (response.data.subject).length; i++) {
                   this.subject.push(response.data.subject[i]);
                 }

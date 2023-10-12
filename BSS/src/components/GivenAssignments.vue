@@ -33,7 +33,7 @@ export default {
         jwt.append('subjectId', subject )
         axios.post('https://smv.usdd.company/API/public/api/assignment/get-all', jwt)
             .then((response) => {
-              if (response.data != null) {
+              if (response.data.assignments != null) {
                 for (let i = 0; i < (response.data.assignments).length; i++) {
                   this.assignment.push(response.data.assignments[i]);
                 }

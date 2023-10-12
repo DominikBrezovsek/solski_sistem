@@ -31,7 +31,7 @@ export default {
         jwt.append('token', token);
         axios.post('https://smv.usdd.company/API/public/api/dashboard/assignments', jwt)
             .then((response) => {
-              if (response.data != null) {
+              if (response.data.assignments != null) {
                 for (let i = 0; i < (response.data.assignments).length; i++) {
                   this.assignment.push(response.data.assignments[i]);
                 }

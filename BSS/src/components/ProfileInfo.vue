@@ -1,13 +1,30 @@
 <template>
   <div class="ProfileInfo">
     <div class="tittle">
-      <h1>Uporabniške informacije</h1>
+      <h1>Urejanje uporabniškega profila</h1>
     </div>
-    <div class="sdfsdf">
-      <p>{{ name }} {{ surname }}</p>
-      <p>test</p>
-      <p v-if="type == 'student'">Razred: {{ razred }}</p>
-      <p>TEST2</p>
+    <div class="user-data">
+      <div class="flex flex-row user-data-row">
+        <div class="inner-div">
+          <label for="Name">Ime</label>
+          <input type="text" name="Name" id="Name" v-model="name">
+        </div>
+        <div class="inner-div">
+          <label for="Surname">Priimek</label>
+          <input type="text" name="Surname" id="Surname" v-model="surname">
+        </div>
+
+      </div>
+      <div class="flex flex-row user-data-row">
+        <div class="inner-div">
+          <label for="Email">E-poštni naslov</label>
+          <input type="email" name="Email" id="Email" v-model="email">
+        </div>
+        <div class="inner-div">
+          <label for="Class">Razred</label>
+          <input type="text" name="Class" id="Class" disabled v-model="razred" v-if="type == 'student'">
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -24,6 +41,7 @@ export default {
       surname: "",
       razred: "",
       type: "",
+      email: ""
     }
   },
   methods: {
@@ -38,11 +56,12 @@ export default {
           this.type = tip;
           axios.post('https://smv.usdd.company/API/public/api/student/get', token)
               .then((response) => {
-                if (response.data.name != "") {
+                if (response.data.name) {
                   this.name = response.data.name;
                   this.surname = response.data.surname;
                   this.razred = response.data.class;
-                } else if (response.data.error == "token") {
+                  this.email = response.data.email;
+                } else if (response.data.error) {
                   Swal.fire({
                     title: 'Seja je potekla',
                     text: 'Za nadaljevanje se ponovno prijavite.',
@@ -129,5 +148,63 @@ export default {
   font-size: xx-large;
   flex-direction: column;
   overflow: hidden;
+}
+.user-data{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.user-data-row {
+  gap: 5vw;
+}
+
+.user-data input {
+  height: 5vh;
+  width: 15vw;
+  border: 2px solid #4377df;
+  border-radius: 10px;
+  color: #6e7881;
+  padding-left: 0.75vw;
+  outline: none;
+  transition: all 0.15s ease-in-out;
+}
+
+.user-data input:hover{
+  border: 4px solid #4377df;
+  border-radius: 10px;
+  color: black;
+  padding-left: 0.65vw;
+  transition: all 0.15s ease-in-out;
+
+}
+
+.user-data input:active {
+  outline: none;
+}
+
+.user-data input:focus{
+  border: 4px solid #4377df;
+  border-radius: 10px;
+  color: black;
+  padding-left: 0.65vw;
+  font-weight: 500;
+  transition: all 0.15s ease-in;
+}
+
+.inner-div{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  gap: 1vh;
+}
+
+.inner-div label {
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 </style>

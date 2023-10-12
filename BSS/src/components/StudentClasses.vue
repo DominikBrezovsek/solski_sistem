@@ -30,11 +30,14 @@ export default {
         jwt.append('token', token);
         axios.post(path + 'sts/get', jwt)
             .then((response) => {
-              if (response.data != null) {
+              if (response.data.error){
+                sessionStorage.setItem('expired', response.data.error)
+              }
+              if (response.data.subjects) {
                 for (let i = 0; i < (response.data.subjects).length; i++) {
                   this.subjects.push(response.data.subjects[i]);
                 }
-              } else if (response.data.error == "token") {
+              } else if ( sessionStorage.getItem('expired') == "token") {
                 Swal.fire({
                   title: 'Seja je potekla',
                   text: 'Za nadaljevanje se ponovno prijavite.',
