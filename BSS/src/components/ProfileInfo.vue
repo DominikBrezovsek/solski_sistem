@@ -7,25 +7,28 @@
       <div class="flex flex-row user-data-row">
         <div class="inner-div">
           <label for="Name">Ime</label>
-          <input type="text" name="Name" id="Name" v-model="name">
+          <input type="text" name="Name" id="Name" v-model="name" @change="changed='true'">
         </div>
         <div class="inner-div">
           <label for="Surname">Priimek</label>
-          <input type="text" name="Surname" id="Surname" v-model="surname">
+          <input type="text" name="Surname" id="Surname" v-model="surname" @change="changed='true'">
         </div>
 
       </div>
       <div class="flex flex-row user-data-row">
         <div class="inner-div">
           <label for="Email">E-poštni naslov</label>
-          <input type="email" name="Email" id="Email" v-model="email">
+          <input type="email" name="Email" id="Email" v-model="email" @change="changed='true'">
         </div>
         <div class="inner-div">
           <label for="Class">Razred</label>
-          <input type="text" name="Class" id="Class" disabled v-model="razred" v-if="type == 'student'">
+          <input type="text" name="Class" id="Class" disabled v-model="razred" v-if="type == 'student'"
+                 @change="changed='true'">
         </div>
       </div>
-      <div class="button-save">Shrani spremembe</div>
+      <div class="button-div">
+      <div class="button-save" @click="saveChanges">Shrani spremembe</div>
+      </div>
     </div>
   </div>
 </template>
@@ -41,8 +44,10 @@ export default {
       name: "",
       surname: "",
       razred: "",
+      razredId: "",
       type: "",
-      email: ""
+      email: "",
+      changed: ""
     }
   },
   methods: {
@@ -62,6 +67,7 @@ export default {
                   this.surname = response.data.surname;
                   this.razred = response.data.class;
                   this.email = response.data.email;
+                  this.razredId = response.data.classId
                 } else if (response.data.error) {
                   Swal.fire({
                     title: 'Seja je potekla',
@@ -115,6 +121,59 @@ export default {
           break
         }
       }
+    },
+    saveChanges() {
+      const path = "https://smv.usdd.company/API/public/api/"
+      const token = sessionStorage.getItem('token');
+      if (this.changed == 'true') {
+        if (token != null) {
+          const data = new FormData();
+          data.append('token', token);
+          data.append('name', this.name);
+          data.append('surname', this.surname);
+          data.append('email', this.email);
+          data.append('classId', this.razredId)
+
+          axios.post(path + 'student/update', data)
+              .then((response) => {
+                if (response.data.success == 'true') {
+                  Swal.fire({
+                    title: 'Podatki posodobljeni',
+                    text: 'Podatki o uporabniku uspešno posodobljeni.',
+                    icon: 'success',
+                    confirmButtonText: 'Razumem',
+                    confirmButtonColor: '#4377df'
+                  })
+                      .then((event) => {
+                        if (event.isConfirmed){
+                          this.changed = '';
+                        }
+                        else {
+                          this.changed = '';
+                        }
+                      })
+                } else {
+                  Swal.fire({
+                    title: 'Napaka',
+                    text: 'Napaka pri posodabljanju podatkov. Prosim, poskusite kasneje.',
+                    icon: 'error',
+                    confirmButtonText: 'Razumem',
+                    confirmButtonColor: '#4377df'
+                  })
+                }
+              })
+        }
+      } else if (this.changed != 'true') {
+        Swal.fire({
+          title: 'Nespremenjeni podatki',
+          text: 'Naredili niste nobene spremembe!',
+          icon: 'warning',
+          confirmButtonText: 'Razumem',
+          confirmButtonColor: '#4377df'
+        })
+      }
+
+
     }
   },
   created() {
@@ -138,7 +197,8 @@ export default {
   align-items: flex-start;
   padding-left: 2vw;
 }
-.tittle{
+
+.tittle {
   width: 100%;
   margin-top: 1vh;
   margin-bottom: 1vh;
@@ -150,7 +210,8 @@ export default {
   flex-direction: column;
   overflow: hidden;
 }
-.user-data{
+
+.user-data {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -164,8 +225,8 @@ export default {
 }
 
 .user-data input {
-  height: 5vh;
-  width: 15vw;
+  height: 6vh;
+  width: 22vw;
   border: 2px solid #4377df;
   border-radius: 10px;
   color: #6e7881;
@@ -174,7 +235,7 @@ export default {
   transition: all 0.15s ease-in-out;
 }
 
-.user-data input:hover{
+.user-data input:hover {
   border: 4px solid #4377df;
   border-radius: 10px;
   color: black;
@@ -187,7 +248,7 @@ export default {
   outline: none;
 }
 
-.user-data input:focus{
+.user-data input:focus {
   border: 4px solid #4377df;
   border-radius: 10px;
   color: black;
@@ -196,7 +257,7 @@ export default {
   transition: all 0.15s ease-in;
 }
 
-.inner-div{
+.inner-div {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -209,7 +270,7 @@ export default {
   font-size: 1.2rem;
 }
 
-.button-save{
+.button-save {
   padding: 2vh 2vw;
   border: 2px solid #4377df;
   border-radius: 10px;
@@ -217,7 +278,11 @@ export default {
   transition: all 0.15s ease-out;
 }
 
-.button-save:hover{
+.button-div{
+  padding-top: 2vh;
+}
+
+.button-save:hover {
   padding: 1.80vh 1.80vw;
   border: 4px solid #4377df;
   border-radius: 10px;
