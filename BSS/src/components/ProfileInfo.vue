@@ -25,6 +25,7 @@
           <input type="text" name="Class" id="Class" disabled v-model="razred" v-if="type == 'student'">
         </div>
       </div>
+      <div class="button-save">Shrani spremembe</div>
     </div>
   </div>
 </template>
@@ -206,5 +207,23 @@ export default {
 .inner-div label {
   font-weight: bold;
   font-size: 1.2rem;
+}
+
+.button-save{
+  padding: 2vh 2vw;
+  border: 2px solid #4377df;
+  border-radius: 10px;
+  color: #6e7881;
+  transition: all 0.15s ease-out;
+}
+
+.button-save:hover{
+  padding: 1.80vh 1.80vw;
+  border: 4px solid #4377df;
+  border-radius: 10px;
+  background: #4377df;
+  color: white;
+  font-weight: 500;
+  transition: all 0.15s ease-in;
 }
 </style>
