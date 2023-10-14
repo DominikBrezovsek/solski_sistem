@@ -1,4 +1,4 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <div class="ProfileInfo">
     <div class="tittle">
       <h1>Urejanje uporabniškega profila</h1>
@@ -27,8 +27,45 @@
         </div>
       </div>
       <div class="button-div">
-      <div class="button-save" @click="saveChanges">Shrani spremembe</div>
+        <div class="button-save" @click="saveChanges">Shrani spremembe</div>
       </div>
+    </div>
+    <div class="tittle">
+      <h1>Nastavi novo geslo</h1>
+    </div>
+    <div class="password-reset">
+      <div class="pwd-reset-form">
+        <div class="pwd-input">
+        <label for="password">Novo geslo</label>
+        <input :type="inputType" id="password" placeholder="Tvoje skrivno geslo" v-model="password" @keyup="checkCriteria">
+        <div v-if="criteriaMet == 'false'" class="pwd-message">
+          <h5>Geslo mora vsebovati</h5>
+          <ul>
+            <div class="criteria">
+              <p v-if="uppercaseMet == 'true'" class="okay"><img src="../assets/check2.svg" alt="check-logo">Najmanj 1 veliko črko</p>
+              <p v-else-if="uppercaseMet != 'true'" class="wrong"><img src="../assets/x.svg" alt="x-logo">Najmanj 1 veliko črko</p>
+            </div>
+            <div class="criteria">
+              <p v-if="lowercaseMet == 'true'" class="okay"><img src="../assets/check2.svg" alt="check-logo">Najmanj 1 majhno črko</p>
+              <p v-else-if="lowercaseMet != 'true'" class="wrong"><img src="../assets/x.svg" alt="x-logo">Najmanj 1 majhno črko</p>
+            </div>
+            <div class="criteria">
+              <p v-if="specialSymbolMet == 'true'" class="okay"><img src="../assets/check2.svg" alt="check-logo">Najmanj 1 poseben znak</p>
+              <p v-else-if="specialSymbolMet != 'true'" class="wrong"><img src="../assets/x.svg" alt="x-logo">Najmanj 1 poseben znak</p>
+            </div>
+            <div class="criteria">
+              <p v-if="lengthMet == 'true'" class="okay"><img src="../assets/check2.svg" alt="check-logo">Najmanj 8 znakov</p>
+              <p v-else-if="lengthMet != 'true'" class="wrong"><img src="../assets/x.svg" alt="x-logo">Najmanj 8 znakov</p>
+            </div>
+          </ul>
+        </div>
+        </div>
+        <div class="pwd-input">
+        <label for="repassword">Ponovno vnesi geslo</label>
+        <input type="password" id="repassword" placeholder="Tvoje skrivno geslo" v-model="repassword">
+        </div>
+      </div>
+      <div class="button-save" @click="resetPassword">Nastavi novo geslo</div>
     </div>
   </div>
 </template>
@@ -47,7 +84,15 @@ export default {
       razredId: "",
       type: "",
       email: "",
-      changed: ""
+      changed: "",
+      inputType: "password",
+      password: "",
+      repassword: "",
+      criteriaMet: 'false',
+      uppercaseMet: 'false',
+      lowercaseMet: 'false',
+      specialSymbolMet: 'false',
+      lengthMet: 'false',
     }
   },
   methods: {
@@ -122,6 +167,38 @@ export default {
         }
       }
     },
+    checkCriteria() {
+      let input = this.password
+      const uppercase = /[A-Z]/g;
+      const lowercase = /[a-z]/g;
+      const special = /[^\w\s]/;
+      const length = input.length;
+        if (input.match(uppercase)) {
+          this.uppercaseMet = 'true';
+        } else {
+          this.uppercaseMet = 'false';
+        }
+        if (input.match(lowercase)) {
+          this.lowercaseMet = 'true';
+        } else {
+          this.lowercaseMet = 'false';
+        }
+        if (input.match(special)) {
+          this.specialSymbolMet = 'true';
+        } else {
+          this.specialSymbolMet = 'false';
+        }
+        if (length >= 7) {
+          this.lengthMet = 'true';
+        } else {
+          this.lengthMet = 'false';
+        }
+      if (this.uppercaseMet == 'true' && this.lowercaseMet == 'true' && this.specialSymbolMet == 'true' && this.lengthMet == 'true') {
+        this.criteriaMet = 'true'
+      } else {
+        this.criteriaMet = 'false'
+      }
+    },
     saveChanges() {
       const path = "https://smv.usdd.company/API/public/api/"
       const token = sessionStorage.getItem('token');
@@ -145,10 +222,9 @@ export default {
                     confirmButtonColor: '#4377df'
                   })
                       .then((event) => {
-                        if (event.isConfirmed){
+                        if (event.isConfirmed) {
                           this.changed = '';
-                        }
-                        else {
+                        } else {
                           this.changed = '';
                         }
                       })
@@ -174,6 +250,66 @@ export default {
       }
 
 
+    },
+    resetPassword() {
+        const path = "https://smv.usdd.company/API/public/api/"
+        const token = sessionStorage.getItem('token');
+        if (this.password != '') {
+          if (this.password == this.repassword){
+            if (token != null) {
+              const data = new FormData();
+              data.append('token', token)
+              data.append('password', this.password)
+
+              axios.post(path + 'student/password', data)
+                  .then((response) => {
+                    if (response.data.success == 'true') {
+                      Swal.fire({
+                        title: 'Geslo spremenjeno',
+                        text: 'Geslo je bilo uspešno spremenjeno.',
+                        icon: 'success',
+                        confirmButtonText: 'Razumem',
+                        confirmButtonColor: '#4377df'
+                      })
+                          .then((event) => {
+                            if (event.isConfirmed) {
+                              this.password = '';
+                              this.repassword = '';
+                            } else {
+                              this.password = '';
+                              this.repassword = '';
+                            }
+                          })
+                    } else {
+                      Swal.fire({
+                        title: 'Napaka',
+                        text: 'Napaka pri posodabljanju podatkov. Prosim, poskusite kasneje.',
+                        icon: 'error',
+                        confirmButtonText: 'Razumem',
+                        confirmButtonColor: '#4377df'
+                      })
+                    }
+                  })
+            }
+          } else {
+            Swal.fire({
+              title: 'Gesli se ne ujemata',
+              text: 'Gesli se ne ujemata!',
+              icon: 'warning',
+              confirmButtonText: 'Razumem',
+              confirmButtonColor: '#4377df'
+            })
+          }
+
+    } else {
+            Swal.fire({
+              title: 'Manjkajoči podatki',
+              text: 'Prosim, izpolnite vnosna polja!',
+              icon: 'warning',
+              confirmButtonText: 'Razumem',
+              confirmButtonColor: '#4377df'
+            })
+        }
     }
   },
   created() {
@@ -192,7 +328,7 @@ export default {
   flex-direction: column;
   gap: 2vh;
   width: 82vw;
-  height: 40vh;
+  height: 100%;
   justify-content: flex-start;
   align-items: flex-start;
   padding-left: 2vw;
@@ -200,9 +336,7 @@ export default {
 
 .tittle {
   width: 100%;
-  margin-top: 1vh;
-  margin-bottom: 1vh;
-  margin-left: 1vh;
+  padding: 2vh 0vw;
   display: flex;
   justify-content: center;
   color: grey;
@@ -215,7 +349,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  gap: 2vh;
   justify-content: space-evenly;
   align-items: center;
 }
@@ -278,7 +412,7 @@ export default {
   transition: all 0.15s ease-out;
 }
 
-.button-div{
+.button-div {
   padding-top: 2vh;
 }
 
@@ -290,5 +424,96 @@ export default {
   color: white;
   font-weight: 500;
   transition: all 0.15s ease-in;
+}
+
+.password-reset{
+  width: 82vw;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5vh;
+}
+.pwd-reset-form {
+  display: flex;
+  width: 50%;
+  height: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.pwd-reset-form input {
+  height: 6vh;
+  width: 10vw;
+  border: 2px solid #4377df;
+  border-radius: 10px;
+  color: #6e7881;
+  padding-left: 0.75vw;
+  outline: none;
+  transition: all 0.15s ease-in-out;
+}
+
+.pwd-reset-form input:hover {
+  border: 4px solid #4377df;
+  border-radius: 10px;
+  color: black;
+  padding-left: 0.65vw;
+  transition: all 0.15s ease-in-out;
+
+}
+
+.pwd-reset-form input:active {
+  outline: none;
+}
+
+.pwd-reset-form input:focus {
+  border: 4px solid #4377df;
+  border-radius: 10px;
+  color: black;
+  padding-left: 0.65vw;
+  font-weight: 500;
+  transition: all 0.15s ease-in;
+}
+
+.criteria{
+  display: flex;
+  flex-direction: row;
+}
+
+.criteria p{
+  display: flex;
+  flex-direction: row;
+}
+
+.okay {
+  color: #50d165;
+  font-weight: 500;
+  transition: all 0.15s ease-in;
+}
+
+.wrong {
+  color: #d1404d;
+  font-weight: 500;
+  transition: all 0.15s ease-in;
+}
+
+.pwd-input{
+  display: flex;
+  flex-direction: column;
+}
+.pwd-message{
+  position: absolute;
+  z-index: 1;
+  margin: 10vh -1vw;
+  background: rgb(191 212 255 / 94%);
+  border-radius: 10px;
+  padding: 1vh 1vw;
+}
+
+.password-reset .button-save {
+  margin-bottom: -15vh;
+  margin-top: 10vh;
 }
 </style>
