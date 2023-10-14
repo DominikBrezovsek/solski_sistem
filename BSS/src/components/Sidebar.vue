@@ -10,73 +10,80 @@
     </div>
     <div class="menu">
       <div class="options">
-        <router-link to="/home" class="home">
-          <div>
-            <img src="../assets/home_img.png" alt="img">
-          </div>
-          <div>
-            <h2>Domov</h2>
-          </div>
-        </router-link>
-          <div class="student" v-if="type == 'student'">
-            <div class="headings">
-              <h1>Učenje</h1>
-            </div>
-          </div>
-        <router-link to="/classes" class="navigation_link">
-          <div>
-            <img src="../assets/books_img.png" alt="img">
-          </div>
-          <div>
-            <h2>Predmeti</h2>
-          </div>
-        </router-link>
-      </div>
-      <div class="teacher" v-if="type == 'teacher'">
-        <div class="headings">
-          <h1>Učenje</h1>
-        </div>
-        <router-link to="/classes" class="navigation_link">
-          <div>
-            <img src="../assets/books_img.png" alt="img">
-          </div>
-          <div>
-            <h2>Predmeti</h2>
-          </div>
-        </router-link>
-      </div>
-      <div class="admin" v-if="type == 'admin'">
-        <div class="headings">
-          <h1>Učenje</h1>
-        </div>
-        <router-link to="/classes" class="navigation_link">
-          <div>
-            <img src="../assets/books_img.png" alt="img">
-          </div>
-          <div>
-            <h2>Predmeti</h2>
-          </div>
-        </router-link>
-        <div class="headings">
-          <h1>Ljudje</h1>
-        </div>
-        <div class="link_space">
-          <router-link to="/students" class="navigation_link">
+        <div class="student" v-if="type == 'student'">
+          <router-link to="/home" class="home">
             <div>
-              <img src="../assets/student_img.png" alt="img">
+              <img src="../assets/home_img.png" alt="img">
             </div>
             <div>
-              <h2>Dijaki</h2>
+              <h2>Domov</h2>
             </div>
           </router-link>
-          <router-link to="/teachers" class="navigation_link">
+          <router-link to="/classes" class="navigation_link">
             <div>
-              <img src="../assets/teacher_img.png" alt="img">
+              <img src="../assets/books_img.png" alt="img">
             </div>
             <div>
-              <h2>Profesorji</h2>
+              <h2>Predmeti</h2>
             </div>
           </router-link>
+        </div>
+        <div class="teacher" v-if="type == 'teacher'">
+          <router-link to="/home" class="home">
+            <div>
+              <img src="../assets/home_img.png" alt="img">
+            </div>
+            <div>
+              <h2>Domov</h2>
+            </div>
+          </router-link>
+          <router-link to="/classes" class="navigation_link">
+            <div>
+              <img src="../assets/books_img.png" alt="img">
+            </div>
+            <div>
+              <h2>Predmeti</h2>
+            </div>
+          </router-link>
+        </div>
+        <div class="admin" v-if="type == 'admin'">
+          <router-link to="/home" class="home">
+            <div>
+              <img src="../assets/home_img.png" alt="img">
+            </div>
+            <div>
+              <h2>Domov</h2>
+            </div>
+          </router-link>
+          <router-link to="/classes" class="navigation_link">
+            <div>
+              <img src="../assets/books_img.png" alt="img">
+            </div>
+            <div>
+              <h2>Predmeti</h2>
+            </div>
+          </router-link>
+          <div class="headings">
+            <h1>Ljudje</h1>
+          </div>
+          <div class="link_space">
+            <router-link to="/students" class="navigation_link">
+              <div>
+                <img src="../assets/student_img.png" alt="img">
+              </div>
+              <div>
+                <h2>Dijaki</h2>
+              </div>
+            </router-link>
+            <router-link to="/teachers" class="navigation_link">
+              <div>
+                <img src="../assets/teacher_img.png" alt="img">
+              </div>
+              <div>
+                <h2>Profesorji</h2>
+              </div>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -156,8 +163,8 @@ export default {
                     icon: "warning",
                     confirmButtonText: 'Prijava',
                     confirmButtonColor: '#4377df'
-                  }) .then((event) => {
-                    if (event.isConfirmed){
+                  }).then((event) => {
+                    if (event.isConfirmed) {
                       sessionStorage.clear();
                       localStorage.clear();
                       this.$router.push('/');
@@ -241,8 +248,8 @@ export default {
 }
 
 .logo {
-  margin-bottom: 10vh;
-  margin-top: 1vh;
+  padding-bottom: 10vh;
+  padding-top: 1vh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -257,9 +264,12 @@ export default {
 .user img {
   height: 10vh;
 }
-.home img{
+
+.home img {
   height: 6vh;
+  padding-right: 10px;
 }
+
 .user {
   margin-bottom: 5vh;
   width: 100%;
@@ -294,8 +304,8 @@ export default {
   color: white;
   font-size: large;
   justify-content: space-between;
-  padding-bottom: 10vh;
   padding-left: 1vw;
+  padding-bottom: 20vh;
 }
 
 .navigation_link {
@@ -323,7 +333,7 @@ export default {
   align-items: center;
   justify-content: left;
   font-size: large;
-  margin-bottom: 10vh;
+  padding-left: 5px;
 }
 
 </style>

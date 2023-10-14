@@ -4,10 +4,10 @@
       <h1>Zadnje naloge</h1>
     </div>
     <div class="assignment">
-      <div class="recent-assignment" v-for ="a in assignment" @click="assignmentInfo(a.id)">
-        <h2>{{a.tittle}}</h2>
-        <p>{{a.subject}}</p>
-        <p>{{a.deadline}}</p>
+      <div class="recent-assignment" v-for="a in assignment" @click="assignmentInfo(a.id)">
+        <h2>{{ a.tittle }}</h2>
+        <p>{{ a.subject }}</p>
+        <p>{{ a.deadline }}</p>
       </div>
     </div>
   </div>
@@ -42,8 +42,8 @@ export default {
                   icon: "warning",
                   confirmButtonText: 'Prijava',
                   confirmButtonColor: '#4377df'
-                }) .then((event) => {
-                  if (event.isConfirmed){
+                }).then((event) => {
+                  if (event.isConfirmed) {
                     sessionStorage.clear();
                     localStorage.clear();
                     this.$router.push('/');
@@ -57,7 +57,7 @@ export default {
             })
       }
     },
-    assignmentInfo(id: string){
+    assignmentInfo(id: string) {
       sessionStorage.setItem('assignmentId', id);
       this.$router.push('/assignments');
     }
@@ -69,7 +69,7 @@ export default {
 </script>
 
 <style scoped>
-.recent-assignments{
+.recent-assignments {
   height: 60vh;
   width: 82vw;
   display: flex;
@@ -78,7 +78,8 @@ export default {
   padding-left: 2vw;
   counter-reset: section;
 }
-.recent-assignment{
+
+.recent-assignment {
   height: 2vh;
   width: 40vw;
   display: flex;
@@ -99,6 +100,7 @@ export default {
   transition: 0.2s ease-in-out;
   cursor: pointer;
 }
+
 .recent-assignment h2 {
   color: black;
   font-size: large;
@@ -106,16 +108,17 @@ export default {
   line-break: auto;
 }
 
-.recent-assignment h2,p {
+.recent-assignment h2, p {
   padding-top: 1vh;
   padding-bottom: 3vh;
 }
+
 .recent-assignment h2::before {
   counter-increment: section;
   content: counter(section) ": ";
 }
 
-.tittle{
+.tittle {
   width: 100%;
   margin-top: 1vh;
   margin-bottom: 1vh;
@@ -127,7 +130,8 @@ export default {
   flex-direction: column;
   overflow: hidden;
 }
-.assignment{
+
+.assignment {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

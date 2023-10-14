@@ -4,11 +4,11 @@
       <h1>Oddane naloge</h1>
     </div>
     <div class="assignment">
-      <div class="submitted-assignment" v-for ="a in assignment">
+      <div class="submitted-assignment" v-for="a in assignment">
         <div @click="assignmentInfo(a.id)" class="assignment-inner-div">
-          <h2>{{a.tittle}}</h2>
-          <p>{{a.subject}}</p>
-          <p>{{a.deadline}}</p>
+          <h2>{{ a.tittle }}</h2>
+          <p>{{ a.subject }}</p>
+          <p>{{ a.deadline }}</p>
         </div>
         <div class="button">
           <p><img src="../assets/delete-icon.png" alt="Izbriši" @click="deleteSubmission(a.file)"></p>
@@ -49,8 +49,8 @@ export default {
                   icon: "warning",
                   confirmButtonText: 'Prijava',
                   confirmButtonColor: '#4377df'
-                }) .then((event) => {
-                  if (event.isConfirmed){
+                }).then((event) => {
+                  if (event.isConfirmed) {
                     sessionStorage.clear();
                     localStorage.clear();
                     this.$router.push('/');
@@ -65,14 +65,14 @@ export default {
       } else {
       }
     },
-    assignmentInfo(id: string){
+    assignmentInfo(id: string) {
       sessionStorage.setItem('assignmentId', id);
       this.$router.push('/assignments');
     },
-    deleteSubmission(file: string){
+    deleteSubmission(file: string) {
       const token = sessionStorage.getItem('token');
       const subjectId = sessionStorage.getItem('subjectId');
-      if (token != null && subjectId != null){
+      if (token != null && subjectId != null) {
         /*define the API URL*/
         const path = "https://smv.usdd.company/API/public/api/"
         /*Create new FormData instance and append the needed data*/
@@ -93,11 +93,11 @@ export default {
           denyButtonText: 'Ne, zadovoljen sem s trenutno oddajo.',
           denyButtonColor: '#4377df'
         })
-            .then(function (isSuccess){
-              if(isSuccess.isConfirmed){
+            .then(function (isSuccess) {
+              if (isSuccess.isConfirmed) {
                 axios.post(path + 'assignment/deleteSubmission', data)
                     .then((response) => {
-                      if (response.data.success == 'true'){
+                      if (response.data.success == 'true') {
                         Swal.fire({
                           title: "Oddaja odstranjena",
                           text: "Uspešno ste odstranili oddajo naloge.",
@@ -115,7 +115,7 @@ export default {
                         })
                       }
                     })
-              } else if (isSuccess.isDenied){
+              } else if (isSuccess.isDenied) {
                 Swal.fire({
                   title: "Oddaja ohranjena",
                   text: "Brez skrbi! Vaša prejšna oddaja je na varnem.",
@@ -136,7 +136,7 @@ export default {
 </script>
 
 <style scoped>
-.submitted-assignments{
+.submitted-assignments {
   height: 40vh;
   width: 82vw;
   display: flex;
@@ -145,7 +145,8 @@ export default {
   padding-left: 2vw;
   counter-reset: section;
 }
-.submitted-assignment{
+
+.submitted-assignment {
   height: 2vh;
   width: 40vw;
   display: flex;
@@ -159,40 +160,48 @@ export default {
   padding-bottom: 2vh;
   padding-top: 1vh;
 }
-.assignment-inner-div{
+
+.assignment-inner-div {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: left;
 
 }
+
 .submitted-assignment:hover {
   border-bottom: 4px solid #5891d3;
   transition: 0.2s ease-in-out;
   cursor: pointer;
 }
+
 .submitted-assignment h2 {
   color: black;
   font-size: large;
   width: 15vw;
   line-break: auto;
 }
+
 .submitted-assignment img {
   width: 2vw;
 }
+
 .submitted-assignment img:hover,
-.submitted-assignment img:focus{
-   width:2.2vw;
- }
-.submitted-assignment h2,p {
+.submitted-assignment img:focus {
+  width: 2.2vw;
+}
+
+.submitted-assignment h2, p {
   padding-top: 1vh;
   padding-bottom: 3vh;
 }
+
 .submitted-assignment h2::before {
   counter-increment: section;
   content: counter(section) ": ";
 }
-.tittle{
+
+.tittle {
   width: 100%;
   margin-top: 1vh;
   margin-bottom: 1vh;
@@ -204,7 +213,8 @@ export default {
   flex-direction: column;
   overflow: hidden;
 }
-.assignment{
+
+.assignment {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

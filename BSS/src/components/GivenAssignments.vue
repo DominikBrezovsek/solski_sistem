@@ -4,10 +4,10 @@
       <h1>Dodeljene naloge</h1>
     </div>
     <div class="assignment">
-      <div class="given-assignment" v-for ="a in assignment" @click="assignmentInfo(a.id)">
-        <h2>{{a.tittle}}</h2>
-        <p>{{a.subject}}</p>
-        <p>{{a.deadline}}</p>
+      <div class="given-assignment" v-for="a in assignment" @click="assignmentInfo(a.id)">
+        <h2>{{ a.tittle }}</h2>
+        <p>{{ a.subject }}</p>
+        <p>{{ a.deadline }}</p>
       </div>
     </div>
   </div>
@@ -30,22 +30,22 @@ export default {
       if (token != null && subject != null) {
         const jwt = new FormData();
         jwt.append('token', token);
-        jwt.append('subjectId', subject )
+        jwt.append('subjectId', subject)
         axios.post('https://smv.usdd.company/API/public/api/assignment/get-all', jwt)
             .then((response) => {
               if (response.data.assignments != null) {
                 for (let i = 0; i < (response.data.assignments).length; i++) {
                   this.assignment.push(response.data.assignments[i]);
                 }
-              } else if (response.data.error == "token"){
+              } else if (response.data.error == "token") {
                 Swal.fire({
                   title: 'Seja je potekla',
                   text: 'Za nadaljevanje se ponovno prijavite.',
                   icon: "warning",
                   confirmButtonText: 'Prijava',
                   confirmButtonColor: '#4377df'
-                }) .then((event) => {
-                  if (event.isConfirmed){
+                }).then((event) => {
+                  if (event.isConfirmed) {
                     sessionStorage.clear();
                     localStorage.clear();
                     this.$router.push('/');
@@ -59,7 +59,7 @@ export default {
             })
       }
     },
-    assignmentInfo(id: string){
+    assignmentInfo(id: string) {
       sessionStorage.setItem('assignmentId', id);
       this.$router.push('/assignments');
     }
@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style scoped>
-.given-assignments{
+.given-assignments {
   height: 40vh;
   width: 82vw;
   display: flex;
@@ -80,7 +80,8 @@ export default {
   padding-left: 2vw;
   counter-reset: section;
 }
-.given-assignment{
+
+.given-assignment {
   height: 2vh;
   width: 40vw;
   display: flex;
@@ -101,21 +102,25 @@ export default {
   transition: 0.2s ease-in-out;
   cursor: pointer;
 }
+
 .given-assignment h2 {
   color: black;
   font-size: large;
   width: 15vw;
   line-break: auto;
 }
-.given-assignment h2,p {
+
+.given-assignment h2, p {
   padding-top: 1vh;
   padding-bottom: 3vh;
 }
+
 .given-assignment h2::before {
   counter-increment: section;
   content: counter(section) ": ";
 }
-.tittle{
+
+.tittle {
   width: 100%;
   margin-top: 1vh;
   margin-bottom: 1vh;
@@ -127,7 +132,8 @@ export default {
   flex-direction: column;
   overflow: hidden;
 }
-.assignment{
+
+.assignment {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

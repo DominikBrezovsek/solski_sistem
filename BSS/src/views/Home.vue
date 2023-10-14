@@ -3,8 +3,8 @@
     <Sidebar/>
     <div class="content">
       <RecentSubjects v-if="user_type == 'student'"/>
-      <RecentAssignments v-if="user_type == 'student'" />
-      <GivenAssignments v-if="user_type == 'teacher'" />
+      <RecentAssignments v-if="user_type == 'student'"/>
+      <GivenAssignments v-if="user_type == 'teacher'"/>
     </div>
   </div>
 

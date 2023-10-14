@@ -104,14 +104,14 @@ export default {
                       }
                     })
               }
-              if (response.data.error == "token"){
+              if (response.data.error == "token") {
                 Swal.fire({
                   title: 'Seja je potekla',
                   text: 'Za nadaljevanje se ponovno prijavite.',
                   icon: "warning",
                   confirmButtonText: 'Prijava',
                   confirmButtonColor: '#4377df'
-                }) .then((event) => {
+                }).then((event) => {
                   if (event.isConfirmed) {
                     sessionStorage.clear();
                     localStorage.clear();
@@ -190,9 +190,11 @@ input[type="file"] {
   flex-direction: column;
   overflow: hidden;
 }
-.flex{
+
+.flex {
   gap: 2vh;
 }
+
 .button-file {
   background-color: #315cfd;
   border: none;

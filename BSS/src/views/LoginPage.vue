@@ -111,11 +111,10 @@ export default {
       }
     }
   },
-created()
-{
-  localStorage.clear();
-  sessionStorage.clear();
-}
+  created() {
+    localStorage.clear();
+    sessionStorage.clear();
+  }
 }
 </script>
 

@@ -21,6 +21,7 @@ import SubmittedAssignments from "@/components/SubmittedAssignments.vue";
   margin: 0;
   padding: 0;
 }
+
 .content {
   display: flex;
   flex-direction: column;

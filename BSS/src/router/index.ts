@@ -7,7 +7,8 @@ import StudentsPage from '../views/Students.vue'
 import TeachersPage from '../views/Teachers.vue'
 import HomePage from '../views/Home.vue'
 import Assignment from "@/views/Assignment.vue";
-import Subject from "@/views/Subject.vue";
+import StudentSubject from "@/views/StudentSubject.vue";
+import TeacherSubject from "@/views/TeacherSubject.vue";
 import Profile from "../views/Profile.vue";
 
 const router = createRouter({
@@ -77,9 +78,17 @@ const router = createRouter({
             }
         },
         {
-            path: '/subject',
-            name: 'Subject',
-            component: Subject,
+            path: '/subject-s',
+            name: 'Subject-s',
+            component: StudentSubject,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/subject-t',
+            name: 'Subject-t',
+            component: TeacherSubject,
             meta: {
                 requiresAuth: true
             }

@@ -28,7 +28,7 @@ export default {
       let assId = sessionStorage.getItem('assignmentId');
 
       if (token != null) {
-        if (assId){
+        if (assId) {
           const data = new FormData();
           data.append('token', token);
           data.append('assignmentId', assId);
@@ -40,20 +40,19 @@ export default {
                     this.assignment.push(assResponse[i]);
                     sessionStorage.setItem('subjectId', this.assignment[i].subjectId)
                   }
-                } else if(response.data.error == "token"){
+                } else if (response.data.error == "token") {
                   Swal.fire({
                     title: 'Seja je potekla',
                     text: 'Za nadaljevanje se ponovno prijavite.',
                     icon: "warning",
                     confirmButtonText: 'Prijava',
                     confirmButtonColor: '#4377df'
-                  }) .then((event) => {
-                    if (event.isConfirmed){
+                  }).then((event) => {
+                    if (event.isConfirmed) {
                       sessionStorage.clear();
                       localStorage.clear();
                       this.$router.push('/');
-                    }
-                    else {
+                    } else {
                       sessionStorage.clear();
                       localStorage.clear();
                       this.$router.push('/');

@@ -4,7 +4,7 @@
       <h1>Predmeti</h1>
     </div>
     <div class="classes">
-      <div class="Student_class" v-for ="a in subjects" @click="openSubject(a.id)" >
+      <div class="Student_class" v-for="a in subjects" @click="openSubject(a.id)">
         <h1>{{ a.subject }}</h1>
       </div>
     </div>
@@ -30,27 +30,26 @@ export default {
         jwt.append('token', token);
         axios.post(path + 'sts/get', jwt)
             .then((response) => {
-              if (response.data.error){
+              if (response.data.error) {
                 sessionStorage.setItem('expired', response.data.error)
               }
               if (response.data.subjects) {
                 for (let i = 0; i < (response.data.subjects).length; i++) {
                   this.subjects.push(response.data.subjects[i]);
                 }
-              } else if ( sessionStorage.getItem('expired') == "token") {
+              } else if (sessionStorage.getItem('expired') == "token") {
                 Swal.fire({
                   title: 'Seja je potekla',
                   text: 'Za nadaljevanje se ponovno prijavite.',
                   icon: "warning",
                   confirmButtonText: 'Prijava',
                   confirmButtonColor: '#4377df'
-                }) .then((event) => {
-                  if (event.isConfirmed){
+                }).then((event) => {
+                  if (event.isConfirmed) {
                     sessionStorage.clear();
                     localStorage.clear();
                     this.$router.push('/');
-                  }
-                  else {
+                  } else {
                     sessionStorage.clear();
                     localStorage.clear();
                     this.$router.push('/');
@@ -60,9 +59,9 @@ export default {
             })
       }
     },
-    openSubject (id: string){
+    openSubject(id: string) {
       sessionStorage.setItem('subjectId', id);
-      this.$router.push('/subject');
+      this.$router.push('/subject-s');
     }
   },
   created() {
@@ -99,12 +98,14 @@ export default {
   font-size: x-large;
   font-weight: bold;
 }
+
 .Student_class:hover {
   border-bottom: 4px solid #5891d3;
   transition: 0.2s ease-in-out;
   cursor: pointer;
 }
-.tittle{
+
+.tittle {
   width: 100%;
   margin-top: 1vh;
   margin-bottom: 1vh;
@@ -116,7 +117,8 @@ export default {
   flex-direction: column;
   overflow: hidden;
 }
-.classes{
+
+.classes {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;

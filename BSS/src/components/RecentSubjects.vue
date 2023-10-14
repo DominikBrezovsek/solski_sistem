@@ -42,8 +42,8 @@ export default {
                   icon: "warning",
                   confirmButtonText: 'Prijava',
                   confirmButtonColor: '4377df'
-                }) .then((event) => {
-                  if (event.isConfirmed){
+                }).then((event) => {
+                  if (event.isConfirmed) {
                     sessionStorage.clear();
                     localStorage.clear();
                     this.$router.push('/');
@@ -57,10 +57,10 @@ export default {
             })
       }
     },
-      openSubject (id: string){
+    openSubject(id: string) {
       sessionStorage.setItem('subjectId', id);
-      this.$router.push('/subject');
-      }
+      this.$router.push('/subject-s');
+    }
   },
   created() {
     this.getRecentSubjects();
@@ -91,6 +91,7 @@ export default {
   border-radius: 2vh;
   box-shadow: 4px 3px 14px 0px #00000085
 }
+
 .recent-subject:hover {
   border-bottom: 4px solid #5891d3;
   transition: 0.2s ease-in-out;
@@ -102,7 +103,8 @@ export default {
   font-size: x-large;
   font-weight: bold;
 }
-.tittle{
+
+.tittle {
   width: 100%;
   margin-top: 1vh;
   margin-bottom: 1vh;
@@ -115,7 +117,7 @@ export default {
   overflow: hidden;
 }
 
-.subjects{
+.subjects {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;

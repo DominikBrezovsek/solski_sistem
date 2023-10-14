@@ -4,14 +4,14 @@
       <h1>{{ a.subject }}</h1>
     </div>
     <div class="description">
-      <p>{{a.description}}</p>
+      <p>{{ a.description }}</p>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import axios from "axios";
-import Subject from "@/views/Subject.vue";
+import Subject from "@/views/StudentSubject.vue";
 import Swal from "sweetalert2";
 
 export default {
@@ -42,8 +42,8 @@ export default {
                   icon: "warning",
                   confirmButtonText: 'Prijava',
                   confirmButtonColor: '#4377df'
-                }) .then((event) => {
-                  if (event.isConfirmed){
+                }).then((event) => {
+                  if (event.isConfirmed) {
                     sessionStorage.clear();
                     localStorage.clear();
                     this.$router.push('/');
