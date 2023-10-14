@@ -7,6 +7,7 @@ use App\Models\StudentTable;
 use App\Models\UserLoginTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -46,7 +47,7 @@ class StudentController extends Controller
         $loginId = session('loginId');
         $student = DB::table('StudentTable')
             ->join('ClassTable', 'StudentTable.classId', '=', 'ClassTable.id')
-            ->select('name', 'surname', 'email', 'class', 'StudentTable.id')
+            ->select('name', 'surname', 'email', 'class', 'StudentTable.id', 'ClassTable.id AS classId')
             ->where('loginId', '=', $loginId)
             ->first();
         session(['studentId' => $student->id]);
@@ -65,17 +66,15 @@ class StudentController extends Controller
 
     public function updateStudent(Request $request)
     {
-        $loginId = $request->loginId;
+        $loginId = session('loginId');
         $name = $request->name;
         $surname = $request->surname;
         $email = $request->email;
-        $class = $request->classId;
-        if ($loginId != null && $class != null && $name != null && $surname != null && $email != null) {
+        if ($loginId != null && $name != null && $surname != null && $email != null) {
             StudentTable::where('loginId', '=', $loginId)->update(array(
                 'name' => $name,
                 'surname' => $surname,
                 'email' => $email,
-                'classId' => $class
             ));
             return response()->json([
                 'success' => 'true'
@@ -103,6 +102,23 @@ class StudentController extends Controller
         } else {
             return response()->json([
                 'error' => 'studentId'
+            ]);
+        }
+    }
+
+    public function resetPassword(Request $request){
+        $loginId = session('loginId');
+        if ($request->password != null && $loginId != null){
+            $password = Hash::make($request->password);
+            DB::table('UserLoginTable')
+                ->where('id', '=', $loginId)
+                ->update(array('password' => $password));
+            return response()->json([
+                'success' => 'true'
+            ]);
+        } else {
+            return response()->json([
+                'error' => 'loginId'
             ]);
         }
     }
