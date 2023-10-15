@@ -6,7 +6,7 @@
     <div class="classes">
       <div class="search-bar">
         <div>
-
+          <h1>Iskanje</h1>
         </div>
       </div>
       <div class="table">
@@ -49,14 +49,13 @@
   color: grey;
   font-size: xx-large;
   flex-direction: column;
-  overflow: hidden;
 }
 .table {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 100%;
+  width: 82vw;
   height: 80vh;
   padding-top: 5vh;
   background: #dee8fb;
