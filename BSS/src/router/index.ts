@@ -10,6 +10,8 @@ import Assignment from "@/views/Assignment.vue";
 import StudentSubject from "@/views/StudentSubject.vue";
 import TeacherSubject from "@/views/TeacherSubject.vue";
 import Profile from "../views/Profile.vue";
+import EditAssignment from "@/views/EditAssignment.vue";
+import AddAssignment from "@/components/AddAssignment.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -92,7 +94,23 @@ const router = createRouter({
             meta: {
                 requiresAuth: true
             }
-        }
+        },
+        {
+            path: '/assignment/edit',
+            name: 'Edit assignment',
+            component: EditAssignment,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/assignment/add',
+            name: 'Add assignment',
+            component: AddAssignment,
+            meta: {
+                requiresAuth: true
+            }
+        },
     ]
 })
 router.beforeEach((to, from) => {

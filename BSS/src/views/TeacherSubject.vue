@@ -3,17 +3,33 @@
     <Sidebar/>
     <div class="content">
       <SubjectInfo/>
-      <GivenAssignments/>
-      <AddAssignment />
+      <TeacherAssignment/>
+      <div class="button">
+      <label class="button-add" @click="toAss">
+        Dodaj
+      </label>
+    </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script  lang="ts">
 import Sidebar from "@/components/Sidebar.vue";
 import SubjectInfo from "@/components/SubjectInfo.vue";
-import GivenAssignments from "@/components/GivenAssignments.vue";
-import AddAssignment from "@/components/AddAssignment.vue";
+import TeacherAssignment from "@/components/TeacherAssignment.vue";
+
+export default {
+  components: {
+    SubjectInfo,
+    TeacherAssignment,
+    Sidebar
+  },
+  methods: {
+    toAss() {
+      this.$router.push('/assignments');
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -26,5 +42,58 @@ import AddAssignment from "@/components/AddAssignment.vue";
   display: flex;
   flex-direction: column;
   width: 85%;
+}
+
+.button-add {
+  background-color: #315cfd;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.button-add:after {
+  content: "";
+  background-color: rgba(255, 255, 255, 0.2);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+.button-add:hover:after {
+  animation: ripple_401 1s ease-out;
+}
+
+@keyframes ripple_401 {
+  0% {
+    width: 5px;
+    height: 5px;
+    opacity: 1;
+  }
+
+  100% {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+  }
+}
+.button{
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  width: 100%;
+  padding: 2vh;
 }
 </style>
