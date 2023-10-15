@@ -27,10 +27,12 @@ export default {
     getGivAssignment() {
       let token = sessionStorage.getItem('token');
       const subject = sessionStorage.getItem('subjectId');
-      if (token != null && subject != null) {
+      const userType = sessionStorage.getItem('type')
+      if (token != null && subject != null && userType != null) {
         const jwt = new FormData();
         jwt.append('token', token);
         jwt.append('subjectId', subject)
+        jwt.append('userType', userType)
         axios.post('https://smv.usdd.company/API/public/api/assignment/get-all', jwt)
             .then((response) => {
               if (response.data.assignments != null) {

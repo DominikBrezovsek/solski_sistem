@@ -1,5 +1,4 @@
 <template>
-  <CustomAlert/>
   <div class="login flex flex-row justify-between">
     <div class="about-side w-4/12 flex justify-center align-center">
       <div class="mt-auto mb-auto about-inner">
@@ -71,13 +70,18 @@ export default {
       if (this.username != "" && this.password != "") {
         axios.post('https://smv.usdd.company/API/public/api/login/check', credentials)
             .then((response) => {
-              console.log(response.data.logged);
               if (response.data.success == "true") {
                 sessionStorage.setItem('token', response.data.jwt);
                 if (response.data.type != null) {
                   sessionStorage.setItem('type', response.data.type);
                 }
-                this.$router.push('/home');
+
+                if (this.$route.query.redirect != null){
+                  this.$router.push(this.$route.query.redirect.toString());
+
+                } else {
+                  this.$router.push('/home');
+                }
               } else if (response.data.error == "credentials") {
                 Swal.fire({
                   title: "Napaka pri prijavi",
@@ -244,11 +248,5 @@ export default {
   text-align: center;
 }
 
-.confirm-button {
-  background-color: #4377df;
-  color: white;
-  padding: 2vh;
-  border-radius: 10px;
-}
 </style>
 

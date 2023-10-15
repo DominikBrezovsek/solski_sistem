@@ -10,6 +10,14 @@
     </div>
     <div class="menu">
       <div class="options">
+          <div @click="logout" class="logout">
+            <div>
+              <img src="../assets/logout-white.png" alt="logout">
+            </div>
+            <div>
+              <h2>Odjava</h2>
+            </div>
+          </div>
         <div class="student" v-if="type == 'student'">
           <router-link to="/home" class="home">
             <div>
@@ -101,7 +109,6 @@
 
 <script lang="ts">
 import axios from 'axios';
-import router from "@/router";
 import Swal from "sweetalert2";
 
 
@@ -211,6 +218,28 @@ export default {
 
 
       }
+    },
+    logout(){
+      Swal.fire({
+        title: 'Potrdite odjavo',
+        text: 'Se želite odjaviti?',
+        icon: "question",
+        confirmButtonText: 'Da, želim se odjaviti',
+        confirmButtonColor:  '#4377df',
+        cancelButtonText: 'Ne, ne želim se odjaviti',
+        showCancelButton: true,
+        cancelButtonColor: "#e63946"
+      })
+          .then((event) => {
+            if(event.isConfirmed){
+              sessionStorage.clear();
+              localStorage.clear();
+              this.$router.push('/');
+            }
+            else {
+              Swal.close()
+            }
+          })
     }
 
   },
@@ -267,6 +296,11 @@ export default {
 
 .home img {
   height: 6vh;
+  padding-right: 10px;
+}
+
+.logout img {
+  height: 5vh;
   padding-right: 10px;
 }
 
@@ -334,6 +368,18 @@ export default {
   justify-content: left;
   font-size: large;
   padding-left: 5px;
+}
+
+.logout{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: large;
+  padding-left: 1vw;
+  margin-right: auto;
+  padding-bottom: 2vh;
+  cursor: pointer;
 }
 
 </style>

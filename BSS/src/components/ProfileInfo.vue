@@ -206,6 +206,7 @@ export default {
                 if (response.data.name != "") {
                   this.name = response.data.name;
                   this.surname = response.data.surname;
+                  this.email = response.data.email;
                   sessionStorage.setItem('teacherId', response.data.id);
                 } else if (response.data.error == "token") {
                   sessionStorage.clear();
@@ -222,6 +223,7 @@ export default {
               .then((response) => {
                 this.name = response.data.name;
                 this.surname = response.data.surname;
+                this.email = response.data.email;
               }, (error) => {
                 console.log(error);
               });
@@ -393,7 +395,7 @@ export default {
 
 .tittle {
   width: 100%;
-  padding: 2vh 0vw;
+  padding: 2vh 0;
   display: flex;
   justify-content: center;
   color: grey;
@@ -563,6 +565,7 @@ export default {
 .pwd-input {
   display: flex;
   flex-direction: column;
+  gap: 1.5vh;
 }
 
 .pwd-message {
