@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('material');
             $table->dateTime('addedAt');
+            $table->bigInteger('author')->unsigned()->index();
+            $table->foreign('author')->references('id')->on('TeacherTable')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

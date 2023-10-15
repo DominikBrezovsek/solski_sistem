@@ -47,6 +47,7 @@ class DashboardController extends Controller
         SELECT SubmissionTable.id
         FROM SubmissionTable
         WHERE SubmissionTable.studSubjectId = SST.id
+        AND SubmissionTable.assignmentId = SAT.id
     )
     AND ST.loginId = $user_id
     ORDER BY SAT.deadline ASC

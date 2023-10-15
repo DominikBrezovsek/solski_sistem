@@ -126,18 +126,20 @@ class DatabaseSeeder extends Seeder
 
         AssignmentMaterialTable::create([
             'material' => 'Polinomi',
-            'addedAt' => '2023-10-01 00:00:00'
+            'addedAt' => '2023-10-01 00:00:00',
+            'author' => $teacher_id->id
         ]);
 
         AssignmentMaterialTable::create([
             'material' => 'Strahovi',
-            'addedAt' => '2023-10-01 00:00:00'
+            'addedAt' => '2023-10-01 00:00:00',
+            'author' => $teacher_id->id
         ]);
 
         $tsIdSlo = TeacherSubjectTable::select('id')->where('subjectId', '=', $subject_id_slo->id)->first();
         $tsIdMat = TeacherSubjectTable::select('id')->where('subjectId', '=', $subject_id_mat->id)->first();
-        $amIdMat = AssignmentMaterialTable::select('id')->where('material', '=', 'Polinomi')->first();
-        $amIdSlo = AssignmentMaterialTable::select('id')->where('material', '=', 'Strahovi')->first();
+        $amIdMat = AssignmentMaterialTable::select('id')->where('material', '=', 'Polinomi')->where('author', '=', $teacher_id->id)->first();
+        $amIdSlo = AssignmentMaterialTable::select('id')->where('material', '=', 'Strahovi')->where('author', '=', $teacher_id->id)->first();
 
         SubjectAssignmentTable::create([
             'subjectId' => $subject_id_mat->id,

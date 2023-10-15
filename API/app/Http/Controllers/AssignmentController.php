@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssignmentMaterialTable;
 use App\Models\SubjectAssignmentTable;
 use App\Models\SubmissionTable;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -34,19 +37,19 @@ class AssignmentController extends Controller
 
     public function getAssignments(Request $request)
     {
-        $teacherId = session('teacherId');
         $loginId = session('loginId');
-        if ($teacherId != null) {
+        $userType = $request->userType;
+        if ($userType == 'teacher') {
             $assignment = DB::table('SubjectAssignmentTable')
                 ->select('SubjectAssignmentTable.*', 'TeacherTable.name', 'TeacherTable.surname')
                 ->join('TeacherSubjectTable', 'TeacherSubjectTable.id', '=', 'SubjectAssignmentTable.tsId')
                 ->join('TeacherTable', 'TeacherSubjectTable.teacherId', '=', 'TeacherTable.id')
-                ->where('TeacherTable.id', '=', $teacherId)
+                ->where('TeacherTable.loginId', '=', $loginId)
                 ->get();
             return response()->json([
                 'assignments' => $assignment
             ]);
-        } else if ($teacherId == null && $loginId != null) {
+        } else if ($userType == 'student') {
             $subjectId = $request->subjectId;
             $fistDueAss = DB::select("
     SELECT SAT.id, SAT.tittle, S.subject, SAT.deadline
@@ -58,6 +61,7 @@ class AssignmentController extends Controller
         SELECT SubmissionTable.id
         FROM SubmissionTable
         WHERE SubmissionTable.studSubjectId = SST.id
+        AND SubmissionTable.assignmentId = SAT.id
     )
     AND ST.loginId = $loginId
     AND S.id = $subjectId
@@ -197,10 +201,54 @@ class AssignmentController extends Controller
         }
     }
 
-    public function addAsignment(Request $request){
+    public function addAssignment(Request $request){
+        date_default_timezone_set('Europe/Ljubljana');
         $subjectId = $request->subjectId;
         $material = $request->file('material');
+        $title = $request->title;
+        $description = $request->desc;
+        $deadline = date('Y-m-d H:i:s', strtotime($request->deadline));
         $loginId = session('loginId');
+        if($loginId != null) {
+            $ts = DB::table('TeacherSubjectTable AS TST')
+                ->join('TeacherTable AS T', 'T.id', '=', 'TST.teacherId')
+                ->where('T.loginId', '=', $loginId)
+                ->first();
+
+            $fileName = $material->getClientOriginalName();
+            Storage::putFileAs(
+                '/ass_mat', $material, $fileName
+            );
+
+            AssignmentMaterialTable::create([
+                'material' => $fileName,
+                'addedAt' => gmdate('Y-m-d h:i:s', time()),
+                'author' => $ts->teacherId
+            ]);
+
+            $amId = DB::table('AssignmentMaterialTable AS AMT')
+                ->select('AMT.id')
+                ->join('TeacherTable AS T', 'AMT.author', '=', 'T.id')
+                ->where('AMT.material', '=', $fileName)
+                ->where('T.loginId', '=', $loginId)
+                ->first();
+
+            SubjectAssignmentTable::create([
+                'subjectId' => $subjectId,
+                'tsId' => $ts->id,
+                'amId' => $amId->id,
+                'tittle' => $title,
+                'description' => $description,
+                'deadline' => $deadline,
+                'givenAt' => gmdate('Y-m-d h:i:s', time()),
+            ]);
+
+            return response()->json([
+                'success' => 'true'
+            ]);
+        }
+
+
 
 
 

@@ -11,6 +11,7 @@ class AssignmentMaterialTable extends Model
     protected $table = "AssignmentMaterialTable";
     protected $fillable = [
         'material',
-        'addedAt'
+        'addedAt',
+        'author'
     ];
 }
