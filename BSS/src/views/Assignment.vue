@@ -2,7 +2,7 @@
   <div class="flex flex-row">
     <Sidebar/>
     <div class="content">
-      <AssignmentInfo/>
+      <AssignmentInfo v-if="user_type == 'student'"/>
       <AssignmentSubmission v-if="user_type == 'student'"/>
       <AddAssignment v-if="user_type == 'teacher'" />
     </div>

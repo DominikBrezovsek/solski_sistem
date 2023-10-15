@@ -5,9 +5,9 @@
       <SubjectInfo/>
       <TeacherAssignment/>
       <div class="button">
-      <label class="button-add" @click="toAss">
+      <div class="button-add" @click="toAss">
         Dodaj
-      </label>
+      </div>
     </div>
     </div>
   </div>
@@ -41,6 +41,7 @@ export default {
 .content {
   display: flex;
   flex-direction: column;
+  gap: 5vh;
   width: 85%;
 }
 
@@ -93,7 +94,9 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 2vh;
-  width: 100%;
-  padding: 2vh;
+  width: 40%;
+  padding-top: 8vh;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

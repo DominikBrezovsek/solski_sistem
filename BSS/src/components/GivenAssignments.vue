@@ -105,6 +105,7 @@ export default {
   cursor: pointer;
 }
 
+
 .given-assignment h2 {
   color: black;
   font-size: large;

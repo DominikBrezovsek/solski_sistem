@@ -4,10 +4,12 @@
       <h1>Dodeljene naloge</h1>
     </div>
     <div class="assignment">
-      <div class="given-assignment" v-for="a in assignment" @click="editAssignment(a.id)">
-        <h2>{{ a.tittle }}</h2>
-        <p>{{ a.subject }}</p>
-        <p>{{ a.deadline }}</p>
+      <div class="given-assignment" v-for="a in assignment">
+        <h2 @click="editAssignment(a.id)">{{ a.tittle }}</h2>
+        <p  @click="editAssignment(a.id)">{{ a.subject }}</p>
+        <p  @click="editAssignment(a.id)">{{ a.deadline }}</p>
+        <img src="../assets/delete-icon.png" alt="delete" @click="deleteAssignment(a.id)">
+        <img src="../assets/editing.png" @click="editAssignment(a.id)" alt="edit">
       </div>
     </div>
   </div>
@@ -64,6 +66,9 @@ export default {
     editAssignment(id: string) {
       sessionStorage.setItem('assignmentId', id);
       this.$router.push('/assignment/edit');
+    },
+    deleteAssignment(id:string){
+      console.log('delete');
     }
   },
   created() {
@@ -85,7 +90,7 @@ export default {
 
 .given-assignment {
   height: 2vh;
-  width: 40vw;
+  width: 60vw;
   display: flex;
   flex-direction: row;
   justify-content: left;
@@ -103,6 +108,12 @@ export default {
   border-bottom: 4px solid #5891d3;
   transition: 0.2s ease-in-out;
   cursor: pointer;
+}
+
+.given-assignment img {
+  height: 4vh;
+  width: 2vw;
+  padding-bottom: 0.5vh;
 }
 
 .given-assignment h2 {
@@ -125,14 +136,13 @@ export default {
 .tittle {
   width: 100%;
   margin-top: 1vh;
-  margin-bottom: 1vh;
+  padding-bottom: 5vh;
   margin-left: 1vh;
   display: flex;
   justify-content: center;
   color: grey;
   font-size: xx-large;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .assignment {
