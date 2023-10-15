@@ -4,15 +4,10 @@
       <h1>Dodeljene naloge</h1>
     </div>
     <div class="assignment">
-      <div class="given-assignment" v-for="a in assignment">
-        <div @click="assignmentInfo(a.id)" class="assignment-inner-div">
-          <h2>{{ a.tittle }}</h2>
-          <p>{{ a.subject }}</p>
-          <p>{{ a.deadline }}</p>
-        </div>
-        <div class="button">
-          <p><img src="../assets/delete-icon.png" alt="Izbriši" @click="deleteAssignment(a.file)"></p>
-        </div>
+      <div class="given-assignment" v-for="a in assignment" @click="assignmentInfo(a.id)">
+        <h2>{{ a.tittle }}</h2>
+        <p>{{ a.subject }}</p>
+        <p>{{ a.deadline }}</p>
       </div>
     </div>
   </div>
@@ -25,8 +20,7 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
-      assignment: Array(),
-      type: ""
+      assignment: Array()
     }
   },
   methods: {
@@ -70,68 +64,10 @@ export default {
     assignmentInfo(id: string) {
       sessionStorage.setItem('assignmentId', id);
       this.$router.push('/assignments');
-    },
-    deleteAssignment(file: string) {
-      const token = sessionStorage.getItem('token');
-      const subjectId = sessionStorage.getItem('subjectId');
-      if (token != null && subjectId != null) {
-        /*define the API URL*/
-        const path = "https://smv.usdd.company/API/public/api/"
-        /*Create new FormData instance and append the needed data*/
-        const data = new FormData();
-        data.append('token', token);
-        data.append('subjectId', subjectId);
-
-        /*show an alert-box that prevents user from accidentally deleting a submission*/
-
-        Swal.fire({
-          title: "Odstrani nalogo?",
-          text: "Naloga bo odstranjena iz sistema, datoteka pa izbrisana. Tega dejanja ni mogoče razveljaviti. Želite nadaljevati?",
-          icon: "question",
-          confirmButtonText: 'Da, odstrani nalogo',
-          confirmButtonColor: "#e63946",
-          showDenyButton: true,
-          denyButtonText: 'Ne, zadovoljen sem s trenutno nalogo.',
-          denyButtonColor: '#4377df'
-        })
-            .then(function (isSuccess) {
-              if (isSuccess.isConfirmed) {
-                axios.post(path + 'assignment/deleteAssignment', data)
-                    .then((response) => {
-                      if (response.data.success == 'true') {
-                        Swal.fire({
-                          title: "Naloga odstranjena",
-                          text: "Uspešno ste odstranili nalogo.",
-                          icon: "success",
-                          confirmButtonText: "Razumem",
-                          confirmButtonColor: "#4377df"
-                        })
-                      } else {
-                        Swal.fire({
-                          title: "Napaka",
-                          text: "Ojoj, prišlo je do nepričakovane napake! Poskusite ponovno ali kontaktirajte administratorja.",
-                          icon: "error",
-                          confirmButtonText: "Ti šment!",
-                          confirmButtonColor: "#4377df"
-                        })
-                      }
-                    })
-              } else if (isSuccess.isDenied) {
-                Swal.fire({
-                  title: "Naloga ohranjena",
-                  text: "Brez skrbi! Vaša prejšna naloga je na varnem.",
-                  icon: "success",
-                  confirmButtonText: "Fjuu, čudovito.",
-                  confirmButtonColor: "#4377df"
-                })
-              }
-            })
-        this.$forceUpdate();
-      }
-    },
-    created() {
-      this.getGivAssignment();
-    },
+    }
+  },
+  created() {
+    this.getGivAssignment();
   },
 }
 </script>
@@ -211,13 +147,5 @@ export default {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   box-shadow: -1px -1px 13px 1px #00000040
-}
-
-.button{
-  display: flex;
-  flex-direction: column;
-  gap: 2vh;
-  width: 100%;
-  padding: 2vh;
 }
 </style>
