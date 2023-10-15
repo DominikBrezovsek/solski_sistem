@@ -4,16 +4,36 @@
     <div class="content">
       <SubjectInfo/>
       <GivenAssignments/>
-      <AddAssignment />
+      <AddAssignment/>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import Sidebar from "@/components/Sidebar.vue";
 import SubjectInfo from "@/components/SubjectInfo.vue";
 import GivenAssignments from "@/components/GivenAssignments.vue";
-import AddAssignment from "@/components/AddAssignment.vue";
+import AddAssignment from "@/components/Assignment-add.vue";
+export default {
+  components:{
+    Sidebar,
+    SubjectInfo,
+    GivenAssignments,
+    AddAssignment
+  },
+  methods: {
+    checkUser() {
+      const user = sessionStorage.getItem('type');
+      if (user != null && user != 'teacher') {
+        this.$router.push('/home')
+      }
+    }
+  },
+  created() {
+    this.checkUser()
+  }
+}
+
 </script>
 
 <style scoped>

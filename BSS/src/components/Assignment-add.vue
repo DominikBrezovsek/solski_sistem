@@ -29,6 +29,7 @@ import Swal from "sweetalert2";
   height: 30vh;
   justify-content: flex-start;
   align-items: flex-start;
+  padding-left: 2vw;
 }
 
 .AddAssignment h2, p {
@@ -66,6 +67,7 @@ import Swal from "sweetalert2";
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   position: relative;
   overflow: hidden;
+  width: 20vw;
 }
 
 .button-add:after {

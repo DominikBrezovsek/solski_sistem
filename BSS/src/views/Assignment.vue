@@ -4,7 +4,6 @@
     <div class="content">
       <AssignmentInfo/>
       <AssignmentSubmission v-if="user_type == 'student'"/>
-      <AddAssignment v-if="user_type == 'teacher'" />
     </div>
   </div>
 </template>
@@ -13,11 +12,9 @@
 import Sidebar from "@/components/Sidebar.vue";
 import AssignmentInfo from "@/components/AssignmentInfo.vue";
 import AssignmentSubmission from "@/components/AssignmentSubmission.vue";
-import AddAssignment from "@/components/AddAssignment.vue";
 
 export default {
   components: {
-    AddAssignment,
     Sidebar,
     AssignmentInfo,
     AssignmentSubmission
