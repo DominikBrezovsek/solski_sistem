@@ -71,9 +71,6 @@
               <h2>Predmeti</h2>
             </div>
           </router-link>
-          <div class="headings">
-            <h1>Ljudje</h1>
-          </div>
           <div class="link_space">
             <router-link to="/students" class="navigation_link">
               <div>
@@ -316,19 +313,7 @@ export default {
 }
 
 .menu {
-  padding-bottom: 5vh;
   width: 100%;
-}
-
-.headings {
-  width: 90%;
-  margin-bottom: 1vh;
-  display: flex;
-  justify-content: left;
-  color: grey;
-  font-size: xx-large;
-  flex-direction: column;
-  overflow: hidden;
 }
 
 .options {
@@ -358,7 +343,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 2vh;
+  padding-left: 8px;
 }
 
 .home {
