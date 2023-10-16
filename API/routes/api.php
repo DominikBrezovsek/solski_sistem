@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\RegisterController;
@@ -24,6 +25,10 @@ use App\Http\Controllers\TeacherSubjectController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::get('/linkstorage', function () {
+    Artisan::call('storage:link');
+});
 
 Route::prefix('login/')->group(function (){
     Route::post('check', [UserLoginController::class, 'checkLogin']);
@@ -102,6 +107,9 @@ Route::middleware(['tokenVerify'])->group(function (){
         Route::post('submitted', [AssignmentController::class, 'getSubmission']);
         Route::post('deleteSubmission', [AssignmentController::class, 'deleteSubmission']);
         Route::post('create', [AssignmentController::class, 'addAssignment']);
+        Route::post('delete', [AssignmentController::class, 'deleteAssignment']);
+        Route::post('update', [AssignmentController::class, 'updateAssignment']);
+        Route::post('file', [AssignmentController::class, 'returnFile']);
 
     });
 

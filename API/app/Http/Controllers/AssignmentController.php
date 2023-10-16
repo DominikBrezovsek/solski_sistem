@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use function Laravel\Prompts\table;
 
 class AssignmentController extends Controller
 {
@@ -19,12 +20,16 @@ class AssignmentController extends Controller
         $assignment_id = $request->assignmentId;
         if ($assignment_id != null) {
             $assignment = DB::table('SubjectAssignmentTable')
-                ->select('SubjectAssignmentTable.*', 'TeacherTable.name', 'TeacherTable.surname', 'SubjectTable.subject')
+                ->select('SubjectAssignmentTable.*', 'TeacherTable.name', 'TeacherTable.surname', 'SubjectTable.subject', 'SubjectTable.id AS sId')
                 ->join('TeacherSubjectTable', 'TeacherSubjectTable.id', '=', 'SubjectAssignmentTable.tsId')
                 ->join('TeacherTable', 'TeacherSubjectTable.teacherId', '=', 'TeacherTable.id')
                 ->join('SubjectTable', 'SubjectTable.id', '=', 'TeacherSubjectTable.subjectId')
                 ->where('SubjectAssignmentTable.id', '=', $assignment_id)
-                ->get();
+                ->first();
+            $material = DB::table('AssignmentMaterialTable')
+                ->select('material')
+                ->where('id', '=', $assignment->amId)
+                ->first();
             return response()->json([
                 'assignment' => $assignment
             ]);
@@ -35,8 +40,34 @@ class AssignmentController extends Controller
         }
     }
 
+    public function returnFile(Request $request){
+        $assignment_id = $request->assignmentId;
+        if ($assignment_id != null) {
+            $assignment = DB::table('SubjectAssignmentTable')
+                ->select('SubjectAssignmentTable.*', 'TeacherTable.name', 'TeacherTable.surname', 'SubjectTable.subject', 'SubjectTable.id AS sId')
+                ->join('TeacherSubjectTable', 'TeacherSubjectTable.id', '=', 'SubjectAssignmentTable.tsId')
+                ->join('TeacherTable', 'TeacherSubjectTable.teacherId', '=', 'TeacherTable.id')
+                ->join('SubjectTable', 'SubjectTable.id', '=', 'TeacherSubjectTable.subjectId')
+                ->where('SubjectAssignmentTable.id', '=', $assignment_id)
+                ->first();
+            $material = DB::table('AssignmentMaterialTable')
+                ->select('material')
+                ->where('id', '=', $assignment->amId)
+                ->first();
+            $file = storage_path().'/app/public/ass_mat/' .$material->material;
+            $mimeType = Storage::mimeType('public/ass_mat/'.$material->material);
+            $headers = ['Content-Type' => $mimeType];
+            return response()->download($file, $material->material, $headers);
+        } else {
+            return response()->json([
+                'error' => 'id'
+            ]);
+        }
+    }
+
     public function getAssignments(Request $request)
     {
+        $subjectId = $request->subjectId;
         $loginId = session('loginId');
         $userType = $request->userType;
         if ($userType == 'teacher') {
@@ -45,6 +76,7 @@ class AssignmentController extends Controller
                 ->join('TeacherSubjectTable', 'TeacherSubjectTable.id', '=', 'SubjectAssignmentTable.tsId')
                 ->join('TeacherTable', 'TeacherSubjectTable.teacherId', '=', 'TeacherTable.id')
                 ->where('TeacherTable.loginId', '=', $loginId)
+                ->where('SubjectAssignmentTable.subjectId', '=', $subjectId)
                 ->get();
             return response()->json([
                 'assignments' => $assignment
@@ -102,7 +134,7 @@ class AssignmentController extends Controller
             if ($file != null) {
                 if ($fileExists == null) {
                     Storage::putFileAs(
-                        '/ass_sub', $file, $fileNameExt
+                        '/ass_sub', $file, $fileNameExt,
                     );
                     SubmissionTable::create([
                         'assignmentId' => $assignmentId,
@@ -121,7 +153,8 @@ class AssignmentController extends Controller
                     SubmissionTable::where(['file' => $deleteFile, 'studSubjectId' => $sstId->id])->delete();
 
                     Storage::putFileAs(
-                        '/ass_sub', $file, $fileNameExt
+                        '/ass_sub', $file, $fileNameExt,
+                        'public'
                     );
                     SubmissionTable::create([
                         'assignmentId' => $assignmentId,
@@ -214,45 +247,184 @@ class AssignmentController extends Controller
                 ->join('TeacherTable AS T', 'T.id', '=', 'TST.teacherId')
                 ->where('T.loginId', '=', $loginId)
                 ->first();
+            if ($material != null && $description != null && $title != null && $subjectId != null && $deadline != null){
+                $fileName = $material->getClientOriginalName();
+                Storage::putFileAs(
+                    '/public/ass_mat', $material, $fileName,
+                );
 
-            $fileName = $material->getClientOriginalName();
-            Storage::putFileAs(
-                '/ass_mat', $material, $fileName
-            );
+                AssignmentMaterialTable::create([
+                    'material' => $fileName,
+                    'addedAt' => gmdate('Y-m-d h:i:s', time()),
+                    'author' => $ts->teacherId
+                ]);
 
-            AssignmentMaterialTable::create([
-                'material' => $fileName,
-                'addedAt' => gmdate('Y-m-d h:i:s', time()),
-                'author' => $ts->teacherId
+                $amId = DB::table('AssignmentMaterialTable AS AMT')
+                    ->select('AMT.id')
+                    ->join('TeacherTable AS T', 'AMT.author', '=', 'T.id')
+                    ->where('AMT.material', '=', $fileName)
+                    ->where('T.loginId', '=', $loginId)
+                    ->first();
+
+                SubjectAssignmentTable::create([
+                    'subjectId' => $subjectId,
+                    'tsId' => $ts->id,
+                    'amId' => $amId->id,
+                    'tittle' => $title,
+                    'description' => $description,
+                    'deadline' => $deadline,
+                    'givenAt' => gmdate('Y-m-d h:i:s', time()),
+                ]);
+                return response()->json([
+                    'success' => 'true'
+                ]);
+            } else {
+                return response()->json([
+                    'error' => 'data'
+                ]);
+            }
+
+
+        } else {
+            return response()->json([
+                'error' => 'data'
             ]);
+        }
+    }
 
-            $amId = DB::table('AssignmentMaterialTable AS AMT')
-                ->select('AMT.id')
-                ->join('TeacherTable AS T', 'AMT.author', '=', 'T.id')
-                ->where('AMT.material', '=', $fileName)
-                ->where('T.loginId', '=', $loginId)
+    public function deleteAssignment(Request $request){
+        $assignmentId = $request->assignmentId;
+        $subjectId = $request->subjectId;
+        $loginId = session('loginId');
+
+        if($assignmentId != null && $subjectId != null && $loginId != null){
+
+            $amId = DB::table('SubjectAssignmentTable')
+                ->select('amId')
+                ->where('id', '=', $assignmentId)
+                ->where('subjectId', '=', $subjectId)
                 ->first();
 
-            SubjectAssignmentTable::create([
-                'subjectId' => $subjectId,
-                'tsId' => $ts->id,
-                'amId' => $amId->id,
-                'tittle' => $title,
-                'description' => $description,
-                'deadline' => $deadline,
-                'givenAt' => gmdate('Y-m-d h:i:s', time()),
-            ]);
+           $material =  DB::table('AssignmentMaterialTable')
+               ->select('material')
+               ->join('TeacherTable', 'TeacherTable.id','=', 'author' )
+               ->join('TeacherSubjectTable', 'TeacherSubjectTable.teacherId', '=', 'TeacherTable.id')
+               ->where('AssignmentMaterialTable.id', '=', $amId->amId)
+               ->where('TeacherTable.loginId', '=', $loginId)
+               ->first();
+
+            Storage::disk('local')->delete('public/ass_mat/'. $material->material);
+
+            DB::table('SubjectAssignmentTable')
+                ->where('id', '=', $assignmentId)
+                ->where('subjectId', '=', $subjectId)
+                ->delete();
+
+            DB::table('AssignmentMaterialTable')
+                ->where('id', '=', $amId->amId)
+                ->delete();
 
             return response()->json([
                 'success' => 'true'
             ]);
+        } else {
+            return response()->json([
+                'error' => 'data'
+            ]);
         }
+    }
+
+    public function updateAssignment(Request $request){
+        $assignmentId = $request->assignmentId;
+        $subjectId = $request->subjectId;
+        $loginId = session('loginId');
+        $material = $request->file('material');
+        $title = $request->title;
+        $description = $request->desc;
+        $deadline = date('Y-m-d H:i:s', strtotime($request->deadline));
+
+        if($loginId != null){
+            if ($assignmentId != null && $subjectId != null && $material != null){
+
+                $amId = DB::table('SubjectAssignmentTable')
+                    ->select('amId', 'TeacherTable.id AS tId')
+                    ->join('TeacherSubjectTable', 'SubjectAssignmentTable.tsId', '=', 'SubjectAssignmentTable.tsId')
+                    ->join('TeacherTable', 'TeacherSubjectTable.teacherId', '=', 'TeacherTable.id')
+                    ->where('id', '=', $assignmentId)
+                    ->first();
+
+                $material =  DB::table('AssignmentMaterialTable')
+                    ->select('material')
+                    ->where('id', '=', $amId->amId)
+                    ->where('author', '=', $amId->tId)
+                    ->first();
+
+                Storage::disk('local')->delete('/ass_mat/'. $material->material);
+
+                DB::table('AssignmentMaterialTable')
+                    ->where('id', '=', $amId->amId)
+                    ->delete();
+
+                $fileName = $material->getClientOriginalName();
+                Storage::putFileAs(
+                    '/public/ass_mat', $material, $fileName
+                );
+                DB::table('AssignmentMaterialTable')
+                ->insert(array(
+                    'material' => $fileName,
+                    'author' => $amId->tId
+                ));
+
+                $assignment = DB::table('AssignmentMaterialTable')
+                    ->select('AssignmentMaterialTable.id', 'TeacherSubjectTable.id AS tsId')
+                    ->join('TeacherTable', 'TeacherTable.id', '=', 'AssignmentMaterialTable.author')
+                    ->join('TeacherSubjectTable', 'TeacherSubjectTable.teacherId', '=', 'TeacherTable.id')
+                    ->where('material',  '=', $fileName)
+                    ->where('TeacherTable.loginId', '=', $loginId)
+                    ->first();
+
+                DB::table('SubjectAssignmentTable')
+                    ->where('id', '=', $assignmentId)
+                    ->update(array(
+                        'tittle' => $title,
+                        'description' => $description,
+                        'deadline' => $deadline,
+                        'amId' => $assignment->id,
+                        'tsId' => $assignment->tsId
+                    ));
+
+                return response()->json([
+                    'success' => 'true'
+                ]);
+            } else if ($material == null){
+
+                $assignment = DB::table('TeacherSubjectTable')
+                    ->select('TeacherSubjectTable.id')
+                    ->join('TeacherTable', 'TeacherTable.id', '=', 'TeacherSubjectTable.teacherId')
+                    ->where('TeacherTable.loginId', '=', $loginId)
+                    ->where('TeacherSubjectTable.subjectId', '=', $subjectId)
+                    ->first();
 
 
-
-
-
-
+                SubjectAssignmentTable::where('id', '=', $assignmentId)->update(array(
+                    'tittle' => $title,
+                    'description' => $description,
+                    'subjectId' => $subjectId,
+                    'tsId' => $assignment->id
+                ));
+                return response()->json([
+                    'success' => 'true'
+                ]);
+            } else {
+                return response()->json([
+                    'error' => 'data'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'error' => 'data'
+            ]);
+        }
     }
 }
 
