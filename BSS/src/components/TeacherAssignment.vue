@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     getGivAssignment() {
-      let token = sessionStorage.getItem('token');
+      const  token = sessionStorage.getItem('token');
       const subject = sessionStorage.getItem('subjectId');
       const userType = sessionStorage.getItem('type')
       if (token != null && subject != null && userType != null) {
@@ -68,7 +68,42 @@ export default {
       this.$router.push('/assignment/edit');
     },
     deleteAssignment(id:string){
-      console.log('delete');
+      const  token = sessionStorage.getItem('token');
+      const subject = sessionStorage.getItem('subjectId');
+      if (token != null && subject != null && id != null){
+        Swal.fire({
+          title: 'Izbrišem nalogo?',
+          text: 'Želite izbrisati nalogo? Tega dejanja ni mogoče razveljaviti!',
+          icon: "question",
+          confirmButtonText: 'Da, želim izbrisati nalogo',
+          confirmButtonColor: '#4377df',
+          showCancelButton: true,
+          cancelButtonText: 'Ne, ohrani nalogo',
+          cancelButtonColor: '#e63946'
+        }) .then((event) => {
+          if (event.isConfirmed){
+            const path = 'https://smv.usdd.company/API/public/api/';
+            const data = new FormData();
+            data.append('token', token);
+            data.append('subjectId', subject);
+            data.append('assignmentId', id);
+            axios.post(path + 'assignment/delete', data)
+                .then((response) => {
+                  if (response.data.success == 'true'){
+                    Swal.fire({
+                      title: 'Naloga izbrisana',
+                      text: 'Naloga je bila uspešno izbrisana.',
+                      icon: 'success',
+                      confirmButtonText: 'Razumem',
+                      confirmButtonColor: '#4377df'
+                    })
+                  }
+                })
+          } else {
+            Swal.close();
+          }
+        })
+      }
     }
   },
   created() {
@@ -79,7 +114,7 @@ export default {
 
 <style scoped>
 .given-assignments {
-  height: 40vh;
+  height: 60vh;
   width: 82vw;
   display: flex;
   flex-direction: column;
@@ -89,7 +124,7 @@ export default {
 }
 
 .given-assignment {
-  height: 2vh;
+  height: 3vh;
   width: 60vw;
   display: flex;
   flex-direction: row;
@@ -112,7 +147,6 @@ export default {
 
 .given-assignment img {
   height: 4vh;
-  width: 2vw;
   padding-bottom: 0.5vh;
 }
 

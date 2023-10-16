@@ -41,7 +41,7 @@ export default {
 .content {
   display: flex;
   flex-direction: column;
-  gap: 5vh;
+  gap: 3vh;
   width: 85%;
 }
 
@@ -95,7 +95,7 @@ export default {
   flex-direction: column;
   gap: 2vh;
   width: 40%;
-  padding-top: 8vh;
+  padding-top: 5vh;
   margin-left: auto;
   margin-right: auto;
 }

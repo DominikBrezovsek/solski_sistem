@@ -1,13 +1,14 @@
 <template>
-  <div class="assignments-info" v-for="a in assignment">
+  <div class="assignments-info">
     <div class="tittle">
-      <h1>{{ a.subject }}</h1>
+      <h1>{{ subject }}</h1>
     </div>
     <div class="tittle_assignment">
-      <h2>{{ a.tittle }}</h2>
+      <h2>{{ tittle }}</h2>
     </div>
-    <p>{{ a.description }}</p>
-    <p>Dodelelil/a: {{ a.name }} {{ a.surname }}</p>
+    <p>{{ description }}</p>
+    <p @click="getFile" class="file-download">Prenesi navodila</p>
+    <p>Dodelelil/a: {{ name }} {{ surname }}</p>
   </div>
 </template>
 
@@ -18,12 +19,17 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
-      assignment: Array()
+      subject: '',
+      tittle: '',
+      description: '',
+      name: '',
+      surname: '',
+      file: null,
+      fileName: '',
     }
   },
   methods: {
     getAssignment() {
-      const assignment = Array();
       const token = sessionStorage.getItem('token');
       let assId = sessionStorage.getItem('assignmentId');
 
@@ -34,12 +40,14 @@ export default {
           data.append('assignmentId', assId);
           axios.post('https://smv.usdd.company/API/public/api/assignment/get', data)
               .then((response) => {
-                const assResponse = response.data.assignment;
-                if (assResponse != null) {
-                  for (let i = 0; i < assResponse.length; i++) {
-                    this.assignment.push(assResponse[i]);
-                    sessionStorage.setItem('subjectId', this.assignment[i].subjectId)
-                  }
+                if (response.data.assignment != null) {
+                  this.subject = response.data.assignment.subject;
+                  this.tittle = response.data.assignment.tittle;
+                  this.description = response.data.assignment.description;
+                  this.name = response.data.assignment.name;
+                  this.surname = response.data.assignment.surname
+                  sessionStorage.setItem('subjectId', response.data.assignment.subjectId)
+
                 } else if (response.data.error == "token") {
                   Swal.fire({
                     title: 'Seja je potekla',
@@ -59,6 +67,25 @@ export default {
                     }
                   })
                 }
+              })
+        }
+      }
+    },
+    getFile() {
+      const token = sessionStorage.getItem('token');
+      let assId = sessionStorage.getItem('assignmentId');
+      if (token != null) {
+        if (assId) {
+          const data = new FormData();
+          data.append('token', token);
+          data.append('assignmentId', assId);
+          axios.post('https://smv.usdd.company/API/public/api/assignment/file', data, {responseType: "arraybuffer"})
+              .then((response) => {
+                let blob = new Blob([response.data], {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})
+                let link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = 'Navodilo'
+                link.click()
               })
         }
       }
@@ -115,5 +142,7 @@ export default {
   flex-direction: column;
   overflow: hidden;
 }
-
+.file-download{
+  cursor: pointer;
+}
 </style>

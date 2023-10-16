@@ -114,7 +114,6 @@ export default {
       }
     },
     addAssignment() {
-      console.log(this.deadline);
       const token = sessionStorage.getItem('token');
       if (token != null && this.file != null) {
         const path = 'https://smv.usdd.company/API/public/api/'
