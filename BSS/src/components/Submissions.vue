@@ -1,35 +1,25 @@
 <template>
-  <div class="flex flex-row">
-    <Sidebar/>
-    <div class="submitted-assignments">
-      <div class="tittle">
-        <h1>Oddane naloge</h1>
-      </div>
-      <div class="assignment">
-        <div class="submitted-assignment" v-for="s in submissions">
-          <div class="assignment-inner-div">
-            <p>{{ s.name }}</p>
-            <p>{{ s.surname }}</p>
-            <p>{{ s.tittle }}</p>
-            <p>{{ s.handedInAt }}</p>
-          </div>
-          <div class="button">
-            <p><img src="../assets/file.png" alt="Prenesi oddajo" @click="getFile(s.id)"></p>
-          </div>
+  <div class="submitted-assignments">
+    <div class="assignment">
+      <div class="submitted-assignment" v-for="s in submissions">
+        <div class="assignment-inner-div">
+          <p>{{ s.name }}</p>
+          <p>{{ s.surname }}</p>
+          <p>{{ s.tittle }}</p>
+          <p>{{ s.handedInAt }}</p>
+        </div>
+        <div class="button">
+          <p><img src="../assets/file.png" alt="Prenesi oddajo" @click="getFile(s.id)"></p>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<script lang="ts">
-
+<script  lang="ts">
 import axios from 'axios'
 import Swal from "sweetalert2";
-import Sidebar from "@/components/Sidebar.vue";
 
 export default {
-  components: {Sidebar},
   data() {
     return {
       submissions: Array()
@@ -69,6 +59,20 @@ export default {
                 })
               }
             })
+      } else if (subjectId == null) {
+        let token = sessionStorage.getItem('token');
+        if (token != null) {
+          const jwt = new FormData();
+          jwt.append('token', token);
+          axios.post('https://smv.usdd.company/API/public/api/assignment/allSubs', jwt)
+              .then((response) => {
+                if (response.data.submissions != null) {
+                  for (let i = 0; i < (response.data.submissions).length; i++) {
+                    this.submissions.push(response.data.submissions[i]);
+                  }
+                }
+              })
+        }
       }
     },
     getFile(id: string) {
@@ -88,7 +92,7 @@ export default {
               link.href = window.URL.createObjectURL(blob)
               link.download = fileName
               link.click()
-        })
+            })
       }
     }
   },
@@ -98,7 +102,6 @@ export default {
 }
 
 </script>
-
 
 <style scoped>
 .submitted-assignments {
