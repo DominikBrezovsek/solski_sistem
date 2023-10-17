@@ -3,16 +3,14 @@
     <Sidebar/>
     <div class="content">
       <SubjectInfo/>
-      <div class="button">
-        <div class="button-add" @click="toSub">
-          Poglej oddane naloge
-        </div>
-      </div>
       <TeacherAssignment/>
       <div class="button">
       <div class="button-add" @click="toAss">
         Dodaj
       </div>
+        <div class="button-add" @click="toSub">
+          Poglej oddane naloge
+        </div>
     </div>
     </div>
   </div>
@@ -67,6 +65,7 @@ export default {
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   position: relative;
   overflow: hidden;
+  width: 20vw;
 }
 
 .button-add:after {
@@ -101,11 +100,13 @@ export default {
 }
 .button{
   display: flex;
-  flex-direction: column;
-  gap: 2vh;
-  width: 40%;
+  flex-direction: row;
+  gap: 5vh;
+  width: 82vw;
   padding-top: 5vh;
   margin-left: auto;
   margin-right: auto;
+  justify-content: center;
+  align-items: center;
 }
 </style>
