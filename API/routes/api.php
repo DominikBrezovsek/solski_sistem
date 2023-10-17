@@ -110,6 +110,8 @@ Route::middleware(['tokenVerify'])->group(function (){
         Route::post('delete', [AssignmentController::class, 'deleteAssignment']);
         Route::post('update', [AssignmentController::class, 'updateAssignment']);
         Route::post('file', [AssignmentController::class, 'returnFile']);
+        Route::post('subFile', [AssignmentController::class, 'returnSubFile']);
+        Route::post('submissions', [AssignmentController::class, 'getSubmissions']);
 
     });
 
