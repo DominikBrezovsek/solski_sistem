@@ -112,6 +112,7 @@ Route::middleware(['tokenVerify'])->group(function (){
         Route::post('file', [AssignmentController::class, 'returnFile']);
         Route::post('subFile', [AssignmentController::class, 'returnSubFile']);
         Route::post('submissions', [AssignmentController::class, 'getSubmissions']);
+        Route::post('allSubs', [AssignmentController::class, 'getAllSubmissions']);
 
     });
 

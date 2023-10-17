@@ -85,6 +85,7 @@ class AssignmentController extends Controller
 
     public function getAssignments(Request $request)
     {
+        date_default_timezone_set('Europe/Ljubljana');
         $subjectId = $request->subjectId;
         $loginId = session('loginId');
         $userType = $request->userType;
@@ -129,6 +130,7 @@ class AssignmentController extends Controller
 
     public function submitAssignment(Request $request)
     {
+        date_default_timezone_set('Europe/Ljubljana');
         $assignmentId = $request->assignmentId;
         $subjectId = $request->subjectId;
         $file = $request->file('file');
@@ -140,7 +142,7 @@ class AssignmentController extends Controller
                 ->join('StudentTable AS S', 'S.id', '=', 'SST.studentId')
                 ->where(['loginId' => $loginId, 'SST.subjectId' => $subjectId])
                 ->first();
-            $handedIn = gmdate('Y-m-d h:i:s', time());
+            $handedIn = date('Y-m-d H:i:s', time());
             $file_tittle = DB::table('SubjectAssignmentTable AS SAT')
                 ->select('SAT.tittle', 'ST.name', 'ST.surname')
                 ->join('StudentSubjectTable AS SST', 'SAT.subjectId', '=', 'SST.subjectId')
@@ -255,6 +257,33 @@ class AssignmentController extends Controller
         }
     }
 
+    public function getAllSubmissions(Request $request){
+        $loginId = session('loginId');
+
+        if ($loginId != null){
+            $submissions = DB::table('SubmissionTable')
+                ->select('SubmissionTable.id','StudentTable.name', 'StudentTable.surname', 'SubjectAssignmentTable.tittle', 'SubmissionTable.handedInAt', )
+                ->join('StudentSubjectTable', 'StudentSubjectTable.id', '=', 'SubmissionTable.studSubjectId')
+                ->join('StudentTable', 'StudentTable.id', '=', 'StudentSubjectTable.studentId')
+                ->join('SubjectAssignmentTable', 'SubjectAssignmentTable.id', '=', 'assignmentId')
+                ->join('TeacherSubjectTable', 'TeacherSubjectTable.teacherId', '=', 'SubjectAssignmentTable.tsId')
+                ->join('TeacherTable', 'TeacherSubjectTable.teacherId', '=', 'teacherId')
+                ->where('TeacherTable.loginId', '=', $loginId)
+                ->orderBy('SubmissionTable.handedInAt', 'desc')
+                ->limit('5')
+                ->distinct()
+                ->get();
+            return response()->json([
+                'submissions' => $submissions
+            ]);
+        }
+        else {
+            return response()->json([
+                'error' => 'data'
+            ]);
+        }
+    }
+
     public function deleteSubmission(Request$request){
         $loginId = session('loginId');
         $subjectId = $request->subjectId;
@@ -301,7 +330,7 @@ class AssignmentController extends Controller
 
                 AssignmentMaterialTable::create([
                     'material' => $fileName,
-                    'addedAt' => gmdate('Y-m-d h:i:s', time()),
+                    'addedAt' => date('Y-m-d H:i:s', time()),
                     'author' => $ts->teacherId
                 ]);
 
@@ -319,7 +348,7 @@ class AssignmentController extends Controller
                     'tittle' => $title,
                     'description' => $description,
                     'deadline' => $deadline,
-                    'givenAt' => gmdate('Y-m-d h:i:s', time()),
+                    'givenAt' => date('Y-m-d H:i:s', time()),
                 ]);
                 return response()->json([
                     'success' => 'true'
