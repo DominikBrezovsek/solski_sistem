@@ -112,6 +112,12 @@ export default {
   align-items: center;
   padding-left: 2vw;
   counter-reset: section;
+
+}
+
+.assignment{
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .submitted-assignment {
