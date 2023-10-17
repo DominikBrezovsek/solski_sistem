@@ -81,8 +81,10 @@ export default {
           data.append('assignmentId', assId);
           axios.post('https://smv.usdd.company/API/public/api/assignment/file', data, {responseType: "arraybuffer"})
               .then((response) => {
-                var fileName = (response.headers['content-disposition'].split('; ')[1].split('filename=')[1].split('.')[0].split('"')[1]).toString();
-                this.fileName = fileName;
+                let fileName = response.headers['content-disposition'].split(';')[1].split('filename=')[1].split('.')[0]
+                if(fileName.search('"') != -1){
+                  fileName = response.headers['content-disposition'].split(';')[1].split('filename=')[1].split('.')[0].split('"')[1].split('"')[0]
+                }
                 let blob = new Blob([response.data], {type: response.headers['content-type']})
                 let link = document.createElement('a')
                 link.href = window.URL.createObjectURL(blob)
@@ -102,7 +104,14 @@ export default {
           data.append('assignmentId', assId);
           axios.post('https://smv.usdd.company/API/public/api/assignment/file', data, {responseType: "arraybuffer"})
               .then((response) => {
-                this.fileName = (response.headers['content-disposition'].split('; ')[1].split('filename=')[1].split('"')[1].split('"')[0]).toString()
+                let file = response.headers['content-disposition'].split(';')[1].split('filename=')[1].split('.')[0]
+                if(file.search('"') != -1){
+                  this.fileName = response.headers['content-disposition'].split(';')[1].split('filename=')[1].split('.')[0].split('"')[1].split('"')[0]
+                }
+                else {
+                  this.fileName = response.headers['content-disposition'].split(';')[1].split('filename=')[1].split('.')[0]
+                }
+
               })
         }
       }

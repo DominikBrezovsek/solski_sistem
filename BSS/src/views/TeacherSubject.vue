@@ -3,6 +3,11 @@
     <Sidebar/>
     <div class="content">
       <SubjectInfo/>
+      <div class="button">
+        <div class="button-add" @click="toSub">
+          Poglej oddane naloge
+        </div>
+      </div>
       <TeacherAssignment/>
       <div class="button">
       <div class="button-add" @click="toAss">
@@ -17,6 +22,7 @@
 import Sidebar from "@/components/Sidebar.vue";
 import SubjectInfo from "@/components/SubjectInfo.vue";
 import TeacherAssignment from "@/components/TeacherAssignment.vue";
+import subjectInfo from "@/components/SubjectInfo.vue";
 
 export default {
   components: {
@@ -27,6 +33,9 @@ export default {
   methods: {
     toAss() {
       this.$router.push('/assignments');
+    },
+    toSub() {
+      this.$router.push('/submissions')
     }
   }
 }
