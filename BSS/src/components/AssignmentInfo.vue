@@ -7,7 +7,7 @@
       <h2>{{ tittle }}</h2>
     </div>
     <p>{{ description }}</p>
-    <p @click="getFile" class="file-download">Prenesi navodila</p>
+    <p @click="getFile" class="file-download">Datoteka: {{fileName}}</p>
     <p>Dodelelil/a: {{ name }} {{ surname }}</p>
   </div>
 </template>
@@ -81,18 +81,36 @@ export default {
           data.append('assignmentId', assId);
           axios.post('https://smv.usdd.company/API/public/api/assignment/file', data, {responseType: "arraybuffer"})
               .then((response) => {
-                let blob = new Blob([response.data], {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})
+                var fileName = (response.headers['content-disposition'].split('; ')[1].split('filename=')[1].split('.')[0].split('"')[1]).toString();
+                this.fileName = fileName;
+                let blob = new Blob([response.data], {type: response.headers['content-type']})
                 let link = document.createElement('a')
                 link.href = window.URL.createObjectURL(blob)
-                link.download = 'Navodilo'
+                link.download = fileName
                 link.click()
+              })
+        }
+      }
+    },
+    getFileName(){
+      const token = sessionStorage.getItem('token');
+      let assId = sessionStorage.getItem('assignmentId');
+      if (token != null) {
+        if (assId) {
+          const data = new FormData();
+          data.append('token', token);
+          data.append('assignmentId', assId);
+          axios.post('https://smv.usdd.company/API/public/api/assignment/file', data, {responseType: "arraybuffer"})
+              .then((response) => {
+                this.fileName = (response.headers['content-disposition'].split('; ')[1].split('filename=')[1].split('"')[1].split('"')[0]).toString()
               })
         }
       }
     }
   },
   created() {
-    this.getAssignment()
+    this.getAssignment();
+    this.getFileName();
   },
 }
 
