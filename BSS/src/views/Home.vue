@@ -53,6 +53,8 @@ export default {
 
 .tittle {
   width: 100%;
+  padding-bottom: 5vh;
+  padding-left: 2vw;
   margin-top: 1vh;
   margin-bottom: 1vh;
   margin-left: 1vh;

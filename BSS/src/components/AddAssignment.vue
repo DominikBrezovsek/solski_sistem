@@ -178,6 +178,7 @@ export default {
   flex-direction: column;
   gap: 2vh;
   width: 100%;
+  padding-left: 2vw;
 }
 
 .AddAssignment h2, p {

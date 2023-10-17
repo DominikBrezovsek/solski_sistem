@@ -3,8 +3,8 @@
     <div class="assignment">
       <div class="submitted-assignment" v-for="s in submissions">
         <div class="assignment-inner-div">
-          <p>{{ s.name }}</p>
-          <p>{{ s.surname }}</p>
+          <p class="space">{{ s.name }}</p>
+          <p class="space">{{ s.surname }}</p>
           <p>{{ s.tittle }}</p>
           <p>{{ s.handedInAt }}</p>
         </div>
@@ -116,7 +116,7 @@ export default {
 
 .submitted-assignment {
   height: 2vh;
-  width: 40vw;
+  width: 80%;
   display: flex;
   flex-direction: row;
   justify-content: left;
@@ -154,27 +154,18 @@ export default {
   width: 2.2vw;
 }
 
-.submitted-assignment h2, p {
+.submitted-assignment p {
   padding-top: 1vh;
   padding-bottom: 3vh;
+  width: 10vw;
+}
+.space{
+  width: 5vw;
 }
 
 .submitted-assignment h2::before {
   counter-increment: section;
   content: counter(section) ": ";
-}
-
-.tittle {
-  width: 100%;
-  margin-top: 1vh;
-  margin-bottom: 1vh;
-  margin-left: 1vh;
-  display: flex;
-  justify-content: center;
-  color: grey;
-  font-size: xx-large;
-  flex-direction: column;
-  overflow: hidden;
 }
 
 .assignment {
