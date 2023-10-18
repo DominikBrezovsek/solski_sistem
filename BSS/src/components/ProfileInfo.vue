@@ -269,34 +269,100 @@ export default {
           data.append('surname', this.surname);
           data.append('email', this.email);
           data.append('classId', this.razredId)
-
-          axios.post(path + 'student/update', data)
-              .then((response) => {
-                if (response.data.success == 'true') {
-                  Swal.fire({
-                    title: 'Podatki posodobljeni',
-                    text: 'Podatki o uporabniku uspešno posodobljeni.',
-                    icon: 'success',
-                    confirmButtonText: 'Razumem',
-                    confirmButtonColor: '#4377df'
-                  })
-                      .then((event) => {
-                        if (event.isConfirmed) {
-                          this.changed = '';
-                        } else {
-                          this.changed = '';
-                        }
-                      })
-                } else {
-                  Swal.fire({
-                    title: 'Napaka',
-                    text: 'Napaka pri posodabljanju podatkov. Prosim, poskusite kasneje.',
-                    icon: 'error',
-                    confirmButtonText: 'Razumem',
-                    confirmButtonColor: '#4377df'
-                  })
-                }
-              })
+          if (this.type != null){
+            switch (this.type) {
+              case "student": {
+                axios.post(path + 'student/update', data)
+                    .then((response) => {
+                      if (response.data.success == 'true') {
+                        Swal.fire({
+                          title: 'Podatki posodobljeni',
+                          text: 'Podatki o uporabniku uspešno posodobljeni.',
+                          icon: 'success',
+                          confirmButtonText: 'Razumem',
+                          confirmButtonColor: '#4377df'
+                        })
+                            .then((event) => {
+                              if (event.isConfirmed) {
+                                this.changed = '';
+                              } else {
+                                this.changed = '';
+                              }
+                            })
+                      } else {
+                        Swal.fire({
+                          title: 'Napaka',
+                          text: 'Napaka pri posodabljanju podatkov. Prosim, poskusite kasneje.',
+                          icon: 'error',
+                          confirmButtonText: 'Razumem',
+                          confirmButtonColor: '#4377df'
+                        })
+                      }
+                    })
+                break;
+              }
+              case "teacher": {
+                axios.post(path + 'teacher/update', data)
+                    .then((response) => {
+                      if (response.data.success == 'true') {
+                        Swal.fire({
+                          title: 'Podatki posodobljeni',
+                          text: 'Podatki o uporabniku uspešno posodobljeni.',
+                          icon: 'success',
+                          confirmButtonText: 'Razumem',
+                          confirmButtonColor: '#4377df'
+                        })
+                            .then((event) => {
+                              if (event.isConfirmed) {
+                                this.changed = '';
+                              } else {
+                                this.changed = '';
+                              }
+                            })
+                      } else {
+                        Swal.fire({
+                          title: 'Napaka',
+                          text: 'Napaka pri posodabljanju podatkov. Prosim, poskusite kasneje.',
+                          icon: 'error',
+                          confirmButtonText: 'Razumem',
+                          confirmButtonColor: '#4377df'
+                        })
+                      }
+                    })
+                break
+              }
+              case "admin": {
+                axios.post(path + 'admin/update', data)
+                    .then((response) => {
+                      if (response.data.success == 'true') {
+                        Swal.fire({
+                          title: 'Podatki posodobljeni',
+                          text: 'Podatki o uporabniku uspešno posodobljeni.',
+                          icon: 'success',
+                          confirmButtonText: 'Razumem',
+                          confirmButtonColor: '#4377df'
+                        })
+                            .then((event) => {
+                              if (event.isConfirmed) {
+                                this.changed = '';
+                              } else {
+                                this.changed = '';
+                              }
+                            })
+                      } else {
+                        Swal.fire({
+                          title: 'Napaka',
+                          text: 'Napaka pri posodabljanju podatkov. Prosim, poskusite kasneje.',
+                          icon: 'error',
+                          confirmButtonText: 'Razumem',
+                          confirmButtonColor: '#4377df'
+                        })
+                      }
+                    })
+                break
+              }
+            }
+          }
         }
       } else if (this.changed != 'true') {
         Swal.fire({

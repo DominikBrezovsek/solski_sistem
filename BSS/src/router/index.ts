@@ -13,6 +13,7 @@ import Profile from "../views/Profile.vue";
 import EditAssignment from "@/views/EditAssignment.vue";
 import AddAssignment from "@/components/AddAssignment.vue";
 import SubmissionsView from "@/views/SubmissionsView.vue";
+import AdminAddSubject from "@/views/AdminAddSubject.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -116,6 +117,14 @@ const router = createRouter({
             path: '/submissions',
             name: 'Display submissions',
             component: SubmissionsView,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/subjects/add',
+            name: 'Add subject',
+            component: AdminAddSubject,
             meta: {
                 requiresAuth: true
             }
