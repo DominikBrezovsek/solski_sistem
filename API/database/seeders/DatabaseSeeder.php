@@ -88,13 +88,11 @@ class DatabaseSeeder extends Seeder
 
         SubjectTable::create([
             'subject' => 'Slovenščina 4',
-            'key' => 'SloR4B',
             'description' => 'Slovenščina za 4.letnik programa računalniški tehnik',
         ]);
 
         SubjectTable::create([
             'subject' => 'Matematika 4',
-            'key' => 'MatR4B',
             'description' => 'Matematika za 4.letnik programa računalniški tehnik',
         ]);
 
@@ -122,43 +120,6 @@ class DatabaseSeeder extends Seeder
         TeacherSubjectTable::create([
             'subjectId' => $subject_id_mat->id,
             'teacherId' => $teacher_id->id,
-        ]);
-
-        AssignmentMaterialTable::create([
-            'material' => 'Polinomi',
-            'addedAt' => '2023-10-01 00:00:00',
-            'author' => $teacher_id->id
-        ]);
-
-        AssignmentMaterialTable::create([
-            'material' => 'Strahovi',
-            'addedAt' => '2023-10-01 00:00:00',
-            'author' => $teacher_id->id
-        ]);
-
-        $tsIdSlo = TeacherSubjectTable::select('id')->where('subjectId', '=', $subject_id_slo->id)->first();
-        $tsIdMat = TeacherSubjectTable::select('id')->where('subjectId', '=', $subject_id_mat->id)->first();
-        $amIdMat = AssignmentMaterialTable::select('id')->where('material', '=', 'Polinomi')->where('author', '=', $teacher_id->id)->first();
-        $amIdSlo = AssignmentMaterialTable::select('id')->where('material', '=', 'Strahovi')->where('author', '=', $teacher_id->id)->first();
-
-        SubjectAssignmentTable::create([
-            'subjectId' => $subject_id_mat->id,
-            'tsId' => $tsIdMat->id,
-            'amId' => $amIdMat->id,
-            'tittle' => 'Polinomi 1',
-            'description' => 'Vaje iz polinomov',
-            'givenAt' => '2023-10-01 00:00:00',
-            'deadline' => '2023-10-15 23:59:59',
-        ]);
-
-        SubjectAssignmentTable::create([
-            'subjectId' => $subject_id_slo->id,
-            'tsId' => $tsIdSlo->id,
-            'amId' => $amIdSlo->id,
-            'tittle' => 'Ibsen, Strahovi - razlagalni spis',
-            'description' => 'Razlagalni spis o Strahovih',
-            'givenAt' => '2023-10-01 00:00:00',
-            'deadline' => '2023-10-8 23:59:59',
         ]);
 
         UserLoginTable::create([

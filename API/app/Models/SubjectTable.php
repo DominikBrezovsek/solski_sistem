@@ -11,7 +11,6 @@ class SubjectTable extends Model
     protected $table = "SubjectTable";
     protected $fillable = [
         'subject',
-        'key',
         'description'
     ];
 }

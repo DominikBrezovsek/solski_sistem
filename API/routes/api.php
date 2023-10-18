@@ -46,6 +46,7 @@ Route::middleware(['tokenVerify'])->group(function (){
     Route::prefix('student/')->group(function (){
         Route::post('get', [StudentController::class, 'getStudent']);
         Route::post('admin-get', [StudentController::class, 'AdminGetStudent']);
+        Route::post('get-all', [StudentController::class, 'getAllStudents']);
         Route::post('update', [StudentController::class, 'updateStudent']);
         Route::post('delete', [StudentController::class, 'deleteStudent']);
         Route::post('password', [StudentController::class, 'resetPassword']);
@@ -64,13 +65,15 @@ Route::middleware(['tokenVerify'])->group(function (){
     });
     Route::prefix('teacher/')->group(function (){
         Route::post('get', [TeacherController::class, 'getTeacher']);
+        Route::post('get-all', [TeacherController::class, 'getAllTeachers']);
         Route::post('create', [TeacherController::class, 'createTeacher']);
         Route::post('delete', [TeacherController::class, 'getTeacher']);
-        Route::post('update', [TeacherController::class, 'getTeacher']);
+        Route::post('update', [TeacherController::class, 'updateTeacher']);
     });
 
     Route::prefix('admin/')->group(function () {
         Route::post('get', [AdminController::class, 'getAdmin']);
+        Route::post('update', [AdminController::class, 'updateAdmin']);
     });
 
     Route::prefix('user/')->group(function (){

@@ -10,7 +10,9 @@ class SubjectController extends Controller
     public function getSubjects(Request $request)
     {
         $subjects = SubjectTable::all();
-        return response()->json($subjects);
+        return response()->json([
+            'subjects' => $subjects
+        ]);
     }
 
     public function getSubject(Request $request){
@@ -30,14 +32,11 @@ class SubjectController extends Controller
     public function createSubject(Request $request)
     {
         $subject = $request->subject;
-        $key = $request->key;
         $description = $request->description;
 
-        if ($subject != null && $key != null && $description != null) {
-
+        if ($subject != null && $description != null) {
             SubjectTable::create([
                 'subject' => $subject,
-                'key' => $key,
                 'description' => $description
             ]);
 

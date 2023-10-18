@@ -86,9 +86,10 @@ class StudentController extends Controller
         }
     }
 
-    public function deleteStudent(Request $request){
+    public function deleteStudent(Request $request)
+    {
         $studentId = $request->studentId;
-        if ($studentId != null){
+        if ($studentId != null) {
             $getStudent = DB::table('StudentTable')
                 ->select('loginId')
                 ->where('id', '=', $studentId)
@@ -106,9 +107,10 @@ class StudentController extends Controller
         }
     }
 
-    public function resetPassword(Request $request){
+    public function resetPassword(Request $request)
+    {
         $loginId = session('loginId');
-        if ($request->password != null && $loginId != null){
+        if ($request->password != null && $loginId != null) {
             $password = Hash::make($request->password);
             DB::table('UserLoginTable')
                 ->where('id', '=', $loginId)
@@ -121,5 +123,35 @@ class StudentController extends Controller
                 'error' => 'loginId'
             ]);
         }
+    }
+
+    public function getAllStudents(Request $request)
+    {
+        $search = $request->search;
+        if ($search != null){
+            $students = DB::table('StudentTable')
+                ->select('StudentTable.*', 'ClassTable.class')
+                ->join('ClassTable', 'StudentTable.classId', '=', 'ClassTable.id')
+                ->where('name', 'LIKE', '%'.$search.'%')
+                ->orWhere('surname', 'LIKE','%'.$search.'%')
+                ->orWhere('ClassTable.class', 'LIKE', '%'.$search.'%')
+                ->orderBy('StudentTable.name', 'asc')
+                ->orderBy('StudentTable.surname', 'asc')
+                ->get();
+            return response()->json([
+                'students' => $students
+            ]);
+        } else{
+            $students = DB::table('StudentTable')
+                ->select('StudentTable.*', 'ClassTable.class')
+                ->join('ClassTable', 'StudentTable.classId', '=', 'ClassTable.id')
+                ->orderBy('StudentTable.name', 'asc')
+                ->orderBy('StudentTable.surname', 'asc')
+                ->get();
+            return response()->json([
+                'students' => $students
+            ]);
+        }
+
     }
 }

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create("SubjectTable", function (Blueprint $table){
             $table->id();
             $table->string('subject')->index();
-            $table->string('key');
             $table->longText('description');
             $table->timestamps();
         });
