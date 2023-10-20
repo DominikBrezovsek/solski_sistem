@@ -3,6 +3,7 @@
     <Sidebar/>
     <div class="content">
       <StudentClasses v-if="user_type == 'student'"/>
+      <StudentEnroll v-if="user_type == 'student'"/>
       <TeacherClasses v-if="user_type == 'teacher'"/>
       <AdminClasses v-if="user_type == 'admin'"/>
     </div>
@@ -14,13 +15,15 @@ import Sidebar from '@/components/Sidebar.vue';
 import StudentClasses from "@/components/StudentClasses.vue";
 import TeacherClasses from "@/components/TeacherClasses.vue";
 import AdminClasses from "@/components/AdminClasses.vue";
+import StudentEnroll from "@/components/StudentEnroll.vue";
 
 export default {
   components: {
     AdminClasses,
     Sidebar,
     StudentClasses,
-    TeacherClasses
+    TeacherClasses,
+    StudentEnroll,
   },
   data() {
     return {

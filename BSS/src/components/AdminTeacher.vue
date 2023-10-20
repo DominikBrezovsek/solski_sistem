@@ -1,12 +1,12 @@
 <template>
   <div class="admin-teacher">
     <div class="tittle">
-      <h1>Dijaki</h1>
+      <h1>Profesorji</h1>
     </div>
     <div class="classes">
       <div class="search-bar">
         <div>
-          <input type="text" placeholder="Najdi dijaka po imenu, priimku ali razredu..." v-model="searchInput"  @change="checkIfSearch" >
+          <input type="text" placeholder="Najdi profesorja po imenu ali priimku..." v-model="searchInput"  @change="checkIfSearch" >
         </div>
       </div>
       <div class="table">

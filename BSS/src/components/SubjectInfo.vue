@@ -5,7 +5,9 @@
     </div>
     <div class="description">
       <p>{{ a.description }}</p>
+      <p @click="removeSubject"><img src="../assets/delete-icon.png" alt="un-enroll"></p>
     </div>
+
   </div>
 </template>
 
@@ -56,7 +58,49 @@ export default {
               }
             })
       }
-    }
+    },
+    removeSubject() {
+      let token = sessionStorage.getItem('token');
+      const subjectId = sessionStorage.getItem('subjectId')
+      if (token != null && subjectId != null) {
+        const path = 'https://smv.usdd.company/API/public/api/';
+        const jwt = new FormData();
+        jwt.append('token', token);
+        jwt.append('subjectId', subjectId)
+        Swal.fire({
+          title: 'Izpis iz predmeta?',
+          text: 'Vaše oddaje bodo odstranjene, predmet pa odstranjen iz seznama. Nadaljujem?',
+          icon: "question",
+          confirmButtonText: 'Da, odstrani predmet s seznama.',
+          confirmButtonColor: '#d1404d',
+          showCancelButton: true,
+          cancelButtonText: 'Ne, ne izpiši me iz predmeta.',
+          cancelButtonColor: '#4377df'
+        }).then((event) => {
+          if (event.isConfirmed) {
+            axios.post(path + 'sts/delete', jwt)
+                .then((response) => {
+                  if (response.data.success == "true") {
+                    Swal.fire({
+                      title: 'Predmet odstranjen',
+                      text: 'Predmet uspešno odstranjen.',
+                      icon: "success",
+                      confirmButtonText: 'Razumem',
+                      confirmButtonColor: '#4377df',
+                    })
+                        .then((event) => {
+                          if (event.isConfirmed || event.isDismissed) {
+                            this.$router.push('/classes')
+                          }
+                        })
+                  }
+                })
+          } else {
+            Swal.close()
+          }
+        })
+      }
+    },
   },
   created() {
     this.getSubject()
@@ -97,5 +141,7 @@ export default {
   font-size: xx-large;
   flex-direction: column;
 }
-
+.description img {
+  height: 3vh;
+}
 </style>

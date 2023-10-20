@@ -15,6 +15,8 @@
             <p>{{ s.name }}</p>
             <p>{{ s.surname }}</p>
             <p>{{ s.class }}</p>
+            <p @click="deleteStudent(s.id)"><img src="../assets/delete-icon.png" alt="odstrani dijaka"></p>
+            <p @click="editStudent(s.id)"><img src="../assets/editing.png" alt="uredi dijaka"></p>
           </div>
         </div>
       </div>
@@ -89,7 +91,54 @@ export default {
       } else {
         this.getAllStudents();
       }
-    }
+    },
+    deleteStudent(studentId: string){
+      const token = sessionStorage.getItem('token');
+      if (token != null && studentId != null){
+        Swal.fire({
+          title: 'Izbrišem dijaka?',
+          text: 'Želite izbrisati dijaka iz sitema? Tega dejanja ni mogoče razveljaviti!',
+          icon: "question",
+          confirmButtonText: 'Da, izbriši dijaka',
+          confirmButtonColor: '#e63946',
+          showCancelButton: true,
+          cancelButtonText: 'Ne, prekliči izbris',
+          cancelButtonColor: '#4377df',
+        })
+            .then((event) => {
+              if(event.isConfirmed){
+                const data = new FormData();
+                data.append('token', token)
+                data.append('studentId', studentId)
+                axios.post('https://smv.usdd.company/API/public/api/student/delete', data)
+                    .then((response) =>{
+                      if(response.data.success == "true"){
+                        Swal.fire({
+                          title: 'Izbris uspešen',
+                          text: 'Dijak uspešno izbrisan',
+                          icon: 'success',
+                          confirmButtonColor: '#4377df'
+                        })
+                            .then((event) => {
+                              if (event.isConfirmed && event.isDismissed){
+                                this.$router.push('/students')
+                              }
+                            })
+
+                      }
+                    })
+              } else {
+                Swal.close()
+              }
+            })
+      }
+    },
+    editStudent(studentId: string){
+      const token = sessionStorage.getItem('token');
+      if (token != null && studentId != null){
+
+      }
+    },
   },
   created() {
     this.checkIfSearch()
@@ -184,6 +233,10 @@ export default {
 .student-row:hover {
   border-bottom: 4px solid #5891d3;
   transition: 0.2s ease-in-out;
+}
+
+.student-row p img{
+  height: 3vh;
   cursor: pointer;
 }
 </style>
