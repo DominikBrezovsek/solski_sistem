@@ -220,7 +220,7 @@ class AssignmentController extends Controller
                 ->join('StudentTable AS ST', 'ST.id', '=', 'SST.studentId')
                 ->join('SubjectAssignmentTable AS SAT', 'SUB.assignmentId', '=', 'SAT.id')
                 ->join('SubjectTable AS S', 'SST.subjectId', '=', 'S.id')
-                ->where('ST.id', '=', $loginId)
+                ->where('ST.loginId', '=', $loginId)
                 ->where('S.id', '=', $subjectId)
                 ->get();
 

@@ -8,6 +8,7 @@ use App\Models\UserLoginTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -94,6 +95,28 @@ class StudentController extends Controller
                 ->select('loginId')
                 ->where('id', '=', $studentId)
                 ->first();
+            $sts = DB::table('StudentSubjectTable')
+                ->select('id')
+                ->where('studentId', '=', $studentId)
+                ->get();
+
+            foreach ($sts as $st){
+                $material = DB::table('SubmissionTable')
+                    ->select('file')
+                    ->where('studSubjectId', '=', $st->id)
+                    ->get();
+
+                foreach ($material as $item){
+                    Storage::delete('/public/ass_sub/'.$item->file);
+                }
+                DB::table('SubmissionTable')
+                    ->where('studSubjectId', '=', $st->id)
+                    ->delete();
+            }
+            DB::table('StudentSubjectTable')
+                ->where('studentId', '=', $studentId)
+                ->delete();
+
             StudentTable::where('loginId', '=', $getStudent->loginId)->delete();
             UserLoginTable::where('id', '=', $getStudent->loginId)->delete();
 

@@ -97,6 +97,7 @@ Route::middleware(['tokenVerify'])->group(function (){
     Route::prefix('sts/')->group(function (){
         Route::post('add', [StudentSubjectController::class, 'enrollStudent']);
         Route::post('get', [StudentSubjectController::class, 'getSubjects']);
+        Route::post('delete', [StudentSubjectController::class, 'removeSubject']);
     });
 
     Route::prefix('ts/')->group(function (){
