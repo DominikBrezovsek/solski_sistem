@@ -5,7 +5,7 @@
     </div>
     <div class="description">
       <p>{{ a.description }}</p>
-      <p @click="removeSubject"><img src="../assets/delete-icon.png" alt="un-enroll"></p>
+      <p @click="removeSubject" v-if="userType == 'student'"><img src="../assets/delete-icon.png" alt="un-enroll"></p>
     </div>
 
   </div>
@@ -19,12 +19,17 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
-      subject: Array()
+      subject: Array(),
+      userType: ''
     }
   },
   methods: {
     getSubject() {
       let token = sessionStorage.getItem('token');
+      const type = sessionStorage.getItem('type')
+      if (type != null){
+        this.userType = type
+      }
       const subjectId = sessionStorage.getItem('subjectId')
       if (token != null && subjectId != null) {
         const path = 'https://smv.usdd.company/API/public/api/';

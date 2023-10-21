@@ -97,6 +97,43 @@ export default {
                       confirmButtonText: 'Razumem',
                       confirmButtonColor: '#4377df'
                     })
+                  } else if (response.data.error == "hasSubs"){
+                    Swal.fire({
+                      title: 'Naloga ima oddaje',
+                      text: 'Naloga, ki jo želite izbrisati že ima oddaje! Izbris naloge bo odstranil tudi oddaje! Želite nadaljevati?',
+                      icon: "question",
+                      confirmButtonText: 'Da, želim izbrisati nalogo',
+                      confirmButtonColor: '#4377df',
+                      showCancelButton: true,
+                      cancelButtonText: 'Ne, ohrani nalogo',
+                      cancelButtonColor: '#e63946'
+                    }) .then((event) => {
+                      if (event.isConfirmed){
+                        const path = 'https://smv.usdd.company/API/public/api/';
+                        const data = new FormData();
+                        data.append('token', token);
+                        data.append('subjectId', subject);
+                        data.append('assignmentId', id);
+                        data.append('evenIf', "true")
+                        axios.post(path + 'assignment/delete', data)
+                            .then((response) => {
+                              if (response.data.success == "true"){
+                                Swal.fire({
+                                  title: 'Naloga izbrisana',
+                                  text: 'Naloga je bila uspešno izbrisana.',
+                                  icon: 'success',
+                                  confirmButtonText: 'Razumem',
+                                  confirmButtonColor: '#4377df'
+                                }) .then((event) => {
+                                  if (event.isConfirmed || event.isDismissed){
+                                    Swal.close()
+                                    this.$router.push('/classes')
+                                  }
+                                })
+                              }
+                            })
+                      }
+                    })
                   }
                 })
           } else {
