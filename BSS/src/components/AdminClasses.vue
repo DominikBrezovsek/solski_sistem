@@ -186,7 +186,7 @@ classes {
   justify-content: flex-start;
   align-items: flex-start;
   width: 82vw;
-  height: 75vh;
+  height: 70vh;
   padding-top: 5vh;
   background: #dee8fb;
   border-top-left-radius: 20px;

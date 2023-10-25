@@ -114,7 +114,6 @@ export default {
   color: grey;
   font-size: xx-large;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .button-add {

@@ -6,7 +6,8 @@
     <div class="classes">
       <div class="search-bar">
         <div>
-          <input type="text" placeholder="Najdi dijaka po imenu, priimku ali razredu..." v-model="searchInput"  @change="checkIfSearch" >
+          <input type="text" placeholder="Najdi dijaka po imenu, priimku ali razredu..." v-model="searchInput"
+                 @change="checkIfSearch">
         </div>
       </div>
       <div class="table">
@@ -20,11 +21,16 @@
           </div>
         </div>
       </div>
+      <div class="button">
+        <div class="button-add" @click="toSubAdd">
+          Dodaj
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<script  lang="ts">
+<script lang="ts">
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -66,6 +72,9 @@ export default {
             })
       }
     },
+    toSubAdd() {
+      this.$router.push('/student/add')
+    },
     findStudent() {
       this.students = Array()
       let token = sessionStorage.getItem('token');
@@ -85,16 +94,16 @@ export default {
       }
 
     },
-    checkIfSearch(){
-      if(this.searchInput.length > 0){
+    checkIfSearch() {
+      if (this.searchInput.length > 0) {
         this.findStudent();
       } else {
         this.getAllStudents();
       }
     },
-    deleteStudent(studentId: string){
+    deleteStudent(studentId: string) {
       const token = sessionStorage.getItem('token');
-      if (token != null && studentId != null){
+      if (token != null && studentId != null) {
         Swal.fire({
           title: 'Izbrišem dijaka?',
           text: 'Želite izbrisati dijaka iz sitema? Tega dejanja ni mogoče razveljaviti!',
@@ -106,13 +115,13 @@ export default {
           cancelButtonColor: '#4377df',
         })
             .then((event) => {
-              if(event.isConfirmed){
+              if (event.isConfirmed) {
                 const data = new FormData();
                 data.append('token', token)
                 data.append('studentId', studentId)
                 axios.post('https://smv.usdd.company/API/public/api/student/delete', data)
-                    .then((response) =>{
-                      if(response.data.success == "true"){
+                    .then((response) => {
+                      if (response.data.success == "true") {
                         Swal.fire({
                           title: 'Izbris uspešen',
                           text: 'Dijak uspešno izbrisan',
@@ -120,7 +129,7 @@ export default {
                           confirmButtonColor: '#4377df'
                         })
                             .then((event) => {
-                              if (event.isConfirmed && event.isDismissed){
+                              if (event.isConfirmed && event.isDismissed) {
                                 this.$router.push('/students')
                               }
                             })
@@ -133,9 +142,9 @@ export default {
             })
       }
     },
-    editStudent(studentId: string){
+    editStudent(studentId: string) {
       const token = sessionStorage.getItem('token');
-      if (token != null && studentId != null){
+      if (token != null && studentId != null) {
 
       }
     },
@@ -156,30 +165,33 @@ export default {
   justify-content: space-between;
   padding-left: 2vw;
 }
-.search-bar{
+
+.search-bar {
   width: 100%;
   height: 5vh;
   margin-bottom: 3vh;
   padding: 1vh 1vw;
 }
 
-.search-bar input{
+.search-bar input {
   width: 100%;
   height: 100%;
   outline: none;
 }
 
-.search-bar input::placeholder{
+.search-bar input::placeholder {
   color: #6e7881;
 }
 
-.search-bar input::placeholder:focus{
+.search-bar input::placeholder:focus {
   color: #000;
 }
-.search-bar input:focus{
+
+.search-bar input:focus {
   border-bottom: 3px solid #4377df;
   transition: all 0.15s ease-in;
 }
+
 .tittle {
   width: 100%;
   margin-top: 1vh;
@@ -198,7 +210,7 @@ export default {
   justify-content: flex-start;
   align-items: flex-start;
   width: 82vw;
-  height: 80vh;
+  height: 70vh;
   padding-top: 5vh;
   background: #dee8fb;
   border-top-left-radius: 20px;
@@ -220,7 +232,7 @@ export default {
   gap: 3vh;
 }
 
-.student-row{
+.student-row {
   border-bottom: 4px solid #2e5baa;
   display: flex;
   flex-direction: row;
@@ -235,8 +247,68 @@ export default {
   transition: 0.2s ease-in-out;
 }
 
-.student-row p img{
+.student-row p img {
   height: 3vh;
   cursor: pointer;
 }
+
+.button-add {
+  background-color: #315cfd;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+  width: 20vw;
+}
+
+.button-add:after {
+  content: "";
+  background-color: rgba(255, 255, 255, 0.2);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+.button-add:hover:after {
+  animation: ripple_401 1s ease-out;
+}
+
+@keyframes ripple_401 {
+  0% {
+    width: 5px;
+    height: 5px;
+    opacity: 1;
+  }
+
+  100% {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+  }
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  gap: 5vh;
+  width: 82vw;
+  padding-top: 5vh;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  align-items: center;
+}
+
 </style>

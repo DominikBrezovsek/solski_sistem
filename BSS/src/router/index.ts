@@ -14,6 +14,7 @@ import EditAssignment from "@/views/EditAssignment.vue";
 import AddAssignment from "@/components/AddAssignment.vue";
 import SubmissionsView from "@/views/SubmissionsView.vue";
 import AdminAddSubject from "@/views/AdminAddSubject.vue";
+import AdminAddStudent from "@/views/AdminAddStudent.vue";
 import AdminAddTeacher from "@/views/AdminAddTeacher.vue";
 
 const router = createRouter({
@@ -33,6 +34,14 @@ const router = createRouter({
             path: '/register2',
             name: 'Register2',
             component: RegisterPage2
+        },
+        {
+            path: '/student/add',
+            name: 'StudentAdd',
+            component: AdminAddStudent,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: '/classes',
@@ -132,7 +141,7 @@ const router = createRouter({
         },
         {
             path: '/teachers/add',
-            name: 'Add teacher',
+            name: 'Add teachers',
             component: AdminAddTeacher,
             meta: {
                 requiresAuth: true
