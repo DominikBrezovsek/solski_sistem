@@ -21,6 +21,11 @@
         </div>
       </div>
     </div>
+    <div class="button">
+      <div class="button-add" @click="toTeacherAdd">
+        Dodaj
+      </div>
+    </div>
   </div>
 </template>
 
@@ -136,6 +141,9 @@ export default {
     editTeacher(id: string){
 
     },
+    toTeacherAdd(){
+      this.$router.push('/teachers/add')
+    }
   },
   created() {
     this.checkIfSearch()
