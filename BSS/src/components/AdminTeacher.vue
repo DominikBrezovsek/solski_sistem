@@ -11,10 +11,12 @@
       </div>
       <div class="table">
         <div class="students-table">
-          <div class="student-row" v-for="s in teachers">
-            <p>{{ s.name }}</p>
-            <p>{{ s.surname }}</p>
-            <p>{{ s.class }}</p>
+          <div class="student-row" v-for="t in teachers">
+            <p>{{ t.name }}</p>
+            <p>{{ t.surname }}</p>
+            <p>{{ t.class }}</p>
+            <p @click="deleteTeacher(t.id)"><img src="../assets/delete-icon.png" alt="odstrani dijaka"></p>
+            <p @click="editTeacher(t.id)"><img src="../assets/editing.png" alt="uredi dijaka"></p>
           </div>
         </div>
       </div>
@@ -89,7 +91,51 @@ export default {
       } else {
         this.getAllTeachers();
       }
-    }
+    },
+    deleteTeacher(id: string){
+      const token = sessionStorage.getItem('token');
+      if (token != null && id != null){
+        Swal.fire({
+          title: 'Izbrišem profesorja?',
+          text: 'Želite izbrisati profesorja iz sitema? Tega dejanja ni mogoče razveljaviti!',
+          icon: "question",
+          confirmButtonText: 'Da, izbriši profesorja',
+          confirmButtonColor: '#e63946',
+          showCancelButton: true,
+          cancelButtonText: 'Ne, prekliči izbris',
+          cancelButtonColor: '#4377df',
+        })
+            .then((event) => {
+              if(event.isConfirmed){
+                const data = new FormData();
+                data.append('token', token)
+                data.append('teacherId', id)
+                axios.post('https://smv.usdd.company/API/public/api/teacher/delete', data)
+                    .then((response) =>{
+                      if(response.data.success == "true"){
+                        Swal.fire({
+                          title: 'Izbris uspešen',
+                          text: 'Profesor uspešno izbrisan',
+                          icon: 'success',
+                          confirmButtonColor: '#4377df'
+                        })
+                            .then((event) => {
+                              if (event.isConfirmed && event.isDismissed){
+                                this.$router.push('/students')
+                              }
+                            })
+
+                      }
+                    })
+              } else {
+                Swal.close()
+              }
+            })
+      }
+    },
+    editTeacher(id: string){
+
+    },
   },
   created() {
     this.checkIfSearch()
@@ -184,6 +230,10 @@ export default {
 .student-row:hover {
   border-bottom: 4px solid #5891d3;
   transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+.student-row p img{
+  height: 3vh;
   cursor: pointer;
 }
 </style>
