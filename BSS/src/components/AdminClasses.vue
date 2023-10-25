@@ -40,6 +40,7 @@ export default {
   },
   methods: {
     getAllSubjects() {
+      this.subjects = Array();
       let token = sessionStorage.getItem('token');
       if (token != null) {
         const jwt = new FormData();
