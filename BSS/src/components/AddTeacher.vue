@@ -1,36 +1,36 @@
 <template>
-  <div class="add-subject">
+  <div class="add-teacher">
     <div class="tittle">
       <h1>Dodaj profesorja</h1>
     </div>
     <div class="flex flex-row">
-      <div class="subject-form">
-        <div class="subject-input">
+      <div class="teacher-form">
+        <div class="teacher-input">
           <label for="username">Uporabniško ime</label>
           <input type="text" v-model="username" id="username" required>
         </div>
-        <div class="subject-input">
+        <div class="teacher-input">
           <label for="password">Geslo</label>
           <input type="text" v-model="password" id="password" required>
         </div>
-        <div class="subject-input">
+        <div class="teacher-input">
           <label for="ime">Ime</label>
           <input type="text" v-model="ime" id="ime" required>
         </div>
-        <div class="subject-input">
+        <div class="teacher-input">
           <label for="priimek">Priimek</label>
           <input type="text" v-model="surname" id="priimek" required>
         </div>
-        <div class="subject-input">
-          <label for="email">Priimek</label>
+        <div class="teacher-input">
+          <label for="email">email</label>
           <input type="email" v-model="email" id="email" required>
         </div>
-        <div class="subject-input">
-          <label for="cabinet">Priimek</label>
+        <div class="teacher-input">
+          <label for="cabinet">Kabinet</label>
           <input type="text" v-model="cabinet" id="cabinet" required>
         </div>
       </div>
-      <div class="subject-select">
+      <div class="teacher-select">
         <div class="option" v-for="s in subjects" >
           <label :for="s.id">{{s.subject}}</label>
           <input type="checkbox" :id="s.id" :value="s.id" v-model="selectedSubjects">
@@ -132,7 +132,7 @@ export default {
 </script>
 
 <style scoped>
-.add-subject {
+.add-teacher {
   display: flex;
   flex-direction: column;
   gap: 2vh;
@@ -140,11 +140,11 @@ export default {
   padding-left: 2vw;
 }
 
-.add-subject h2, p {
+.add-teacher h2, p {
   padding: 2vh;
 }
 
-.add-subject h2 {
+.add-teacher h2 {
   width: 100%;
   padding: 2vh;
   border-bottom: 3px solid grey;
@@ -220,26 +220,26 @@ export default {
   margin-right: auto;
 }
 
-.subject-form {
+.teacher-form {
   display: flex;
   flex-direction: column;
   gap: 3vh;
   padding-top: 10vh;
 }
 
-.subject-form label {
+.teacher-form label {
   font-size: 1rem;
   font-weight: 500;
 }
 
-.subject-input {
+.teacher-input {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.subject-input input, select {
+.teacher-input input, select {
   height: 6vh;
   width: 22vw;
   border: 2px solid #4377df;
@@ -250,7 +250,7 @@ export default {
   transition: all 0.15s ease-in-out;
 }
 
-.subject-input input:hover, select:hover {
+.teacher-input input:hover, select:hover {
   border: 4px solid #4377df;
   border-radius: 10px;
   color: black;
@@ -259,11 +259,11 @@ export default {
 
 }
 
-.subject-input input:active, select:active {
+.teacher-input input:active, select:active {
   outline: none;
 }
 
-.subject-input input:focus, select:focus {
+.teacher-input input:focus, select:focus {
   border: 4px solid #4377df;
   border-radius: 10px;
   color: black;
