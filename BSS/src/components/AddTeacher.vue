@@ -22,7 +22,7 @@
           <input type="text" v-model="surname" id="priimek" required>
         </div>
         <div class="teacher-input">
-          <label for="email">email</label>
+          <label for="email">E-poštni naslov</label>
           <input type="email" v-model="email" id="email" required>
         </div>
         <div class="teacher-input">
