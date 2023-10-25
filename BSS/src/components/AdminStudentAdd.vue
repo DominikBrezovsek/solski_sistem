@@ -3,24 +3,51 @@
     <div class="tittle">
       <h1>Dodaj dijaka</h1>
     </div>
-    <div class="student-form">
-      <div class="student-input">
-        <label for="ime">Ime dijaka</label>
-        <input type="text" v-model="title" id="ime" required>
+    <div class="flex flex-row">
+      <div class="student-form">
+        <div class="student-input">
+          <label for="username">Uporabniško ime</label>
+          <input type="text" v-model="username" id="username" required>
+        </div>
+        <div class="student-input">
+          <label for="password">Geslo</label>
+          <input type="password" v-model="password" id="password" required>
+        </div>
+        <div class="student-input">
+          <label for="ime">Ime dijaka</label>
+          <input type="text" v-model="ime" id="ime" required>
+        </div>
+        <div class="student-input">
+          <label for="priimek">Priimek dijaka</label>
+          <input type="text" v-model="priimek" id="priimek" required>
+        </div>
+        <div class="student-input">
+          <label for="email">E-poštni naslov</label>
+          <input type="text" v-model="email" id="email" required>
+        </div>
+        <div class="student-input">
+          <label for="razred">Šola</label>
+          <select name="school" id="razred" v-model="currentSchool" @change="getClasses">
+            <option value="" disabled selected>Izberi šolo</option>
+            <option v-for="school in schools" :value="school.id">{{ school.name }}</option>
+          </select>
+        </div>
+        <div class="student-input">
+          <label for="razred">Razred</label>
+          <select name="school" id="razred" v-model="razred" @change="getClasses">
+            <option value="" disabled selected>Izberi razred</option>
+            <option v-for="razred in razredi" :value="razred.id">{{ razred.class }}</option>
+          </select>
+        </div>
       </div>
-      <div class="student-input">
-        <label for="priimek">Priimek dijaka</label>
-        <input type="text" v-model="description" id="priimek" required>
-      </div>
-      <div class="student-input">
-        <label for="razred">Razred</label>
-        <input type="text" v-model="description" id="razred" required>
-      </div>
-      <div class="student-input">
-        <label for="predmeti">Predmeti</label>
-        <input type="text" v-model="description" id="predmeti" required>
+      <div class="subject-select">
+        <div class="option" v-for="s in subjects" >
+          <label :for="s.id">{{s.subject}}</label>
+          <input type="checkbox" :id="s.id" :value="s.id" v-model="selectedSubjects">
+        </div>
       </div>
     </div>
+
     <div class="button">
       <label class="button-add" @click="createStudent">
         Dodaj dijaka
@@ -37,21 +64,36 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
-      title: '',
-      description: ''
+      username: '',
+      password: '',
+      ime: '',
+      priimek: '',
+      razred: '',
+      email: '',
+      razredi: Array(),
+      subjects: Array(),
+      selectedSubjects: Array(),
+      currentSchool: '',
+      schools: Array(),
     }
   },
   methods: {
     createStudent() {
       const token = sessionStorage.getItem('token');
       console.log(token)
-      if (token != null && this.title != null && this.description != null) {
+      if (token != null && this.username != null && this.password != null && this.ime != null && this.priimek != null
+      && this.razred != null && this.email != null && this.selectedSubjects.length != 0) {
         const path = 'https://smv.usdd.company/API/public/api/'
         const data = new FormData();
         data.append('token', token)
-        data.append('subject', this.title)
-        data.append('description', this.description)
-        axios.post(path + 'subjects/create', data)
+        data.append('username', this.username)
+        data.append('password', this.password)
+        data.append('name', this.ime)
+        data.append('surname', this.priimek)
+        data.append('email', this.email)
+        data.append('class', this.razred)
+        data.append('subjects', JSON.stringify(this.selectedSubjects))
+        axios.post(path + 'student/create', data)
             .then((response) => {
               if (response.data.success == "true") {
                 Swal.fire({
@@ -79,8 +121,47 @@ export default {
           confirmButtonColor: '#4377df'
         })
       }
+    },
+    getAllSubjects() {
+      this.subjects = Array();
+      let token = sessionStorage.getItem('token');
+      if (token != null) {
+        const jwt = new FormData();
+        jwt.append('token', token);
+        axios.post('https://smv.usdd.company/API/public/api/subjects/get-all', jwt)
+            .then((response) => {
+              if (response.data.subjects != null) {
+                for (let i = 0; i < (response.data.subjects).length; i++) {
+                  this.subjects.push(response.data.subjects[i]);
+                  console.log(this.subjects)
+                }
+              }
+            })
+      }
+    },
+    getClasses() {
+      const school = new FormData();
+
+      school.append('school', this.currentSchool);
+      axios.post('https://smv.usdd.company/API/public/api/school/classes', school)
+          .then((response) => {
+            if (response.data != null) {
+              this.razredi = response.data;
+            }
+          }, (error) => {
+            console.log(error);
+          });
     }
-  }
+  },
+  created() {
+    this.getAllSubjects();
+    axios.get('https://smv.usdd.company/API/public/api/school/getAll')
+        .then((response) => {
+          this.schools = response.data;
+        }, (error) => {
+          console.log(error);
+        });
+},
 }
 </script>
 
