@@ -13,7 +13,9 @@
     <div class="table">
       <div class="class-table">
         <div class="class-row" v-for="s in subjects">
-          <p>{{ s.subject }}</p>
+          <p class="name">{{ s.subject }}</p>
+          <p @click="deleteSubject(s.id)"><img src="../assets/delete-icon.png" alt="odstrani predmet"></p>
+          <p @click="editSubject(s.id)"><img src="../assets/editing.png" alt="uredi predmet"></p>
         </div>
       </div>
     </div>
@@ -96,7 +98,54 @@ export default {
       } else {
         this.getAllSubjects();
       }
-    }
+    },
+    deleteSubject(subjectId: string) {
+      const token = sessionStorage.getItem('token');
+      if (token != null && subjectId != null) {
+        Swal.fire({
+          title: 'Izbrišem predmet?',
+          text: 'Želite izbrisati predmet iz sitema? Tega dejanja ni mogoče razveljaviti!',
+          icon: "question",
+          confirmButtonText: 'Da, izbriši predmet',
+          confirmButtonColor: '#e63946',
+          showCancelButton: true,
+          cancelButtonText: 'Ne, prekliči izbris',
+          cancelButtonColor: '#4377df',
+        })
+            .then((event) => {
+              if (event.isConfirmed) {
+                const data = new FormData();
+                data.append('token', token)
+                data.append('subjectId', subjectId)
+                axios.post('https://smv.usdd.company/API/public/api/subjects/delete', data)
+                    .then((response) => {
+                      if (response.data.success == "true") {
+                        Swal.fire({
+                          title: 'Izbris uspešen',
+                          text: 'Predemet uspešno izbrisan',
+                          icon: 'success',
+                          confirmButtonColor: '#4377df'
+                        })
+                            .then((event) => {
+                              if (event.isConfirmed && event.isDismissed) {
+                                this.$router.push('/classes')
+                              }
+                            })
+
+                      }
+                    })
+              } else {
+                Swal.close()
+              }
+            })
+      }
+    },
+    editSubject(subjectId: string) {
+      const token = sessionStorage.getItem('token');
+      if (token != null && subjectId != null) {
+
+      }
+    },
   },
   created() {
     this.getAllSubjects();
@@ -271,5 +320,26 @@ classes {
 .search-bar input:focus {
   border-bottom: 3px solid #4377df;
   transition: all 0.15s ease-in;
+}
+.class-row {
+  border-bottom: 4px solid #2e5baa;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2vw;
+  width: 100%;
+  height: 5vh;
+}
+
+.class-row:hover {
+  border-bottom: 4px solid #5891d3;
+  transition: 0.2s ease-in-out;
+}
+.name {
+  width: 15vw;
+}
+.class-row p img{
+  height: 3vh;
+  cursor: pointer;
 }
 </style>
