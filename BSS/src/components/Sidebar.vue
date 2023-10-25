@@ -324,7 +324,7 @@ export default {
   font-size: large;
   justify-content: space-between;
   padding-left: 1vw;
-  padding-bottom: 20vh;
+  padding-bottom: 15vh;
 }
 
 .navigation_link {

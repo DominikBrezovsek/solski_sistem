@@ -6,21 +6,21 @@
     <div class="classes">
       <div class="search-bar">
         <div>
-          <h1>Iskanje</h1>
-        </div>
-      </div>
-      <div class="table">
-        <div class="class-table">
-          <div class="class-row" v-for="s in subjects">
-            <p>{{ s.subject }}</p>
-          </div>
+          <input type="text" placeholder="Najdi predmet..." v-model="searchInput" @change="checkIfSearch">
         </div>
       </div>
     </div>
-    <div class="button">
-      <div class="button-add" @click="toSubAdd">
-        Dodaj
+    <div class="table">
+      <div class="class-table">
+        <div class="class-row" v-for="s in subjects">
+          <p>{{ s.subject }}</p>
+        </div>
       </div>
+    </div>
+  </div>
+  <div class="button">
+    <div class="button-add" @click="toSubAdd">
+      Dodaj
     </div>
   </div>
 </template>
@@ -34,7 +34,8 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
-      subjects: Array()
+      subjects: Array(),
+      searchInput: ''
     }
   },
   methods: {
@@ -67,13 +68,38 @@ export default {
             })
       }
     },
-    toSubAdd(){
+    toSubAdd() {
       this.$router.push('/subjects/add')
+    },
+    findSubject() {
+      this.subjects = Array()
+      let token = sessionStorage.getItem('token');
+      console.log(this.searchInput.length)
+      if (token != null && this.searchInput) {
+        const jwt = new FormData();
+        jwt.append('token', token);
+        jwt.append('search', this.searchInput)
+        axios.post('https://smv.usdd.company/API/public/api/subjects/get-all', jwt)
+            .then((response) => {
+              if (response.data.subjects != null) {
+                for (let i = 0; i < (response.data.subjects).length; i++) {
+                  this.subjects.push(response.data.subjects[i]);
+                }
+              }
+            })
+      }
+    },
+    checkIfSearch() {
+      if (this.searchInput.length > 0) {
+        this.findSubject();
+      } else {
+        this.getAllSubjects();
+      }
     }
   },
   created() {
     this.getAllSubjects();
-},
+  },
 }
 </script>
 
@@ -86,6 +112,10 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding-left: 2vw;
+}
+
+classes {
+  width: 100%;
 }
 
 .tittle {
@@ -106,7 +136,7 @@ export default {
   justify-content: flex-start;
   align-items: flex-start;
   width: 82vw;
-  height: 80vh;
+  height: 75vh;
   padding-top: 5vh;
   background: #dee8fb;
   border-top-left-radius: 20px;
@@ -127,7 +157,7 @@ export default {
   overflow-y: auto;
 }
 
-.class-row{
+.class-row {
   border-bottom: 4px solid #2e5baa;
   display: flex;
   flex-direction: row;
@@ -203,7 +233,8 @@ export default {
     opacity: 0;
   }
 }
-.button{
+
+.button {
   display: flex;
   flex-direction: row;
   gap: 5vh;
@@ -213,5 +244,31 @@ export default {
   margin-right: auto;
   justify-content: center;
   align-items: center;
+}
+
+.search-bar {
+  width: 82vw;
+  height: 5vh;
+  margin-bottom: 3vh;
+  padding: 1vh 1vw;
+}
+
+.search-bar input {
+  width: 100%;
+  height: 100%;
+  outline: none;
+}
+
+.search-bar input::placeholder {
+  color: #6e7881;
+}
+
+.search-bar input::placeholder:focus {
+  color: #000;
+}
+
+.search-bar input:focus {
+  border-bottom: 3px solid #4377df;
+  transition: all 0.15s ease-in;
 }
 </style>

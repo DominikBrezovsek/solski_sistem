@@ -6,6 +6,7 @@
       <RecentAssignments v-if="user_type == 'student'"/>
       <h1 v-if="user_type == 'teacher'" class="tittle">Zadnje oddaje</h1>
       <Submissions v-if="user_type == 'teacher'"/>
+      <version v-if="user_type == 'admin'"/>
     </div>
   </div>
 
@@ -17,9 +18,11 @@ import RecentSubjects from "@/components/RecentSubjects.vue";
 import RecentAssignments from "@/components/RecentAssignments.vue";
 import GivenAssignments from "@/components/RecentAssignments.vue";
 import Submissions from "@/components/Submissions.vue";
+import Version from "@/components/Version.vue";
 
 export default {
   components: {
+    Version,
     Sidebar,
     RecentSubjects,
     RecentAssignments,
