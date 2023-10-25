@@ -67,7 +67,7 @@ Route::middleware(['tokenVerify'])->group(function (){
         Route::post('get', [TeacherController::class, 'getTeacher']);
         Route::post('get-all', [TeacherController::class, 'getAllTeachers']);
         Route::post('create', [TeacherController::class, 'createTeacher']);
-        Route::post('delete', [TeacherController::class, 'getTeacher']);
+        Route::post('delete', [TeacherController::class, 'deleteTeacher']);
         Route::post('update', [TeacherController::class, 'updateTeacher']);
     });
 
@@ -92,6 +92,7 @@ Route::middleware(['tokenVerify'])->group(function (){
         Route::post('get', [SubjectController::class, 'getSubject']);
         Route::post('create', [SubjectController::class, 'createSubject']);
         Route::post('delete', [SubjectController::class, 'deleteSubject']);
+        Route::post('update', [SubjectController::class, 'updateSubject']);
     });
 
     Route::prefix('sts/')->group(function (){
