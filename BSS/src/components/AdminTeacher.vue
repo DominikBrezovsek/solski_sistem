@@ -126,7 +126,7 @@ export default {
                         })
                             .then((event) => {
                               if (event.isConfirmed && event.isDismissed){
-                                this.$router.push('/students')
+                                this.$router.push('/teachers')
                               }
                             })
 
