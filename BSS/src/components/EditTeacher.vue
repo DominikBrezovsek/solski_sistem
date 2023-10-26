@@ -6,14 +6,6 @@
     <div class="flex flex-row">
       <div class="teacher-form">
         <div class="teacher-input">
-          <label for="username">Uporabniško ime</label>
-          <input type="text" v-model="username" id="username" required>
-        </div>
-        <div class="teacher-input">
-          <label for="password">Geslo</label>
-          <input type="text" v-model="password" id="password" required>
-        </div>
-        <div class="teacher-input">
           <label for="ime">Ime</label>
           <input type="text" v-model="ime" id="ime" required>
         </div>
@@ -31,14 +23,14 @@
         </div>
       </div>
       <div class="teacher-select">
-        <div class="option" v-for="s in subjects" >
+        <div class="option" v-for="s in subjects">
           <label :for="s.id">{{s.subject}}</label>
           <input type="checkbox" :id="s.id" :value="s.id" v-model="selectedSubjects">
         </div>
       </div>
     </div>
     <div class="button">
-      <label class="button-add" @click="createTeacher">
+      <label class="button-add" @click="editTeacher">
         Dodaj predmet
       </label>
     </div>
@@ -52,8 +44,6 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
-      username: '',
-      password: '',
       ime: '',
       surname: '',
       email: '',
@@ -63,22 +53,22 @@ export default {
     }
   },
   methods: {
-    createTeacher() {
+    editTeacher() {
       const token = sessionStorage.getItem('token');
+      const teacherId = sessionStorage.getItem('currentTeacher')
       console.log(token)
-      if (token != null && this.username != '' && this.password != '' && this.ime != '' && this.surname != '' &&
-          this.email != '' && this.cabinet != '' && this.selectedSubjects.length != 0) {
+      if (token != null  && this.ime != '' && this.surname != '' &&
+          this.email != '' && this.cabinet != '' && this.selectedSubjects.length != 0 && teacherId != null) {
         const path = 'https://smv.usdd.company/API/public/api/'
         const data = new FormData();
         data.append('token', token)
-        data.append('username', this.username)
-        data.append('password', this.password)
         data.append('name', this.ime)
         data.append('surname', this.surname)
         data.append('email', this.email)
         data.append('cabinet', this.cabinet)
         data.append('subjects', JSON.stringify(this.selectedSubjects))
-        axios.post(path + 'teacher/create', data)
+        data.append('teacherId',teacherId )
+        axios.post(path + 'teacher/update', data)
             .then((response) => {
               if (response.data.success == "true") {
                 Swal.fire({
@@ -138,10 +128,49 @@ export default {
             })
       }
     },
+    getTeacher(){
+      this.subjects = Array();
+      let token = sessionStorage.getItem('token');
+      const teacherId = sessionStorage.getItem('currentTeacher')
+      if (token != null && teacherId != null) {
+        const jwt = new FormData();
+        jwt.append('token', token);
+        jwt.append('teacherId', teacherId)
+        axios.post('https://smv.usdd.company/API/public/api/teacher/adminGet', jwt)
+            .then((response) => {
+              if (response.data.subjects != null && response.data.teacher != null) {
+                console.log(response.data.subjects)
+                this.ime = response.data.teacher.name
+                this.surname = response.data.teacher.surname
+                this.email = response.data.teacher.email
+                this.cabinet = response.data.teacher.cabinet
+                for (let i = 0; i < (response.data.subjects).length; i++) {
+                  this.selectedSubjects.push(response.data.subjects[i].id);
+                  console.log(this.selectedSubjects[i].id)
+                }
+              } else if (response.data.error == "token"){
+                Swal.fire({
+                  title: 'Seja je potekla',
+                  text: 'Za nadaljevanje se ponovno prijavite.',
+                  icon: "warning",
+                  confirmButtonText: 'Prijava',
+                  confirmButtonColor: '#4377df'
+                }).then((event) => {
+                  if (event.isConfirmed || event.isDismissed) {
+                    sessionStorage.clear();
+                    localStorage.clear();
+                    this.$router.push('/');
+                  }
+                })
+              }
+            })
+      }
+    }
   },
   created() {
     this.getAllSubjects();
-},
+    this.getTeacher();
+  },
 }
 </script>
 

@@ -16,6 +16,7 @@ import SubmissionsView from "@/views/SubmissionsView.vue";
 import AdminAddSubject from "@/views/AdminAddSubject.vue";
 import AdminAddStudent from "@/views/AdminAddStudent.vue";
 import AdminAddTeacher from "@/views/AdminAddTeacher.vue";
+import EditUser from "@/views/EditUser.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -143,6 +144,14 @@ const router = createRouter({
             path: '/teachers/add',
             name: 'Add teachers',
             component: AdminAddTeacher,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/user/edit',
+            name: 'Edit user',
+            component: EditUser,
             meta: {
                 requiresAuth: true
             }

@@ -37,7 +37,7 @@ export default {
     createSubject() {
       const token = sessionStorage.getItem('token');
       console.log(token)
-      if (token != null && this.title != null && this.description != null) {
+      if (token != null && this.title != '' && this.description != '') {
         const path = 'https://smv.usdd.company/API/public/api/'
         const data = new FormData();
         data.append('token', token)
