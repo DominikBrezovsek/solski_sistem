@@ -109,12 +109,20 @@ function getStudent(Request $request)
 public
 function AdminGetStudent(Request $request)
 {
-    $loginId = $request->loginId;
+    $studentId = $request->studentId;
     $student = DB::table('StudentTable')
         ->join('ClassTable', 'StudentTable.classId', '=', 'ClassTable.id')
-        ->where('loginId', '=', $loginId)
+        ->where('StudentTable.id', '=', $studentId)
         ->first();
-    return response()->json($student);
+    $subjects = DB::table('StudentSubjectTable')
+        ->select('SubjectTable.*')
+        ->join('SubjectTable', 'StudentSubjectTable.subjectId', '=', 'SubjectTable.id')
+        ->where('studentId', '=', $studentId)
+        ->get();
+    return response()->json([
+        'student' => $student,
+        'subjects' => $subjects
+    ]);
 }
 
 public
@@ -124,12 +132,59 @@ function updateStudent(Request $request)
     $name = $request->name;
     $surname = $request->surname;
     $email = $request->email;
-    if ($loginId != null && $name != null && $surname != null && $email != null) {
+    $studentId = $request->studentId;
+    $subjects = json_decode($request->subjects);
+    $class = $request->class;
+    if ($loginId != null && $name != null && $surname != null && $email != null && $studentId == null) {
         StudentTable::where('loginId', '=', $loginId)->update(array(
             'name' => $name,
             'surname' => $surname,
             'email' => $email,
         ));
+        return response()->json([
+            'success' => 'true'
+        ]);
+    } else if ($studentId != null && $subjects != null) {
+        StudentTable::where('loginId', '=', $loginId)->update(array(
+            'name' => $name,
+            'surname' => $surname,
+            'email' => $email,
+            'classId' => $class
+        ));
+
+        foreach ($subjects as $subject) {
+            $st = DB::table('StudentSubjectTable')
+                ->where('subjectId', '=', $subject)
+                ->where('studentId', '=', $studentId)
+                ->first();
+
+            if ($st == null) {
+                StudentSubjectTable::create([
+                    'studentId' => $studentId,
+                    'subjectId' => $subject,
+                    'enrolledAt' => date('Y-m-d H:i:s', time())
+                ]);
+            }
+        }
+        $deleteSub = DB::table('SubmissionTable')
+            ->select('studSubjectId', 'file')
+            ->join('StudentSubjectTable', 'studSubjectId', '=', 'StudentSubjectTable.id')
+            ->where('StudentSubjectTable.studentId', '=', $studentId)
+            ->whereNotIn('subjectId', $subjects)
+            ->get();
+
+        foreach ($deleteSub as $ds) {
+            if ($ds != null) {
+                Storage::delete('/public/ass_sub/' . $ds->file);
+                DB::table('SubmissionTable')
+                    ->where('file', '=', $ds->file)
+                    ->delete();
+            }
+        }
+        DB::table('StudentSubjectTable')
+            ->where('studentId', '=', $studentId)
+            ->whereNotIn('subjectId', $subjects)
+            ->delete();
         return response()->json([
             'success' => 'true'
         ]);

@@ -65,6 +65,7 @@ Route::middleware(['tokenVerify'])->group(function (){
     });
     Route::prefix('teacher/')->group(function (){
         Route::post('get', [TeacherController::class, 'getTeacher']);
+        Route::post('adminGet', [TeacherController::class, 'adminGetTeacher']);
         Route::post('get-all', [TeacherController::class, 'getAllTeachers']);
         Route::post('create', [TeacherController::class, 'createTeacher']);
         Route::post('delete', [TeacherController::class, 'deleteTeacher']);

@@ -11,7 +11,6 @@ class ClassTable extends Model
     protected $table = "ClassTable";
     protected $fillable = [
         'class',
-        'teacherId',
         'schoolId'
     ];
 }

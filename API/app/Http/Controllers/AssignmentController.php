@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use function Laravel\Prompts\select;
 use function Laravel\Prompts\table;
 
 class AssignmentController extends Controller
@@ -324,6 +325,7 @@ class AssignmentController extends Controller
         $loginId = session('loginId');
         if ($loginId != null) {
             $ts = DB::table('TeacherSubjectTable AS TST')
+                ->select('TST.id AS tId', 'TST.subjectId', 'TST.teacherId', 'T.*')
                 ->join('TeacherTable AS T', 'T.id', '=', 'TST.teacherId')
                 ->where('T.loginId', '=', $loginId)
                 ->first();
@@ -348,7 +350,7 @@ class AssignmentController extends Controller
 
                 SubjectAssignmentTable::create([
                     'subjectId' => $subjectId,
-                    'tsId' => $ts->id,
+                    'tsId' => $ts->tId,
                     'amId' => $amId->id,
                     'tittle' => $title,
                     'description' => $description,

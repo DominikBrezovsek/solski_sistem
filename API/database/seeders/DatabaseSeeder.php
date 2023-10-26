@@ -67,7 +67,6 @@ class DatabaseSeeder extends Seeder
         ClassTable::create([
             'class' => 'R4B',
             'schoolId' => $school_id[0]->id,
-            'teacherId' => $teacher_id-> id
         ]);
 
         $class_id = ClassTable::select('id')->where('class', '=', 'R4B')->first();
