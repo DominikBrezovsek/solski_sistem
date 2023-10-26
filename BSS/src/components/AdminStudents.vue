@@ -143,11 +143,10 @@ export default {
       }
     },
     editStudent(studentId: string) {
-      const token = sessionStorage.getItem('token');
-      if (token != null && studentId != null) {
-
-      }
-    },
+      sessionStorage.setItem('currentType', 'student')
+      sessionStorage.setItem('currentStudent', studentId)
+      this.$router.push('/user/edit')
+    }
   },
   created() {
     this.checkIfSearch()
