@@ -3,7 +3,7 @@
     <div class="tittle">
       <h1>Dodaj profesorja</h1>
     </div>
-    <div class="flex flex-row">
+    <div class="flex flex-row justify-center">
       <div class="teacher-form">
         <div class="teacher-input">
           <label for="username">Uporabniško ime</label>
@@ -238,7 +238,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 3vh;
-  padding-top: 10vh;
+  padding-right: 10vw;
 }
 
 .teacher-form label {

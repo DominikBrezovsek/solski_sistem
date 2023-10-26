@@ -3,7 +3,7 @@
     <div class="tittle">
       <h1>Dodaj dijaka</h1>
     </div>
-    <div class="flex flex-row">
+    <div class="flex flex-row justify-center">
       <div class="student-form">
         <div class="student-input">
           <label for="username">Uporabniško ime</label>
@@ -249,7 +249,7 @@ export default {
   flex-direction: column;
   gap: 2vh;
   width: 40%;
-  padding-top: 5vh;
+  padding-top: 2vh;
   margin-left: auto;
   margin-right: auto;
 }
@@ -258,7 +258,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 3vh;
-  padding-top: 10vh;
+  padding-right: 10vw;
 }
 
 .student-form label {
