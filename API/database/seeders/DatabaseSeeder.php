@@ -64,18 +64,16 @@ class DatabaseSeeder extends Seeder
 
         $school_id = SchoolTable::select('id')->where('name', '=', 'Šolski center Celje, SŠ KER')->get();
 
-        ClassTable::create([
-            'class' => 'R4B',
-            'schoolId' => $school_id[0]->id,
-        ]);
+        $classes = ['R1A', 'R1B', 'R2A', 'R2B', 'R3A', 'R3B','R4A', 'R4B'];
+        foreach ($classes as $class) {
+            ClassTable::create([
+                'class' => $class,
+                'schoolId' => $school_id[0]->id,
+            ]);
+        }
+
 
         $class_id = ClassTable::select('id')->where('class', '=', 'R4B')->first();
-
-
-
-
-
-
 
         StudentTable::create([
             'name' => "Dominik",

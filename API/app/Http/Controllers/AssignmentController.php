@@ -249,7 +249,10 @@ class AssignmentController extends Controller
                 ->join('StudentSubjectTable', 'StudentSubjectTable.id', '=', 'SubmissionTable.studSubjectId')
                 ->join('StudentTable', 'StudentTable.id', '=', 'StudentSubjectTable.studentId')
                 ->join('SubjectAssignmentTable', 'SubjectAssignmentTable.id', '=', 'assignmentId')
+                ->join('TeacherSubjectTable', 'SubjectAssignmentTable.tsId', '=', 'TeacherSubjectTable.id' )
+                ->join('TeacherTable', 'TeacherTable.id', '=', 'TeacherSubjectTable.teacherId')
                 ->where('StudentSubjectTable.subjectId', '=', $subjectId)
+                ->where('TeacherTable.loginId', '=', $loginId)
                 ->get();
             return response()->json([
                 'submissions' => $submissions
