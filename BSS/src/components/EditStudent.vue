@@ -3,7 +3,7 @@
     <div class="tittle">
       <h1>Uredi dijaka</h1>
     </div>
-    <div class="flex flex-row">
+    <div class="content">
       <div class="teacher-form">
         <div class="teacher-input">
           <label for="ime">Ime</label>
@@ -41,7 +41,7 @@
     </div>
     <div class="button">
       <label class="button-add" @click="editStudent">
-        Dodaj predmet
+        Uredi
       </label>
     </div>
   </div>
@@ -85,8 +85,8 @@ export default {
             .then((response) => {
               if (response.data.success == "true") {
                 Swal.fire({
-                  title: 'Profesor  ustvarjen',
-                  text: 'Profesor je bil uspešno ustvarjen.',
+                  title: 'Dijak posodobljen',
+                  text: 'Dijak je bil uspešno posodobljen.',
                   icon: 'success',
                   confirmButtonText: 'Razumem',
                   confirmButtonColor: '#4377df'
@@ -286,7 +286,6 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 3vh;
-  padding-top: 10vh;
 }
 
 .teacher-form label {
@@ -332,5 +331,12 @@ export default {
   padding-left: 0.65vw;
   font-weight: 500;
   transition: all 0.15s ease-in;
+}
+.content{
+  display: flex;
+  flex-direction: row;
+  gap: 5vw;
+  justify-content: center;
+  align-items: center;
 }
 </style>

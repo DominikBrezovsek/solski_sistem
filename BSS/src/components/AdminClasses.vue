@@ -156,7 +156,6 @@ export default {
 
 <style scoped>
 .Admin_classes {
-  height: 70vh;
   width: 82vw;
   display: flex;
   flex-direction: column;
@@ -232,7 +231,9 @@ classes {
   padding-bottom: 2vh;
   padding-top: 1vh;
 }
-
+.class-row p.name{
+  width: 20vw;
+}
 .class-table h2::before {
   counter-increment: section;
   content: counter(section) ": ";

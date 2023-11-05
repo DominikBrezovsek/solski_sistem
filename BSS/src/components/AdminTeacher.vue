@@ -12,11 +12,15 @@
       <div class="table">
         <div class="students-table">
           <div class="student-row" v-for="t in teachers">
-            <p>{{ t.name }}</p>
-            <p>{{ t.surname }}</p>
-            <p>{{ t.class }}</p>
-            <p @click="deleteTeacher(t.id)"><img src="../assets/delete-icon.png" alt="odstrani dijaka"></p>
-            <p @click="editTeacher(t.id)"><img src="../assets/editing.png" alt="uredi dijaka"></p>
+            <div class="pwidth">
+              <p>{{ t.name }}</p>
+              <p>{{ t.surname }}</p>
+              <p>{{ t.class }}</p>
+            </div>
+            <div class="ppic">
+              <p @click="deleteTeacher(t.id)"><img src="../assets/delete-icon.png" alt="odstrani dijaka"></p>
+              <p @click="editTeacher(t.id)"><img src="../assets/editing.png" alt="uredi dijaka"></p>
+            </div>
           </div>
         </div>
       </div>
@@ -304,5 +308,18 @@ export default {
   margin-right: auto;
   justify-content: center;
   align-items: center;
+}
+.pwidth{
+  display: flex;
+  flex-direction: row;
+  gap: 5vw;
+}
+.pwidth p{
+  width: 8vw;
+}
+.ppic{
+  display: flex;
+  flex-direction: row;
+  gap: 5vw;
 }
 </style>

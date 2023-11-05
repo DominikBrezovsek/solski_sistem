@@ -39,7 +39,7 @@
     </div>
     <div class="button">
       <label class="button-add" @click="createTeacher">
-        Dodaj predmet
+        Dodaj profesorja
       </label>
     </div>
   </div>
