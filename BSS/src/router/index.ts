@@ -17,6 +17,7 @@ import AdminAddSubject from "@/views/AdminAddSubject.vue";
 import AdminAddStudent from "@/views/AdminAddStudent.vue";
 import AdminAddTeacher from "@/views/AdminAddTeacher.vue";
 import EditUser from "@/views/EditUser.vue";
+import EditSubject from "@/views/EditSubject.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -152,6 +153,14 @@ const router = createRouter({
             path: '/user/edit',
             name: 'Edit user',
             component: EditUser,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/classes/edit',
+            name: 'Edit subject',
+            component: EditSubject,
             meta: {
                 requiresAuth: true
             }

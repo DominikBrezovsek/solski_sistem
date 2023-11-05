@@ -142,8 +142,9 @@ export default {
     },
     editSubject(subjectId: string) {
       const token = sessionStorage.getItem('token');
-      if (token != null && subjectId != null) {
-
+      if (token != null) {
+        sessionStorage.setItem('subjectId', subjectId)
+        this.$router.push('/classes/edit')
       }
     },
   },
