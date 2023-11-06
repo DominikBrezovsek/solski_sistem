@@ -127,6 +127,8 @@ export default {
   height: 100%;
   align-items: center;
   padding-left: 5vw;
+  padding-bottom: 3vh;
+  padding-top: 3vh;
   overflow-y: scroll;
   scroll-behavior: smooth;
 }
