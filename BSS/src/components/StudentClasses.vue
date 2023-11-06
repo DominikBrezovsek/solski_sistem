@@ -121,10 +121,13 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  flex-wrap: wrap;
   gap: 8vw;
   width: 100%;
   height: 100%;
   align-items: center;
   padding-left: 5vw;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 </style>

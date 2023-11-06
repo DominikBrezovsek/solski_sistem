@@ -50,8 +50,10 @@ export default {
                 })
                     .then((event) => {
                       if (event.isDismissed || event.isConfirmed){
-                        Swal.close();
-                        this.$router.push('/classes')
+                        document.location.reload();
+                      }
+                      else {
+                        document.location.reload();
                       }
                     })
               } else if (response.data.error == 'enrolled') {
@@ -63,9 +65,11 @@ export default {
                   confirmButtonText: 'Razumem',
                 })
                     .then((event) => {
-                      if (event.isDismissed || event.isConfirmed){
-                        Swal.close();
-                        this.$router.push('/classes')
+                      if (event.isConfirmed){
+                        document.location.reload();
+                      }
+                      else {
+                        document.location.reload();
                       }
                     })
               }

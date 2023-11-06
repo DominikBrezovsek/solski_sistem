@@ -5,7 +5,7 @@
     </div>
     <div class="description">
       <p>{{ a.description }}</p>
-      <p @click="removeSubject" v-if="userType == 'student'"><img src="../assets/delete-icon.png" alt="un-enroll"></p>
+      <p @click="removeSubject" v-if="userType == 'student'" class="button-remove">Izpis iz predmeta</p>
     </div>
 
   </div>
@@ -135,6 +135,14 @@ export default {
   border-bottom: 3px solid grey;
 }
 
+.description {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
 .tittle {
   width: 100%;
   margin-top: 1vh;
@@ -146,7 +154,27 @@ export default {
   font-size: xx-large;
   flex-direction: column;
 }
-.description img {
-  height: 3vh;
+
+.button-remove {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15vw;
+  height: 5vh;
+  border: 2px solid #315cfd;
+  border-radius: 5px;
+  transition: all 0.22s;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 550;
+  text-align: center;
+  color: #315cfd;
+  margin-left: auto;
+}
+
+.button-remove:hover {
+  background: #315cfd;
+  color: white;
+  font-size: 1.1em;
 }
 </style>

@@ -69,13 +69,56 @@ export default {
     }
   },
   methods: {
+    checkCriteria() {
+      let input = this.password
+      const uppercase = /[A-Z]/g;
+      console.log(uppercase)
+      const lowercase = /[a-z]/g;
+      const special = /[^\w\s]/;
+      const length = input.length;
+
+      if (input.match(uppercase) && input.match(lowercase) && input.match(special) && length >= 8) {
+        return true
+      } else {
+        return false
+      }
+    },
+
     register() {
       const credentials = new FormData();
-
       if (this.password == this.re_password && this.password != "") {
-        credentials.append('username', this.username);
-        credentials.append('password', this.password);
-        credentials.append('userType', 'student')
+        if (this.checkCriteria() == true) {
+          credentials.append('username', this.username);
+          credentials.append('password', this.password);
+          credentials.append('userType', 'student')
+          axios.post('https://smv.usdd.company/API/public/api/register', credentials)
+              .then((response) => {
+                console.log(response.data.logged);
+                if (response.data.id != "") {
+                  sessionStorage.setItem('loginId', response.data.id);
+                  this.$router.push('/register');
+                } else if (response.data.error == "duplicate") {
+                  Swal.fire({
+                    title: "Uporabnik obstaja",
+                    text: "Uporabnik s tem uporabniškim imenom že obstaja.",
+                    icon: "info",
+                    confirmButtonText: "Razumem",
+                    buttonsStyling: true,
+                    confirmButtonColor: "#4377df"
+                  })
+                }
+              })
+        }
+
+      } else if (!this.checkCriteria()) {
+        Swal.fire({
+          title: "Geslo ni ustrezno!",
+          text: "Vnešeno geslo ne zadošča pogojem. Vsebovati mora najmanj 8 znakov, 1 veliko črko in en poseben znak.",
+          icon: "error",
+          confirmButtonText: "Razumem",
+          buttonsStyling: true,
+          confirmButtonColor: "#4377df"
+        })
       } else if (this.password != this.re_password && this.password != "") {
         Swal.fire({
           title: "Gesli se ne ujemata",
@@ -95,58 +138,10 @@ export default {
           confirmButtonColor: "#4377df"
         })
       }
-      if (this.username != "" && this.password != "") {
-        axios.post('https://smv.usdd.company/API/public/api/register', credentials)
-            .then((response) => {
-              console.log(response.data.logged);
-              if (response.data.id != "") {
-                sessionStorage.setItem('loginId', response.data.id);
-                this.$router.push('/register');
-              } else if (response.data.error == "duplicate") {
-                Swal.fire({
-                  title: "Uporabnik obstaja",
-                  text: "Uporabnik s tem uporabniškim imenom že obstaja.",
-                  icon: "info",
-                  confirmButtonText: "Razumem",
-                  buttonsStyling: true,
-                  confirmButtonColor: "#4377df"
-                })
-              } else {
-                Swal.fire({
-                  title: "Registracija ni uspela",
-                  text: "Prišlo je do napake pri registraciji. Prosim, poskusite kasneje.",
-                  icon: "error",
-                  confirmButtonText: "Razumem",
-                  buttonsStyling: true,
-                  confirmButtonColor: "#4377df"
-                })
-                this.$router.push('/');
-              }
-            }, (error) => {
-              console.log(error);
-              Swal.fire({
-                title: "Registracija ni uspela",
-                text: "Prišlo je do napake pri registraciji. Prosim, poskusite kasneje.",
-                icon: "error",
-                confirmButtonText: "Razumem",
-                buttonsStyling: true,
-                confirmButtonColor: "#4377df"
-              })
-              this.$router.push('/');
-            });
-      } else {
-        Swal.fire({
-          title: "Manjkajoči podatki",
-          text: "Prosimo, izpolnite vsa polja!",
-          icon: "warning",
-          confirmButtonText: "Razumem",
-          buttonsStyling: true,
-          confirmButtonColor: "#4377df"
-        })
-      }
-    },
+    }
   }
 }
+
 </script>
 
 <style scoped>

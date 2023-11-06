@@ -120,6 +120,7 @@ export default {
 
 .classes {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   justify-content: flex-start;
   gap: 8vw;
@@ -127,5 +128,6 @@ export default {
   height: 100%;
   align-items: center;
   padding-left: 5vw;
+  overflow-y: scroll;
 }
 </style>

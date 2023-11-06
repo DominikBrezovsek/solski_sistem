@@ -54,7 +54,7 @@
           <input id="email" class="username" type="email" v-model="email" placeholder="johndoe@school.domain"/>
         </div>
         <div>
-          <button @click="nextStep" class="login-button">Next step</button>
+          <button @click="nextStep" class="login-button">Create account</button>
         </div>
       </div>
       <div class="no-account">

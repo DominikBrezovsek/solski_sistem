@@ -105,6 +105,14 @@ export default {
                           confirmButtonText: "Razumem",
                           confirmButtonColor: "#4377df"
                         })
+                            .then(event => {
+                              if (event.isConfirmed){
+                                document.location.reload();
+                              }
+                              else {
+                                document.location.reload();
+                              }
+                            })
                       } else {
                         Swal.fire({
                           title: "Napaka",

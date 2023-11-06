@@ -18,8 +18,8 @@
           <input type="email" v-model="email" id="email" required>
         </div>
         <div class="teacher-input">
-          <label for="razred">Šola</label>
-          <select name="school" id="razred" v-model="currentSchool" @change="getClasses">
+          <label for="šola">Šola</label>
+          <select name="school" id="šola" v-model="currentSchool" @change="getClasses" @select="getClasses">
             <option value="" disabled selected>Izberi šolo</option>
             <option v-for="school in schools" :value="school.id">{{ school.name }}</option>
           </select>
@@ -127,10 +127,11 @@ export default {
                 this.priimek = response.data.student.surname
                 this.email = response.data.student.email
                 this.razred = response.data.student.classId
+                this.currentSchool = response.data.student.schoolId
                 for (let i = 0; i < (response.data.subjects).length; i++) {
                   this.selectedSubjects.push(response.data.subjects[i].id.toString());
-                  console.log(this.selectedSubjects[i].id)
                 }
+                this.getClasses();
               } else if (response.data.error == "token"){
                 Swal.fire({
                   title: 'Seja je potekla',
