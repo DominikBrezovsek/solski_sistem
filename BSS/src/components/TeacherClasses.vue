@@ -72,7 +72,7 @@ export default {
 
 <style scoped>
 .Teacher_classes {
-  height: 40vh;
+  height: 100%;
   width: 82vw;
   display: flex;
   flex-direction: column;
@@ -129,5 +129,7 @@ export default {
   align-items: center;
   padding-left: 5vw;
   overflow-y: scroll;
+  padding-bottom: 3vh;
+  padding-top: 3vh;
 }
 </style>

@@ -136,6 +136,13 @@ export default {
                     confirmButtonText: 'Razumem',
                     confirmButtonColor: '#4377df'
                   })
+                      .then(event => {
+                        if (event.isConfirmed){
+                          this.$router.push('/classes')
+                        } else {
+                          this.$router.push('/classes')
+                        }
+                      })
                 } else if (response.data.error == 'token') {
                   Swal.fire({
                     title: 'Seja je potekla',
