@@ -120,14 +120,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         UserLoginTable::create([
-            'username' => 'daddySlemi2m',
+            'username' => 'daddyLubej4pet',
             'password' => Hash::make('admin'),
             'userType' => 'admin'
         ]);
-        $admin_login_id = UserLoginTable::where('username', '=', 'daddySlemi2m')->first();
+        $admin_login_id = UserLoginTable::where('username', '=', 'daddyLubej4pet')->first();
         AdminTable::create([
-            'name' => 'Daddy',
-            'surname' => 'Slemi',
+            'name' => 'Boštjan',
+            'surname' => 'Lubej',
             'email' => 'uzelagamagla@magla.com',
             'loginId' => $admin_login_id->id,
         ]);

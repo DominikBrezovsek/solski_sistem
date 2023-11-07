@@ -72,7 +72,8 @@ class UserLoginController extends TokenController {
             $loginId = $student->loginId;
             $uuid    = uniqid();
             $link    = 'https://smv.usdd.company/API/public/api/confirmReset?user=' . $loginId . '&uuid=' . $uuid;
-            mail( $email, 'Ponastavitev gesla', 'Pozdravljeni. Nekdo je zahteval ponastavitev gesla za vaš račun. Če želite geslo ponastaviti, kliknite ta link:' . $link );
+            $headers = "From: webmaster@example.com";
+            mail( $email, 'Ponastavitev gesla', 'Pozdravljeni. Nekdo je zahteval ponastavitev gesla za vaš račun. Če želite geslo ponastaviti, kliknite ta link:' . $link, $headers);
 
             return response()->json( [
                 'success' => 'true'
@@ -86,7 +87,8 @@ class UserLoginController extends TokenController {
             $loginId = $teacher->loginId;
             $uuid    = uniqid();
             $link    = 'https://smv.usdd.company/API/public/api/confirmReset?user=' . $loginId . '&uuid=' . $uuid;
-            mail( $email, 'Ponastavitev gesla', 'Pozdravljeni. Nekdo je zahteval ponastavitev gesla za vaš račun. Če želite geslo ponastaviti, kliknite ta link:' . $link );
+            $headers = "From: webmaster@example.com";
+            mail( $email, 'Ponastavitev gesla', 'Pozdravljeni. Nekdo je zahteval ponastavitev gesla za vaš račun. Če želite geslo ponastaviti, kliknite ta link:' . $link, $headers);
 
             return response()->json( [
                 'success' => 'true'
@@ -100,7 +102,8 @@ class UserLoginController extends TokenController {
             $loginId = $admin->loginId;
             $uuid    = uniqid();
             $link    = 'https://smv.usdd.company/API/public/api/confirmReset?user=' . $loginId . '&uuid=' . $uuid;
-            mail( $email, 'Ponastavitev gesla', 'Pozdravljeni. Nekdo je zahteval ponastavitev gesla za vaš račun. Če želite geslo ponastaviti, kliknite ta link:' . $link );
+            $headers = "From: webmaster@example.com";
+            mail( $email, 'Ponastavitev gesla', 'Pozdravljeni. Nekdo je zahteval ponastavitev gesla za vaš račun. Če želite geslo ponastaviti, kliknite ta link:' . $link, $headers);
 
             return response()->json( [
                 'success' => 'true'
@@ -131,9 +134,7 @@ class UserLoginController extends TokenController {
           ->where('loginId', '=', $loginId)
           ->delete();
 
-        return response()->json([
-            'success' => 'true'
-        ]);
+        redirect('https://smv.usdd.company/?pwd-reset=true');
     }
 
 }

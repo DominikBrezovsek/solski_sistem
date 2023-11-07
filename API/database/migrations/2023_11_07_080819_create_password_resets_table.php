@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigInteger('loginId')->unsigned()->index();
             $table->longText('newPassword');
             $table->timestamps();
-            $table->foreign('loginId')->references('id')->on('UserLogintable')->noActionOnDelete()->cascadeOnUpdate();
+            $table->foreign('loginId')->references('id')->on('UserLoginTable')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 
