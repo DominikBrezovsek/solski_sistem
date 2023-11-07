@@ -30,8 +30,11 @@ Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
 });
 
+Route::get('/confirmReset', [UserLoginController::class, 'confirmReset']);
+
 Route::prefix('login/')->group(function (){
     Route::post('check', [UserLoginController::class, 'checkLogin']);
+    Route::post('pwdreset', [UserLoginController::class, 'passwordReset']);
 });
 Route::prefix('school/')->group(function (){
     Route::get('getAll', [SchoolController::class, 'getSchool']);
