@@ -12,55 +12,48 @@
           <h1>BSS E-portal</h1>
         </div>
         <div class="text-xl font-normal ml-auto mr-auto text-about">
-          <p>BSS is a modern digital platform dedicated to enchancing the educational journey of students and
-            teachers
-            alike.</p>
+          <p>je moderna digitalna platforma, ki izboljšuje proces šolanja za dijake in profesorje.</p>
         </div>
       </div>
     </div>
     <div class="login-side w-8/12 flex flex-col justify-center">
       <div class="login-tittle flex flex-col">
         <div class="tittle ml-auto mr-auto text-5xl font-bold text-black">
-          <h1>Register</h1>
+          <h1>Registracija - profilni podatki</h1>
         </div>
         <div class="subtittle text-xl font-medium ml-auto mr-auto">
-          Create your student account.
+          Dopolni svoje profilne podatke.
         </div>
       </div>
       <div class="flex flex-col login-form w-full">
         <div class="flex flex-col">
-          <label for="name" class="label">Name</label>
-          <input id="name" class="username" type="text" v-model="name" placeholder="John"/>
+          <label for="name" class="label">Ime</label>
+          <input id="name" class="username" type="text" v-model="name" placeholder="Janez"/>
         </div>
         <div class="flex flex-col">
-          <label for="password" class="label">Surname</label>
-          <input id="password" class="password" type="text" v-model="surname" placeholder="Doe"/>
+          <label for="password" class="label">Priimek</label>
+          <input id="password" class="password" type="text" v-model="surname" placeholder="Novak"/>
         </div>
         <div class="flex flex-col">
-          <label for="school" class="label">School</label>
+          <label for="school" class="label">Šola</label>
           <select name="school" id="school" v-model="currentSchool" @change="getClasses">
             <option value="" disabled selected>Select your school</option>
             <option v-for="school in schools" :value="school.id">{{ school.name }}</option>
           </select>
         </div>
         <div class="flex flex-col">
-          <label for="class" class="label">Class</label>
+          <label for="class" class="label">Razred</label>
           <select name="class" id="class" v-model="currentClass">
             <option v-for="razred in classes" :value="razred.id">{{ razred.class }}</option>
           </select>
         </div>
         <div class="flex flex-col">
-          <label for="email" class="label">Email</label>
-          <input id="email" class="username" type="email" v-model="email" placeholder="johndoe@school.domain"/>
+          <label for="email" class="label">E-poštni naslov</label>
+          <input id="email" class="username" type="email" v-model="email" placeholder="janez.novak@šola.domena"/>
         </div>
         <div>
-          <button @click="nextStep" class="login-button">Create account</button>
+          <button @click="nextStep" class="login-button">Ustvari račun</button>
         </div>
-      </div>
-      <div class="no-account">
-        <p>Already have an account?
-          <RouterLink to="/">Login</RouterLink>
-        </p>
       </div>
     </div>
   </div>

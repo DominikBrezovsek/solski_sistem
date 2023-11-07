@@ -18,6 +18,7 @@ import AdminAddStudent from "@/views/AdminAddStudent.vue";
 import AdminAddTeacher from "@/views/AdminAddTeacher.vue";
 import EditUser from "@/views/EditUser.vue";
 import EditSubject from "@/views/EditSubject.vue";
+import PasswordReset from "@/views/PasswordReset.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -36,6 +37,11 @@ const router = createRouter({
             path: '/register2',
             name: 'Register2',
             component: RegisterPage2
+        },
+        {
+            path: '/password-reset',
+            name: 'Ponastavi geslo',
+            component: PasswordReset
         },
         {
             path: '/student/add',

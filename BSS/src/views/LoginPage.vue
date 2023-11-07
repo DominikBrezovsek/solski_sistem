@@ -44,6 +44,11 @@
           <RouterLink to="/register2">Registriraj se</RouterLink>
         </p>
       </div>
+      <div class="no-account">
+        <p>Pozabljeno geslo?
+          <RouterLink to="/password-reset">Ponastavi geslo</RouterLink>
+        </p>
+      </div>
     </div>
   </div>
 </template>
