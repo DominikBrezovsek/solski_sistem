@@ -4,9 +4,7 @@
       <h1>BSS</h1>
     </div>
     <div>
-      <p class="p">is a modern digital platform dedicated to enchancing the educational journey of students and
-        teachers
-        alike.</p>
+      <p class="p">je moderna digitalna platforma, ki izboljšuje proces šolanja za dijake in profesorje.</p>
     </div>
   </div>
 </template>

@@ -12,9 +12,7 @@
           <h1>BSS E-portal</h1>
         </div>
         <div class="text-xl font-normal ml-auto mr-auto text-about">
-          <p>BSS is a modern digital platform dedicated to enchancing the educational journey of students and
-            teachers
-            alike.</p>
+          <p>je moderna digitalna platforma, ki izboljšuje proces šolanja za dijake in profesorje.</p>
         </div>
       </div>
     </div>
@@ -24,26 +22,26 @@
           <h1>Login</h1>
         </div>
         <div class="subtittle text-xl font-medium ml-auto mr-auto">
-          Enter your credentials to log into your account.
+          Vnesite svoje prijavne podatke za dostop do sistema.
         </div>
       </div>
       <div class="flex flex-col login-form w-full">
         <div class="flex flex-col">
-          <label for="username" class="label">Username</label>
+          <label for="username" class="label">Uporabniško ime</label>
           <input id="username" class="username" type="text" v-model="username" placeholder="BabaJaga21"/>
         </div>
         <div class="flex flex-col">
-          <label for="password" class="label">Password</label>
+          <label for="password" class="label">Geslo</label>
           <input id="password" class="password" type="password" v-model="password"
-                 placeholder="Your super secret password" @keyup.enter="login"/>
+                 placeholder="Tvoje super skrivno geslo" @keyup.enter="login"/>
         </div>
         <div>
-          <button @click="login" class="login-button">Login</button>
+          <button @click="login" class="login-button">Prijava</button>
         </div>
       </div>
       <div class="no-account">
-        <p>Don't have an account?
-          <RouterLink to="/register2">Register</RouterLink>
+        <p>Še nimaš računa?
+          <RouterLink to="/register2">Registriraj se</RouterLink>
         </p>
       </div>
     </div>
