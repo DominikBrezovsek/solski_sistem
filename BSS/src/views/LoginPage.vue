@@ -19,7 +19,7 @@
     <div class="login-side w-8/12 flex flex-col justify-center">
       <div class="login-tittle flex flex-col">
         <div class="tittle ml-auto mr-auto text-5xl font-bold text-black">
-          <h1>Login</h1>
+          <h1>Prijava</h1>
         </div>
         <div class="subtittle text-xl font-medium ml-auto mr-auto">
           Vnesite svoje prijavne podatke za dostop do sistema.
